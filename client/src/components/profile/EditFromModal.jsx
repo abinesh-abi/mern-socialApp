@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { updateProfileUser } from "../../redux/actions/profileActions"
 import { postDataAPI } from "../../utils/fetchData"
 
 
@@ -10,6 +11,7 @@ const EditFromModal =({user,dob,userUpdate})=>{
   let [err,setErr] = useState('')
 
   const {auth} = useSelector(state=>state)
+  const dispatch = useDispatch()
 
   let date = new Date(dob)?.toLocaleDateString()?.split('/').reverse().join('-')
 
@@ -20,18 +22,29 @@ const EditFromModal =({user,dob,userUpdate})=>{
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    postDataAPI('/user/edit',data,auth.token).then(({data})=>{
-      if (data.status) {
-        userUpdate()
+  const closeModel =()=>{
         // close bootstrap model
         document.getElementById("editDetails").classList.remove("show", "d-block");
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
-      }else{
-        setErr(data.message)
-      }
-    })
+  }
+
+
+  const onSubmit = (data) => {
+    // postDataAPI('/user/edit',data,auth.token).then(({data})=>{
+    //   if (data.status) {
+    //     userUpdate()
+    //     // close bootstrap model
+    //     document.getElementById("editDetails").classList.remove("show", "d-block");
+    //     document.querySelectorAll(".modal-backdrop")
+    //         .forEach(el => el.classList.remove("modal-backdrop"));
+    //   }else{
+    //     setErr(data.message)
+    //   }
+    // })
+
+    dispatch(updateProfileUser(data,auth,closeModel))
+
   };
 
   return(

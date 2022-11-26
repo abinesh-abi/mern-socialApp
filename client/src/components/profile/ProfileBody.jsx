@@ -61,10 +61,17 @@ const ProfileBody = ()=>{
         <UserDetailFeild feild={'User Name'} value={user?.username} />
         <UserDetailFeild feild={'Email'} value={user?.email} />
         <UserDetailFeild feild={'Date Of Birth'} value={new Date(user?.dob).toLocaleDateString() } />
-        <Link className="btn btn-primary mx-auto"
-        data-toggle="modal"
-        data-target="#editDetails"
-        >Edit User Details</Link>
+        {
+          auth.user._id ===id ?
+          <Link className="btn btn-primary mx-auto"
+          data-toggle="modal"
+          data-target="#editDetails"
+          >Edit User Details</Link> :
+          <Link className="btn btn-primary mx-auto">Follow</Link>
+        }
+
+        {
+          auth.user._id ===id ?
         <div className="col-11 col-md-12 d-flex justify-content-between mt-2 px-5">
           <div className="d-flex">
             <p>password</p>
@@ -74,7 +81,8 @@ const ProfileBody = ()=>{
             ></Link>
           </div>
           <p>******</p>
-        </div>
+        </div> : ''
+        }
         <UserDetailFeild feild={'Followers'} value={user?.followers.length} />
         <UserDetailFeild feild={'Followings'} value={user?.following.length} />
      </div>
