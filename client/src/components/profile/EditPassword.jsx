@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { postDataAPI } from '../../utils/fetchData';
 
-function EditPassword({userUpdate}) {
+function EditPassword() {
   let [err,setErr] = useState('')
   const {auth} = useSelector(state=>state)
 
@@ -18,7 +18,6 @@ function EditPassword({userUpdate}) {
   const onSubmit = (data) => {
     postDataAPI('/user/editPassword',data,auth.token).then(({data})=>{
       if (data.status) {
-        userUpdate()
         setErr('')
         // close bootstrap model
         document.getElementById("editPassword").classList.remove("show", "d-block");

@@ -6,7 +6,7 @@ import { postDataAPI } from "../../utils/fetchData"
 
 
 
-const EditFromModal =({user,dob,userUpdate})=>{
+const EditFromModal =({user,dob})=>{
 
   let [err,setErr] = useState('')
 

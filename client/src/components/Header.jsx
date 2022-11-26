@@ -1,10 +1,7 @@
 import React from 'react'
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { logout } from '../redux/actions/authAction'
-import config from '../utils/config'
-import { getDataAPI } from '../utils/fetchData'
 
 function Header() {
   const {auth} = useSelector(state=>state)
@@ -42,7 +39,7 @@ function Header() {
         <Link className="nav-link p-0" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
           {/* <img src="https://www.pngitem.com/pimgs/m/78-786293_1240-x-1240-0-avatar-profile-icon-png.png" className="rounded-circle z-depth-0" */}
-          <img src={`http://127.0.0.1:5000/images/profile/${auth.user.avatar}.jpg`} className="rounded-circle z-depth-0"
+          <img src={`http://127.0.0.1:5000/images/profile/${auth?.user?.avatar}.jpg`} className="rounded-circle z-depth-0"
             alt="avatar image" height="35" />
         </Link>
         <div className="dropdown-menu dropdown-menu-right dropdown-default"

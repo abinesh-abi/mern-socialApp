@@ -10,7 +10,6 @@ export const PROFILE_TYPES = {
 export const updateProfileUser = (data,auth,closeModel) =>async(dispatch)=>{
     const res = await postDataAPI('/user/edit',data,auth.token)
     if (res.data.status) {
-        console.log(auth)
             dispatch({
                 type:GLOBALTYPES.AUTH,
                 payload:{

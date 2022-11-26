@@ -31,8 +31,8 @@ const ProfileBody = ()=>{
        })
    } 
   useEffect(()=>{
-    getUsers()
-    },[])
+    setUser(auth.user)
+    },[auth.user])
 
 
   return (
@@ -91,8 +91,8 @@ const ProfileBody = ()=>{
 
 {/* <!-- Modal --> */}
 <ImageEditModal image={user?.avatar} userUpdate={getUsers}/>
- {user &&<EditFromModal user={user} userUpdate={getUsers} dob={user?.dob}/>} 
- <EditPassword  userUpdate={getUsers} />
+ {user &&<EditFromModal user={user}  dob={user?.dob}/>} 
+ <EditPassword   />
 
 </div>
   )
