@@ -11,6 +11,9 @@
 # production
 /build
 
+/uploads
+!uploads/profile/avatar.jpg
+
 # misc
 .DS_Store
 .env

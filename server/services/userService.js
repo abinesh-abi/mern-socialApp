@@ -36,6 +36,13 @@ module.exports = {
       .catch(error=>reject(error))
     })
   },
+  useridAndUserNameExists:(id,username)=>{
+    return new Promise((resolve, reject) => {
+      userModel.findOne({ _id:{$ne:id},username})
+      .then((data)=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
   updateUser:(_id,values)=>{
     return new Promise((resolve, reject) => {
       userModel.updateOne({_id},{$set:values})

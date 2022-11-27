@@ -25,11 +25,11 @@ const ProfileBody = ()=>{
   const {id} = useParams()
   const {auth} = useSelector(state=>state)
 
-   let getUsers  = ()=>{
-       getDataAPI(`/user/${id}`,auth.token).then(data=>{
-        setUser(data.data.user)
-       })
-   } 
+  //  let getUsers  = ()=>{
+  //      getDataAPI(`/user/${id}`,auth.token).then(data=>{
+  //       setUser(data.data.user)
+  //      })
+  //  } 
   useEffect(()=>{
     setUser(auth.user)
     },[auth.user])
@@ -62,7 +62,7 @@ const ProfileBody = ()=>{
         <UserDetailFeild feild={'Email'} value={user?.email} />
         <UserDetailFeild feild={'Date Of Birth'} value={new Date(user?.dob).toLocaleDateString() } />
         {
-          auth.user._id ===id ?
+          auth.user?._id ===id ?
           <Link className="btn btn-primary mx-auto"
           data-toggle="modal"
           data-target="#editDetails"
@@ -71,7 +71,7 @@ const ProfileBody = ()=>{
         }
 
         {
-          auth.user._id ===id ?
+          auth.user?._id ===id ?
         <div className="col-11 col-md-12 d-flex justify-content-between mt-2 px-5">
           <div className="d-flex">
             <p>password</p>
@@ -90,7 +90,7 @@ const ProfileBody = ()=>{
 
 
 {/* <!-- Modal --> */}
-<ImageEditModal image={user?.avatar} userUpdate={getUsers}/>
+<ImageEditModal image={user?.avatar} />
  {user &&<EditFromModal user={user}  dob={user?.dob}/>} 
  <EditPassword   />
 

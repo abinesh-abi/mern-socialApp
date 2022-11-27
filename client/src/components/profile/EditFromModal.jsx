@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
@@ -8,9 +9,10 @@ import { postDataAPI } from "../../utils/fetchData"
 
 const EditFromModal =({user,dob})=>{
 
-  let [err,setErr] = useState('')
+  const {auth,showErr} = useSelector(state=>state)
 
-  const {auth} = useSelector(state=>state)
+  let [err,setErr] = useState(showErr?.message)
+
   const dispatch = useDispatch()
 
   let date = new Date(dob)?.toLocaleDateString()?.split('/').reverse().join('-')
@@ -28,6 +30,9 @@ const EditFromModal =({user,dob})=>{
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
   }
+  useEffect(()=>{
+    setErr(showErr?.message)
+  })
 
 
   const onSubmit = (data) => {

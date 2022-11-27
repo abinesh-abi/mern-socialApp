@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
-const { getUserByUserId, useridAndEmailExists, updateUser, editPassword } = require("../services/userService")
+const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists } = require("../services/userService")
 
 const userControl ={
     searchUser:(req,res)=>{},
@@ -18,7 +18,12 @@ const userControl ={
             let id = req.user._id
             let {body} = req
             const user = await useridAndEmailExists(id,body.email)
-            if(user) return res.json({message: "This Email already Taken"})
+            let userNameExitsts = await useridAndUserNameExists(id,body.username)
+
+            
+            if(user) return res.json({message: "This Email is already Taken"})
+            if(userNameExitsts) return res.json({message: "This User Name is already Taken"})
+
             let update = await updateUser(id,body)
             res.json({status:true,message:"User Detail Updated"})
         } catch (err) {

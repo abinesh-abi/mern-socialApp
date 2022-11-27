@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateProfilePhoto } from "../../redux/actions/profileActions";
 import { postDataAPI } from "../../utils/fetchData";
 
-const ImageEditModal =({image,userUpdate})=>{
+const ImageEditModal =({image})=>{
 
   const profileStyle = {
     borderRadius: "50%",
@@ -12,18 +13,27 @@ const ImageEditModal =({image,userUpdate})=>{
 
     let [newImage,setNewimage] = useState(null)
     const [imageUpdated,setImageUpdated] = useState(false)
+
+    const dispatch = useDispatch()
+
     const {auth} = useSelector(state=>state)
+
+    const closeModel = ()=>{
+        document.getElementById("exampleModalCenter").classList.remove("show", "d-block");
+        document.querySelectorAll(".modal-backdrop")
+            .forEach(el => el.classList.remove("modal-backdrop"));
+    }
 
     const updateImage = () =>{
         let data = new FormData()
         data.append('image',newImage)
-        postDataAPI('/user/editImage',data,auth.token)
-        .then(({data})=>{
-            userUpdate()
-        document.getElementById("exampleModalCenter").classList.remove("show", "d-block");
-        document.querySelectorAll(".modal-backdrop")
-            .forEach(el => el.classList.remove("modal-backdrop"));
-        })
+        dispatch(updateProfilePhoto(data,auth,closeModel))
+        // postDataAPI('/user/editImage',data,auth.token)
+        // .then(({data})=>{
+        // document.getElementById("exampleModalCenter").classList.remove("show", "d-block");
+        // document.querySelectorAll(".modal-backdrop")
+        //     .forEach(el => el.classList.remove("modal-backdrop"));
+        // })
     }
 
   return(
