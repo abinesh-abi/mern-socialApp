@@ -11,7 +11,7 @@ function Home(){
         <Sidebar />
       </div>
       {/* body */}
-      <div className="col-12 col-md-6 mt-3 bg-white rounded">
+      <div className="col-12 col-md-6 mt-3 rounded">
      <HomeBody /> 
       </div>
       {/* friends */}

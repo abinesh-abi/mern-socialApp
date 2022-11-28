@@ -49,7 +49,7 @@ function Login() {
               <div className="row justify-content-center">
                 <div className="col-md-8">
                   <div className="mb-4">
-                    <h3>Sign In</h3>
+                    <h3>Log In</h3>
                   </div>
                   <p className="text-danger text-center">{err}</p>
                   <form onSubmit={handleSubmit(onSubmit)}>

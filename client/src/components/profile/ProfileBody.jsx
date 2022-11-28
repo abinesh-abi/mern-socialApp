@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getDataAPI } from "../../utils/fetchData";
 import EditFromModal from "./EditFromModal";
 import EditPassword from "./EditPassword";
 import ImageEditModal from "./ImageEditModal";

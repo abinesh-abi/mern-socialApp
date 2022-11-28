@@ -1,4 +1,4 @@
-import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
+import {  postDataAPI } from '../../utils/fetchData'
 import {GLOBALTYPES} from './globalTypes'
 
 export const PROFILE_TYPES = {

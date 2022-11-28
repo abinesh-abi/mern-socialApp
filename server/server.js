@@ -36,5 +36,6 @@ mongodbConnection()
 // router
 app.use('/',require("./routes/authRouter"))
 app.use('/',require("./routes/userRouter"))
+app.use('/',require("./routes/adminRouter"))
 
 app.listen(PORT,()=>console.log('server running on port '+PORT))

@@ -3,7 +3,6 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { updateProfileUser } from "../../redux/actions/profileActions"
-import { postDataAPI } from "../../utils/fetchData"
 
 
 
@@ -32,7 +31,7 @@ const EditFromModal =({user,dob})=>{
   }
   useEffect(()=>{
     setErr(showErr?.message)
-  })
+  },[showErr?.message])
 
 
   const onSubmit = (data) => {
@@ -148,8 +147,6 @@ const EditFromModal =({user,dob})=>{
             <label htmlFor="dob" className="col-sm-2 col-form-label">DOB</label>
             <div className="col-sm-10">
               <input type="date" className="form-control" id="dob" placeholder="DOB" 
-                // defaultValue={new Date(user?.dob)?.toLocaleDateString() }
-                // onChange={e=>setNewDate(e.target.value)}
                 defaultValue={date}
                         {...register("dob", {
                           required: true,

@@ -1,4 +1,5 @@
 import React from 'react'
+import '../../styles/posts.css'
 
 function HomeBody() {
   const status = {
@@ -12,7 +13,7 @@ function HomeBody() {
 
   return (
     <>
-      <div>
+      <div className=''>
         
       </div>
     </>
