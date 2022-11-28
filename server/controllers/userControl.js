@@ -1,9 +1,18 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
-const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists } = require("../services/userService")
+const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser } = require("../services/userService")
 
 const userControl ={
-    searchUser:(req,res)=>{},
+    searchUser: async(req,res)=>{
+        try {
+            const {name} = req.body
+            const users = await serchUser(name)
+            res.json({users})
+        } catch (error) {
+            return res.json({message:err.message})
+        }
+        
+    },
     getUser: async (req, res) => {
         try {
             const user = await getUserByUserId(req.params.id)

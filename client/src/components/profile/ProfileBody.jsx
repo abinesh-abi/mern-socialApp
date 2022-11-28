@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { getDataAPI } from "../../utils/fetchData";
 import EditFromModal from "./EditFromModal";
 import EditPassword from "./EditPassword";
 import ImageEditModal from "./ImageEditModal";
@@ -23,16 +24,22 @@ const ProfileBody = ()=>{
   let [user,setUser] = useState()
   const {id} = useParams()
   const {auth} = useSelector(state=>state)
+  let ownProfile = id===auth?.user?._id
 
-  //  let getUsers  = ()=>{
-  //      getDataAPI(`/user/${id}`,auth.token).then(data=>{
-  //       setUser(data.data.user)
-  //      })
-  //  } 
+   let getUsers  = ()=>{
+       getDataAPI(`/user/${id}`,auth.token).then(data=>{
+        setUser(data.data.user)
+       })
+   } 
   useEffect(()=>{
-    setUser(auth.user)
-    },[auth.user])
-
+    if (ownProfile) {
+      setUser(auth.user)
+    }else{
+       getDataAPI(`/user/${id}`,auth.token).then(data=>{
+        setUser(data.data.user)
+       })
+    }
+    },[auth.user,id,useParams])
 
   return (
   <div className="d-flex flex-column bg-white">

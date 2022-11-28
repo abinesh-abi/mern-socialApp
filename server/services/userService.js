@@ -43,6 +43,13 @@ module.exports = {
       .catch(error=>reject(error))
     })
   },
+  serchUser:(name)=>{
+    return new Promise((resolve, reject) => {
+      userModel.find({username: {$regex: name}}).limit(5).select("-password")
+      .then((data)=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
   updateUser:(_id,values)=>{
     return new Promise((resolve, reject) => {
       userModel.updateOne({_id},{$set:values})

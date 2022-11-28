@@ -1,7 +1,10 @@
 import React from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { logout } from '../redux/actions/authAction'
+import { postDataAPI } from '../utils/fetchData'
+import SearchModel from './SearchModel'
 
 function Header() {
   const {auth,adminAuth} = useSelector(state=>state)
@@ -18,6 +21,7 @@ function Header() {
   let userName =auth?.user?.fullname?.split(' ')[0]
   let adminName = adminAuth?.admin?.admin
 
+
   return (
 <nav className="mb-1 navbar navbar-expand-lg navbar-dark bg-dark  lighten-1">
   <Link className="navbar-brand" to={'/'}>SocialApp</Link>
@@ -27,6 +31,21 @@ function Header() {
   </button>
   <div className="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul className="navbar-nav ml-auto nav-flex-icons">
+      <li className={`nav-item  px-2`}>
+        {/* <div className="input-group ">
+          <div className="form-outline ">
+            <input type="search" defaultValue={serch} id="form1" className="form-control"
+              onChange={e=>setSerch(e.target.value)}
+            />
+          </div>
+          <button type="button" className="btn btn-primary"
+            onClick={serchUser}
+          >
+            <i className="fas fa-search"></i>
+          </button>
+        </div> */}
+        <Link className="fa-solid nav-link active fa-magnifying-glass" data-toggle="modal" data-target="#exampleModal"></Link>
+      </li> 
       {
         isAdmin ? 
       <li className={`nav-item  px-2 ${isActive('/admin')}`}>
@@ -72,6 +91,60 @@ function Header() {
       </li>
     </ul>
   </div>
+
+      {/* model */}
+      <SearchModel />
+      
+
+  {/* <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog" role="document">
+    <div className="modal-content">
+      <div className="modal-header">
+        <button onClick={clearSearch} type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" >&times;</span>
+        </button>
+      </div>
+
+        <div className=" m-3 justify-content-center">
+          <div className="card  p-4">
+              <form onSubmit={serchUser}>
+                <div className="input-group mb-1">
+                  <input type="text" className="form-control"
+                  defaultValue={serch}
+                    onChange={e=>setSerch(e.target.value)}
+                  />
+                  <div className="input-group-append">
+                    <button className="btn btn-primary">
+                      <i className="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            <div className="mb-3">
+              <p className='mx-auto text-danger'>{serchErr}</p>
+              {
+                userList.map((value,index)=>{
+                   return <div onClick={()=>viewProfile(value._id)}  key={index} className=" d-flex justify-content-between shadow-sm px-3 mx-1" style={listDiv}
+                   >
+                        <div className='d-flex'>
+                            <img
+                            className="img-fluid"
+                            src={`http://127.0.0.1:5000/images/profile/${value?.avatar}.jpg`}
+                            style={listImage}
+                            alt=""
+                            />
+                            <p className='mx-3' style={{'lineHeight': '45px',}}>{value.fullname}</p>
+                        </div>
+                    </div>
+                })
+              }
+            </div>
+            
+          </div>	
+        </div>
+    </div>
+  </div>
+</div> */}
 </nav>
   )
 }
