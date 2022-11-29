@@ -5,9 +5,9 @@ import Sidebar from '../components/Sidebar'
 
 function Home(){
   return (
-    <div className="container-fluid row justify-content-center">
+    <div className="container-fluid row justify-content-center ">
       {/* side bar */}
-      <div className="col-11 col-md-2 rounded">
+      <div className="col-11 col-md-2 rounded ">
         <Sidebar />
       </div>
       {/* body */}

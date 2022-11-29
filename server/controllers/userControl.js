@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const multer = require('multer')
 const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser } = require("../services/userService")
 
-const userControl ={
+const postControll ={
     searchUser: async(req,res)=>{
         try {
             const {name} = req.body
@@ -75,4 +75,4 @@ const userControl ={
     }
 }
 
-module.exports = userControl
+module.exports = postControll

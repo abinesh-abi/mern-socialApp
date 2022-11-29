@@ -31,13 +31,15 @@ const ProfileBody = ()=>{
         setUser(data.data.user)
        })
    } 
+
   useEffect(()=>{
     if (ownProfile) {
       setUser(auth.user)
     }else{
-       getDataAPI(`/user/${id}`,auth.token).then(data=>{
-        setUser(data.data.user)
-       })
+      //  getDataAPI(`/user/${id}`,auth.token).then(data=>{
+      //   setUser(data.data.user)
+      //  })
+      getUsers()
     }
     },[auth.user,id,useParams])
 
@@ -51,6 +53,8 @@ const ProfileBody = ()=>{
         style={profileStyle}
         alt=""
       />
+      {
+        auth.user?._id ===id ?
       <Link className="fa-regular fa-pen-to-square"
        data-toggle="modal"
        data-target="#exampleModalCenter"
@@ -60,7 +64,8 @@ const ProfileBody = ()=>{
           left: 'calc(50% - 10px)',
           top:"155px",
         }
-        }></Link>
+        }></Link> :''
+      }
      </div>
      <div className="row mt-5 align-self-center shadow w-100">
         <UserDetailFeild feild={'Name'} value={user?.fullname} />

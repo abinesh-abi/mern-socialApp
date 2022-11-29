@@ -26,6 +26,7 @@ function App() {
     <>
       <BrowserRouter>
          {(auth.token || adminAuth.token) && <Header />} 
+         <div className="pt-5">
         <Routes>
           <Route path="/" element={auth.token ? <Home /> :<Login />} />
           <Route path="/:page" element={<PageRender />} />
@@ -36,6 +37,7 @@ function App() {
           <Route path="/admin" element={ adminAuth.token?<Dashboard />:<AdminLogin />} />
           
         </Routes>
+        </div>
       </BrowserRouter>
     </>
   );

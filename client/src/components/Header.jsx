@@ -23,7 +23,8 @@ function Header() {
 
 
   return (
-<nav className="mb-1 navbar navbar-expand-lg navbar-dark bg-dark  lighten-1">
+    <div className='w-100' style={{position:'fixed',zIndex:'1'}}>
+<nav className="mb-1 navbar navbar-expand-lg navbar-dark bg-dark lighten-1 " >
   <Link className="navbar-brand" to={'/'}>SocialApp</Link>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,6 +147,7 @@ function Header() {
   </div>
 </div> */}
 </nav>
+</div>
   )
 }
 
