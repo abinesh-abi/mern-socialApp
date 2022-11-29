@@ -7,8 +7,8 @@ function Sidebar() {
   return (
     <>
     {/* <div className=" rounded shadow mt-3 h-100 d-flex flex-column" style={{background:'#868B8E'}}> */}
-    <div className=" card  shadow mt-3 h-100 d-flex flex-column" style={{background:'#868B8E'}}>
-      <div className='mt-5 d-flex flex-column ' style={{background:'#868B8E'}}>
+    <div className="card  shadow mt-3 h-100 d-flex flex-column" style={{background:'#868B8E'}}>
+      <div className='mt-5 d-flex flex-column' style={{background:'#868B8E'}}>
           <Link className="px-4 my-1 py-3 text-white shadow-sm" to={'/'}>Home</Link>
           <Link className="px-4 my-1 py-3 text-white shadow-sm" to={`/profile/${auth?.user?._id}`}>Profile</Link>
           <Link className="px-4 my-1 py-3 text-white shadow-sm" to={'/message'}>Message</Link>

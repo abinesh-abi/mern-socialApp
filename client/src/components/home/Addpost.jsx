@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { createPost } from '../../redux/actions/postAction'
+import { createPost, getPost } from '../../redux/actions/postAction'
 import { postDataAPI } from '../../utils/fetchData'
 
 function Addpost() {
@@ -47,7 +47,7 @@ function Addpost() {
         document.getElementById("add-post").classList.remove("show", "d-block");
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
-          
+            dispatch(getPost(auth.token))
         })
       }
     }).catch(err=>setErr('Erron In uplad'))
@@ -59,7 +59,7 @@ function Addpost() {
         <div className="d-flex">
             <div className='rounded-circle'>
                 <img src={`http://127.0.0.1:5000/images/profile/${auth?.user?.avatar}.jpg`}
-                 style={{width:'50px',height:'50px'}}
+                 style={{width:'50px',height:'50px',borderRadius: "50%"}}
                  alt="" />
             </div>
             <input type="text"className='form-control mt-1 mx-3' placeholder='Whats Happening' disabled />

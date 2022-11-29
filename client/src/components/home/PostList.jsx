@@ -1,29 +1,50 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getDataAPI, postDataAPI } from '../../utils/fetchData'
+import swal from 'sweetalert'
+import { getPost } from '../../redux/actions/postAction'
+import { deleteDataAPI, getDataAPI, postDataAPI } from '../../utils/fetchData'
 
 function PostList() {
 
-    const [posts, setPosts] = useState([])
-  const {auth} = useSelector(state=>state)
+  const {auth,posts} = useSelector(state=>state)
+  const [postsList, setPostsList] = useState([])
+  const dispatch = useDispatch()
 
-    function getPosts(){
-       postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
-        setPosts(data.data)
-       })
-    }
+    // function getPosts(){
+    //    postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
+    //     setPosts(data.data)
+    //    })
+    // }
+
 
     useEffect(()=>{
-        getPosts()
-    },[])
-  
+        // getPosts()
+        dispatch(getPost(auth.token))
+        setPostsList(posts.posts)
+    },[dispatch,posts.posts.length])
+
+   const deletePost = (id)=>{
+        swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this post !",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    deleteDataAPI(`/user/post/delete/${id}`,auth.token)
+                    dispatch(getPost(auth.token))
+                }
+            });
+    }
+
   return (
     <>
-    {!posts.length ? <h3 className='text-center mt-5' >No post to show</h3> :
-    posts.map((post,index)=>{
-        console.log(post)
+    {!postsList.length ? <h3 className='text-center mt-5' >No post to show</h3> :
+    postsList.map((post,index)=>{
 return <section key={index} className="profile-feed py-2" >
     <div className="">
         <div className="row">
@@ -46,7 +67,7 @@ return <section key={index} className="profile-feed py-2" >
 
                                      <>
                                       <Link className="dropdown-item" to="/">Edit Post</Link> 
-                                      <Link className="dropdown-item" to="/">Delete Post</Link> 
+                                      <Link className="dropdown-item" onClick={()=>deletePost(post._id)}>Delete Post</Link> 
                                     </>
 
                                 }
@@ -65,7 +86,12 @@ return <section key={index} className="profile-feed py-2" >
                     </div>
 
                     <div className="cardbox-heading">
-                        <img className="img-fluid" src={`http://127.0.0.1:5000/images/posts/${post?._id}.jpg`} alt="Image" />
+                        <img className="img-fluid" src={`http://127.0.0.1:5000/images/posts/${post?._id}.jpg`} alt="Image"
+                            width={"100%"}
+                        />
+                    </div>
+                    <div className='cardbox-heading '>
+                        <p className='text-secondary' >{post.content}</p>
                     </div>
                     <div className="cardbox-base">
                         <ul className="float-right">
@@ -83,7 +109,7 @@ return <section key={index} className="profile-feed py-2" >
                             <li><a><span>{post.likes.length} Likes</span></a></li>
                         </ul>
                     </div>
-                    <div className='d-flex px-3 my-2'>
+                    <div className='d-flex px-3 my-2 pb-3'>
                         <div>
                         <img src={`http://127.0.0.1:5000/images/profile/${auth?.user?.avatar}.jpg`}
                          className="rounded-circle" 
@@ -95,7 +121,6 @@ return <section key={index} className="profile-feed py-2" >
                              <i className="fa fa-rocket h2 text-secondary mt-2 mx-3"></i>
                         </div>
                     </div>
-
 
                 </div>
 

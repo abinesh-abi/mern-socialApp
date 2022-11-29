@@ -40,6 +40,14 @@ const postControll ={
         } catch (error) {
          return res.json({message:err.message})
         }
+    },deletePost:(req,res)=>{
+        try {
+        let {id} = req.params
+        const val = postService.deletePost(id)
+        res.json({stauts:true,data:val})
+        } catch (error) {
+         return res.json({status:false, message:err.message})
+        }
     }
 }
 
