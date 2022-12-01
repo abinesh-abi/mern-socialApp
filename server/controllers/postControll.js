@@ -38,12 +38,22 @@ const postControll ={
             res.json({status:true,message:'Image Updated'});
         });
         } catch (error) {
-         return res.json({message:err.message})
+         return res.json({status:false, message:err.message})
         }
-    },deletePost:(req,res)=>{
+    },
+    editContent:async(req,res)=>{
+        try {
+            const {postId,content} = req.body
+            const val = await postService.editContent(postId,content)
+            res.json({stauts:true,data:val})
+        } catch (error) {
+         return res.json({status:false, message:err.message})
+        }
+    },
+    deletePost:async(req,res)=>{
         try {
         let {id} = req.params
-        const val = postService.deletePost(id)
+        const val = await postService.deletePost(id)
         res.json({stauts:true,data:val})
         } catch (error) {
          return res.json({status:false, message:err.message})

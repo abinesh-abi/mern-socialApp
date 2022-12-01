@@ -55,7 +55,7 @@ const ProfileBody = ()=>{
       />
       {
         auth.user?._id ===id ?
-      <Link className="fa-regular fa-pen-to-square"
+      <a className="fa-regular fa-pen-to-square"
        data-toggle="modal"
        data-target="#exampleModalCenter"
        style={
@@ -64,7 +64,7 @@ const ProfileBody = ()=>{
           left: 'calc(50% - 10px)',
           top:"155px",
         }
-        }></Link> :''
+        }></a> :''
       }
      </div>
      <div className="row mt-5 align-self-center shadow w-100">
@@ -74,10 +74,11 @@ const ProfileBody = ()=>{
         <UserDetailFeild feild={'Date Of Birth'} value={new Date(user?.dob).toLocaleDateString() } />
         {
           auth.user?._id ===id ?
-          <Link className="btn btn-primary mx-auto"
+          <a className="btn btn-primary mx-auto"
+          // href="#profile-edit"
           data-toggle="modal"
           data-target="#editDetails"
-          >Edit User Details</Link> :
+          >Edit User Details</a> :
           <Link className="btn btn-primary mx-auto">Follow</Link>
         }
 

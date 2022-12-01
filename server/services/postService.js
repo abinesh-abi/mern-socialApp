@@ -15,6 +15,13 @@ module.exports = {
                .catch(err=>reject(err))
         })
     },
+    editContent:(_id,content)=>{
+        return new Promise((resolve, reject) => {
+            postModel.findOneAndUpdate({_id},{$set:{content}})
+            .then(data =>resolve(data))
+            .catch(error=> reject(error))
+        })
+    },
     deletePost:(_id)=>{
         return new Promise((resolve, reject) => {
             postModel.findOneAndRemove({_id})

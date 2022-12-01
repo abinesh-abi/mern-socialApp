@@ -44,22 +44,69 @@ function SearchModel() {
   }
   function viewProfile(id) {
     naviagate(`/profile/${id}`)
-    document.getElementById("exampleModal").classList.remove("show", "d-block");
-    document.querySelectorAll(".modal-backdrop")
-        .forEach(el => el.classList.remove("modal-backdrop"));
+    document.getElementById('search').style.display='none'
+    // document.getElementById("exampleModal").classList.remove("show", "d-block");
+    // document.querySelectorAll(".modal-backdrop")
+    //     .forEach(el => el.classList.remove("modal-backdrop"));
   }
   return (
-    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<>
+
+
+<div id="search" class="custom-model">
+    <div class="modal__content">
+        <div className=" m-3 justify-content-center">
+            <div className="card  p-4">
+                <p className='mx-auto'>Search</p>
+                <form onSubmit={serchUser}>
+                    <div className="input-group mb-1">
+                    <input type="text" className="form-control"
+                    defaultValue={serch}
+                        onChange={e=>setSerch(e.target.value)}
+                    />
+                    <div className="input-group-append">
+                        <button className="btn btn-primary">
+                        <i className="fas fa-search"></i>
+                        </button>
+                    </div>
+                    </div>
+                </form>
+                <div className="mb-3">
+                <p className='mx-auto text-danger'>{serchErr}</p>
+                {
+                    userList.map((value,index)=>{
+                    return <div onClick={()=>viewProfile(value._id)}  key={index} className=" d-flex justify-content-between shadow-sm px-3 mx-1" style={listDiv}
+                    >
+                            <div className='d-flex'>
+                                <img
+                                className="img-fluid"
+                                src={`http://127.0.0.1:5000/images/profile/${value?.avatar}.jpg`}
+                                style={listImage}
+                                alt=""
+                                />
+                                <p className='mx-3' style={{'lineHeight': '45px',}}>{value.fullname}</p>
+                            </div>
+                        </div>
+                    })
+                }
+                </div>
+                
+            </div>	
+            </div>
+
+        <a href="#" class="modal__close">&times;</a>
+    </div>
+</div>
+{/* modada+++++++++++++ */}
+    {/* <div className="modal" id="search1" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div className="modal-dialog" role="document">
         <div className="modal-content">
         <div className="modal-header">
-            {/* <h5 className="modal-title" id="exampleModalLabel">Modal title</h5> */}
             <button onClick={clearSearch} type="button" className="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" >&times;</span>
             </button>
         </div>
 
-        {/* <div className="modal-body"> */}
             <div className=" m-3 justify-content-center">
             <div className="card  p-4">
                 <form onSubmit={serchUser}>
@@ -97,14 +144,10 @@ function SearchModel() {
                 
             </div>	
             </div>
-        {/* </div> */}
-        {/* <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary">Save changes</button>
-        </div> */}
         </div>
     </div>
-    </div>
+    </div> */}
+    </>
   )
 }
 

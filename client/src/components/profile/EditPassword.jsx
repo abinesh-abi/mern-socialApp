@@ -19,7 +19,7 @@ function EditPassword() {
     postDataAPI('/user/editPassword',data,auth.token).then(({data})=>{
       if (data.status) {
         setErr('')
-        // close bootstrap model
+        // close  model
         document.getElementById("editPassword").classList.remove("show", "d-block");
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
@@ -30,6 +30,7 @@ function EditPassword() {
   };
 
   return(
+    <>
     <div className="modal fade" id="editPassword" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div className="modal-dialog" role="document">
     <div className="modal-content">
@@ -104,6 +105,7 @@ function EditPassword() {
     </div>
   </div>
 </div>
+    </>
   )
 
 }

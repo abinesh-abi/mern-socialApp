@@ -13,7 +13,8 @@ router.post('/user/editImage',auth,userControl.editImage)
 router.post('/user/posts',auth,postControll.getPosts)
 router.post('/user/addPost',auth,postControll.createPost)
 router.post('/user/post/editImage/:id',auth,postControll.editImage)
+router.patch('/user/post/editContent',auth,postControll.editContent)
 router.delete('/user/post/delete/:id',auth,postControll.deletePost)
 
-
+// /user/post/editContent/
 module.exports = router

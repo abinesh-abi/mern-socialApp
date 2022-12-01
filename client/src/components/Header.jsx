@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { logout } from '../redux/actions/authAction'
 import { postDataAPI } from '../utils/fetchData'
 import SearchModel from './SearchModel'
+import '../../src/styles/seacrchModel.css'
 
 function Header() {
   const {auth,adminAuth} = useSelector(state=>state)
@@ -45,7 +46,11 @@ function Header() {
             <i className="fas fa-search"></i>
           </button>
         </div> */}
-        <Link className="fa-solid nav-link active fa-magnifying-glass" data-toggle="modal" data-target="#exampleModal"></Link>
+        <a className="fa-solid nav-link active fa-magnifying-glass" href='#search'></a>
+        {/* <Link className="fa-solid nav-link active fa-magnifying-glass" data-toggle="modal" data-target="#search"></Link>
+        <div class="">
+          <a href="#search">Open Demo Modal</a>
+        </div> */}
       </li> 
       {
         isAdmin ? 

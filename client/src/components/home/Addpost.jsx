@@ -9,7 +9,7 @@ function Addpost() {
     const [image, setImage] = useState([])
     const [content, setContent] = useState('')
     const [err, setErr] = useState('')
-  const {auth} = useSelector(state=>state)
+    const {auth} = useSelector(state=>state)
 
   const dispatch = useDispatch()
 
@@ -44,13 +44,13 @@ function Addpost() {
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
           
+        dispatch(getPost(auth.token))
         document.getElementById("add-post").classList.remove("show", "d-block");
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
-            dispatch(getPost(auth.token))
         })
       }
-    }).catch(err=>setErr('Erron In uplad'))
+    }).catch(err=>setErr('Error In upload'))
 
   }
   return (
@@ -58,9 +58,11 @@ function Addpost() {
     <div className='px-3 bg-white p-3 rounded'>
         <div className="d-flex">
             <div className='rounded-circle'>
+              <Link to={`/profile/${auth.user?._id}`}>
                 <img src={`http://127.0.0.1:5000/images/profile/${auth?.user?.avatar}.jpg`}
                  style={{width:'50px',height:'50px',borderRadius: "50%"}}
                  alt="" />
+              </Link>
             </div>
             <input type="text"className='form-control mt-1 mx-3' placeholder='Whats Happening' disabled />
             <Link className='btn btn-primary w-25' data-toggle="modal" data-target="#add-post">Add Post</Link>
@@ -73,7 +75,7 @@ function Addpost() {
   <div className="modal-dialog" role="document">
     <div className="modal-content">
       <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 className="modal-title" id="exampleModalLabel">Add Post</h5>
         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -83,7 +85,7 @@ function Addpost() {
         <form onSubmit={sendPost}>
         <textarea name="desc" id="desc"  rows="4" className='form-control'
           defaultValue={content}
-          onClick={e=>setContent(e.target.value)}
+          onChange={e=>setContent(e.target.value)}
         ></textarea>
         {image.length !==0 && <img className='mx-auto p-3 m-3' width={400}   src={URL.createObjectURL(image[0])} alt="" />}
         <div className="d-flex">
