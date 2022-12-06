@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
 import { getPost } from '../../redux/actions/postAction'
-import { deleteDataAPI, getDataAPI, postDataAPI } from '../../utils/fetchData'
+import { deleteDataAPI, patchDataAPI} from '../../utils/fetchData'
+import AddComment from './AddComment'
 import EditPost from './EditPost'
 
 function PostList() {
@@ -14,17 +15,22 @@ function PostList() {
   const [editPost,setEditPost] = useState({})
   const dispatch = useDispatch()
 
-    // function getPosts(){
+//   console.log(posts?.posts[0]?.comments[0].message)
+//   console.log(posts?.posts[0])
+
+    function getPosts(){
+        dispatch(getPost(auth.token))
+        setPostsList(posts.posts)
     //    postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
     //     setPosts(data.data)
     //    })
-    // }
+    }
 
 
     useEffect(()=>{
-        // getPosts()
-        dispatch(getPost(auth.token))
-        setPostsList(posts.posts)
+        getPosts()
+        // dispatch(getPost(auth.token))
+        // setPostsList(posts.posts)
     },[dispatch,posts.posts.length])
 
    const deletePost = (id)=>{
@@ -41,6 +47,22 @@ function PostList() {
                     dispatch(getPost(auth.token))
                 }
             });
+    }
+
+    const likePost = (id)=>{
+        patchDataAPI(`/user/post/like`,{postId:id},auth.token)
+        .then(({data})=>{
+            dispatch(getPost(auth.token))
+            setPostsList(posts.posts)
+        }
+        )
+    }
+    const unLikePost = (id)=>{
+        patchDataAPI(`/user/post/unLike`,{postId:id},auth.token)
+        .then(({data})=>{
+            dispatch(getPost(auth.token))
+            setPostsList(posts.posts)
+        })
     }
 
   return (
@@ -80,10 +102,14 @@ return <section key={index} className="profile-feed py-2" >
                         </div>
                         <div className="media m-0">
                             <div className="d-flex mr-3">
-                                <Link  ><img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post?.user}.jpg`} alt="User" /></Link>
+                                <Link to={`/profile/${post.user}`} >
+                                    {
+                                        <img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post.userDetail.avatar}.jpg`} alt="User" />
+                                    }
+                                </Link>
                             </div>
                             <div className="media-body">
-                                <p className="m-0">{auth.user.fullname}</p>
+                                <p className="m-0">{post.userDetail.fullname}</p>
                                 {/* <small><span><i className="icon ion-md-pin"></i> London, England</span></small>
                                 <small><span><i className="icon ion-md-time"></i> 1 hour ago</span></small> */}
                             </div>
@@ -101,12 +127,18 @@ return <section key={index} className="profile-feed py-2" >
                     <div className="cardbox-base">
                         <ul className="float-right">
                             <li><a><i className="fa fa-message"></i></a></li>
-                            <li><a><em className="mr-5">0</em></a></li>
-                            <li><a><i className="fa fa-share"></i></a></li>
-                            <li><a><em className="mr-3">{post.comments.length}</em></a></li>
+                            <li><a><em className="mr-5">{post.comments?.length}</em></a></li>
+                            <li><a><i className="fa fa-bookmark"></i></a></li>
+                            <li><a><em className="mr-3">0</em></a></li>
                         </ul>
                         <ul>
-                            <li><a><i className="fa fa-thumbs-up"></i></a></li>
+                            {
+                                post.likes.includes(auth.user._id)?
+                            <li onClick={()=>unLikePost(post._id)}><a><i className="fa fa-heart text-danger"></i></a></li>
+                                :
+                            <li onClick={()=>likePost(post._id)}><a><i className="fa fa-heart"></i></a></li>
+                                
+                            }
                             {/* <li><Link to="/"><img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
                             <li><Link to="/"><img src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
                             <li><Link to="/"><img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
@@ -114,19 +146,30 @@ return <section key={index} className="profile-feed py-2" >
                             <li><a><span>{post.likes.length} Likes</span></a></li>
                         </ul>
                     </div>
-                    <div className='d-flex px-3 my-2 pb-3'>
-                        <div>
-                        <img src={`http://127.0.0.1:5000/images/profile/${auth?.user?.avatar}.jpg`}
-                         className="rounded-circle" 
-                         style={{width:'55px'}}
-                         alt="" />
-                        </div>
-                         <input type="text" className='form-control mt-2 mx-3' placeholder='add comment' style={{top:'10px'}} />
-                        <div>
-                             <i  className="fa-solid fa-paper-plane h2 text-secondary mt-2 mx-3"></i>
-                        </div>
-                    </div>
+                    {
+                     post?.comments[0]  && 
+                        <>
+                            <h5 className='text-secondary mx-3'>Comments</h5>
+                            <div className=' px-3 my-2 mx-4 pb-3 '>
+                                <div className='d-flex'>
+                                    <img src={`http://127.0.0.1:5000/images/profile/${post?.commentDetails[0]?.avatar}.jpg`}
+                                    className="rounded-circle" 
+                                    style={{width:'17px',height:'17px'}}
+                                    alt="" />
+                                    <small className='text-secondary px-2'>{post?.commentDetails[0]?.fullname}</small>
+                                </div>
+                                <div className='p-2 px-4' style={{background:'#e9e9e9'}}><small>{post?.comments[0]?.message}</small></div>
+                                <div className="text-center pt-2">
+                                    <Link to={`/post/${post._id}`} className='text-center'>View more</Link>
+                                </div>
+                                
 
+                            </div>
+                        </>
+                    }
+                        
+
+                    <AddComment updatePost={getPost}  post={post} auth={auth} />
                 </div>
 
             </div>

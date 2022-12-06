@@ -53,8 +53,8 @@ function SearchModel() {
 <>
 
 
-<div id="search" class="custom-model">
-    <div class="modal__content">
+<div id="search" className="custom-model">
+    <div className="modal__content">
         <div className=" m-3 justify-content-center">
             <div className="card  p-4">
                 <p className='mx-auto'>Search</p>
@@ -94,7 +94,7 @@ function SearchModel() {
             </div>	
             </div>
 
-        <a href="#" class="modal__close">&times;</a>
+        <a href="#" className="modal__close">&times;</a>
     </div>
 </div>
 {/* modada+++++++++++++ */}

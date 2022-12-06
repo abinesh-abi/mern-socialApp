@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+var logger = require('morgan');
 const { PORT } = require('./config/basicConfig')
 const mongodbConnection = require('./config/db')
 
@@ -9,6 +10,7 @@ const mongodbConnection = require('./config/db')
 const app = express()
 
 app.use(express.json());
+app.use(logger('dev'));
 app.use(cors({
     origin:'http://127.0.0.1:3000',
     credentials: true,

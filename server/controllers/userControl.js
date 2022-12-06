@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
-const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser } = require("../services/userService")
+const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers } = require("../services/userService")
 
 const postControll ={
     searchUser: async(req,res)=>{
@@ -72,6 +72,43 @@ const postControll ={
             res.json({status:true,message:'Image Updated'});
         });
             //     /* image upload multer end*/
+    },
+    follow:async(req,res)=>{
+        try {
+            let id = req.user.id
+            let folloUserId = req.params.id
+
+            let followed = await  followUser(id,folloUserId)
+            if (followed) {
+                res.json({status:true,message:'followed'});
+            }
+        } catch (error) {
+            res.json({status:false,message:error.message});
+        }
+    },
+    unFollow:async(req,res)=>{
+        try {
+            let id = req.user.id
+            let folloUserId = req.params.id
+
+            let unFollowed = await  unFollowUser(id,folloUserId)
+            if (unFollowed) {
+                res.json({status:true,message:'unfollowed'});
+            }
+        } catch (error) {
+            res.json({status:false,message:error.message});
+        }
+    },
+    getFollowers:async(req,res)=>{
+        try {
+            let user= req.user.id
+            let followers = await getFollowers(user)
+            res.json({status:true,data:followers})
+
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
+        
     }
 }
 

@@ -14,7 +14,6 @@ export const POST_TYPES ={
 export const getPost =(token)=>async dispatch=>{
     try {
         let {data} = await postDataAPI(`/user/posts`,{},token)
-        // console.log(data.data,'data+++=')
         dispatch({
             type:POST_TYPES.GET_POST,
             payload:{

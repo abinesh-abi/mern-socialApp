@@ -41,7 +41,7 @@ function Login() {
             <div className="col-md-6">
               <img
                 src="https://preview.colorlib.com/theme/bootstrap/login-form-07/images/undraw_remotely_2j6y.svg"
-                alt="Image"
+                alt=""
                 className="img-fluid"
               />
             </div>

@@ -12,6 +12,7 @@ import '../src/styles/index.css'
 import Dashboard from "./pages/admin/Dashboard";
 import AdminLogin from "./pages/admin/AdminLogin";
 import { adminRefreshToken } from "./redux/actions/adminAuthAction";
+import Post from "./pages/post/id";
 
 function App() {
   const { auth ,adminAuth} = useSelector((state) => state);
@@ -32,6 +33,8 @@ function App() {
           <Route path="/:page" element={<PageRender />} />
           <Route path="/profile/:id" element={ <Profile /> } />
           <Route path="/:page/:id" element={<PageRender />} />
+          {/* post */}
+          <Route path="/post/:id" element={ <Post /> } />
 
           {/* admin */}
           <Route path="/admin" element={ adminAuth.token?<Dashboard />:<AdminLogin />} />

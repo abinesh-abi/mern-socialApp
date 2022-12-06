@@ -1,10 +1,12 @@
 
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { getProfileUsers } from "../../redux/actions/profileActions";
 import { getDataAPI } from "../../utils/fetchData";
 import EditFromModal from "./EditFromModal";
 import EditPassword from "./EditPassword";
+import FollowBtn from "./FollowBtn";
 import ImageEditModal from "./ImageEditModal";
 
 const ProfileBody = ()=>{
@@ -21,9 +23,11 @@ const ProfileBody = ()=>{
     top:"60px"
   };
 
-  let [user,setUser] = useState()
+  const {auth,profile} = useSelector(state=>state)
+  let [user,setUser] = useState({})
   const {id} = useParams()
-  const {auth} = useSelector(state=>state)
+  let dispatch  = useDispatch()
+
   let ownProfile = id===auth?.user?._id
 
    let getUsers  = ()=>{
@@ -32,16 +36,19 @@ const ProfileBody = ()=>{
        })
    } 
 
+
   useEffect(()=>{
+   dispatch(getProfileUsers({id,auth})) 
+      // setUser(profile?.user)
     if (ownProfile) {
-      setUser(auth.user)
+      setUser(auth?.user)
     }else{
       //  getDataAPI(`/user/${id}`,auth.token).then(data=>{
       //   setUser(data.data.user)
       //  })
       getUsers()
     }
-    },[auth.user,id,useParams])
+    },[auth?.user,id,useParams])
 
   return (
   <div className="d-flex flex-column bg-white">
@@ -79,7 +86,7 @@ const ProfileBody = ()=>{
           data-toggle="modal"
           data-target="#editDetails"
           >Edit User Details</a> :
-          <Link className="btn btn-primary mx-auto">Follow</Link>
+          <FollowBtn updateUser={getUsers} user={user} />
         }
 
         {
@@ -95,8 +102,8 @@ const ProfileBody = ()=>{
           <p>******</p>
         </div> : ''
         }
-        <UserDetailFeild feild={'Followers'} value={user?.followers.length} />
-        <UserDetailFeild feild={'Followings'} value={user?.following.length} />
+        <UserDetailFeild feild={'Followers'} value={user?.followers?.length} />
+        <UserDetailFeild feild={'Followings'} value={user?.following?.length} />
      </div>
 
 

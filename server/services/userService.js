@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const userModel = require("../models/userModel");
 
 module.exports = {
@@ -60,6 +61,79 @@ module.exports = {
   editPassword:(_id,password)=>{
     return new Promise((resolve, reject) => {
       userModel.updateOne({_id},{$set:{password}})
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
+  followUser:(userId,folloId)=>{
+    return new Promise(async(resolve, reject) => {
+      let addToFollowings = await userModel.findOneAndUpdate({_id:userId},{
+        $addToSet:{following: folloId}
+      })
+      let addToFollowers = await userModel.findOneAndUpdate({_id:folloId},{
+        $addToSet:{followers:userId}
+      })
+      if (addToFollowings || addToFollowers) {
+        resolve(true)
+      }else{
+        reject(false)
+      }
+
+    })
+  },
+  unFollowUser:(userId,folloId)=>{
+    return new Promise(async(resolve, reject) => {
+      let removeFromFollowings = await userModel.findOneAndUpdate({_id:userId},{
+        $pull:{following: folloId}
+      })
+      let removeFromFollowers = await userModel.findOneAndUpdate({_id:folloId},{
+        $pull:{followers:userId}
+      })
+      if (removeFromFollowings || removeFromFollowers) {
+        resolve(true)
+      }else{
+        reject(false)
+      }
+
+    })
+  },
+  getFollowers:(userId)=>{
+    return new Promise((resolve, reject) => {
+      userModel.aggregate([
+        {
+          $match:{
+            "_id":mongoose.Types.ObjectId(userId)
+          }
+        },
+
+        {
+          $lookup:{
+            from:'users',
+            localField:'followers',
+            foreignField:"_id",
+            as:'values'
+          }
+        },
+        {
+          $project:{
+            values:1,
+            _id:0
+          }
+        },
+        { $limit : 5 },
+        {
+          $unwind:'$values'
+        },
+        {
+          $project:{
+            fullname:1,
+            username:1,
+            values:1,
+            avatar:1,
+            _id:0
+          }
+        },
+      ])
       .then(data=>resolve(data))
       .catch(error=>reject(error))
     })

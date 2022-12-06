@@ -1,9 +1,10 @@
-import React from 'react'
-import Followers from '../components/Followers'
-import HomeBody from '../components/home/HomeBody'
-import Sidebar from '../components/Sidebar'
 
-function Home(){
+import React from 'react'
+import Followers from '../../components/Followers'
+import ViewPosts from '../../components/home/ViewPosts'
+import Sidebar from '../../components/Sidebar'
+
+function Post(){
   return (
     <div className="row justify-content-center">
       {/* side bar */}
@@ -12,7 +13,7 @@ function Home(){
       </div>
       {/* body */}
       <div className="col-12 col-md-6 mt-3 rounded "style={{overflowY:"scroll",height:'89vh'}}>
-          <HomeBody /> 
+        <ViewPosts />
       </div>
       {/* friends */}
       <div className="col-11 col-md-3 mt-3  rounded" >
@@ -23,4 +24,4 @@ function Home(){
   )
 }
 
-export default Home
+export default Post

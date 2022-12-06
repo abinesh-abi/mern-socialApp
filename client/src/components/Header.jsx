@@ -48,7 +48,7 @@ function Header() {
         </div> */}
         <a className="fa-solid nav-link active fa-magnifying-glass" href='#search'></a>
         {/* <Link className="fa-solid nav-link active fa-magnifying-glass" data-toggle="modal" data-target="#search"></Link>
-        <div class="">
+        <div className="">
           <a href="#search">Open Demo Modal</a>
         </div> */}
       </li> 

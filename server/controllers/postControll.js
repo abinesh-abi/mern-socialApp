@@ -1,12 +1,24 @@
 
 const multer = require("multer")
 const postService = require("../services/postService")
-
+const fs = require('fs')
+const { getPostById } = require("../services/postService")
 const postControll ={
     getPosts:async(req,res)=>{
         const user = req.user
         let data = await postService.getPosts(user._id,user.following)
         res.json({stauts:true,data})
+    },
+    getSinglePost:async(req,res)=>{
+        let {id}= req.params
+        try {
+             let data = await getPostById(id)
+            res.json({status:true,data:data})
+            
+        } catch (error) {
+         return res.json({message:error.message})
+            
+        }
     },
     createPost:async(req,res)=>{
         try {
@@ -54,11 +66,40 @@ const postControll ={
         try {
         let {id} = req.params
         const val = await postService.deletePost(id)
-        res.json({stauts:true,data:val})
+          if (val) {
+            fs.unlink(`uploads/posts/${val._id}.jpg`,(err => {
+            if (err) {
+                console.log('imgage edit error')
+            }
+            else {
+                res.json({stauts:true,data:val})
+            }
+            }))
+          }
         } catch (error) {
-         return res.json({status:false, message:err.message})
+         return res.json({status:false, message:error.message})
         }
-    }
+    },
+    likePost:async(req,res)=>{
+        try {
+            let {body}= req
+            let id = req.user._id
+            let data = await postService.likePost(body.postId,id)
+            res.json({stauts:true,message:"Liked"})
+        } catch (error) {
+         return res.json({status:false, message:error.message})
+        }
+    },
+    unLikePost:async(req,res)=>{
+        try {
+            let {body}= req
+            let id = req.user._id
+            let data = await postService.unLikePost(body.postId,id)
+            res.json({stauts:true,message:"Uniked"})
+        } catch (error) {
+         return res.json({status:false, message:error.message})
+        }
+    },
 }
 
 module.exports = postControll

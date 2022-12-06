@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import FriendsList from "../components/FriendsList";
+import FriendsList from "../components/Followers";
 import ProfileBody from "../components/profile/ProfileBody";
 import Sidebar from "../components/Sidebar";
 

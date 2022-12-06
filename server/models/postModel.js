@@ -8,7 +8,13 @@ const schema = new mongoose.Schema({
     //     required: true
     // },
     likes: [{ type: mongoose.Types.ObjectId, ref: 'user' }],
-    comments: [{ type: mongoose.Types.ObjectId, ref: 'comment' }],
+    comments: [
+        {
+            message:String,
+            user: mongoose.Types.ObjectId,
+            // username:String
+        }
+        ]
 }, {
     timestamps: true
 })

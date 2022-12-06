@@ -49,6 +49,8 @@ function Addpost() {
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
         })
+        setImage([])
+        setContent('')
       }
     }).catch(err=>setErr('Error In upload'))
 
