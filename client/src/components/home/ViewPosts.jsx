@@ -76,6 +76,7 @@ function ViewPosts() {
                                   </button>
                                   <div className="dropdown-menu dropdown-scale dropdown-menu-right" role="menu" style={{position: 'absolute', transform: 'translate3d(-136px, 28px, 0px)', top: "0px", left: "0px", "willChange": "transform"}}>
                                       {/* <Link className="dropdown-item" to="/">Hide post</Link> */}
+
                                       {
                                           auth.user?._id !== post[0]?.user ?
                                           <>
@@ -123,7 +124,7 @@ function ViewPosts() {
                           <div className="cardbox-base">
                               <ul className="float-right">
                                   <li><a><i className="fa fa-message"></i></a></li>
-                                  <li><a><em className="mr-5">{post.length}</em></a></li>
+                                  <li><a><em className="mr-5">{!post[0]?.comments.length && '0' || post.length}</em></a></li>
                                   <li><a><i className="fa fa-bookmark"></i></a></li>
                                   <li><a><em className="mr-3">0</em></a></li>
                               </ul>
@@ -147,9 +148,11 @@ function ViewPosts() {
                               </ul>
                           </div>
                           <AddComment updatePost={findPosts}  post={post[0]} auth={auth} />
-                         <h5 className='text-secondary mx-3'>Comments</h5>
                           {
-                          post.map((values,index)=>{
+                            (post?.length >1 || post[0]?.comments._id) &&
+                            <>
+                         <h5 className='text-secondary mx-3'>Comments</h5>
+                          {post.map((values,index)=>{
                             return <CommentBody key={index} 
                             userDetail={values?.commentDetails} 
                             comment={values?.comments} 
@@ -157,7 +160,8 @@ function ViewPosts() {
                             commentId={values?.comments?.commentId}
                             findPosts={findPosts}
                              />
-                          })
+                          })}
+                            </>
                           }
                           
                       </div>

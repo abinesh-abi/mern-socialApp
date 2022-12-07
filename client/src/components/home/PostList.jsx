@@ -213,9 +213,11 @@ return <section key={index} className="profile-feed py-2" >
                             commentId={post?.comments[0].commentId}
                             findPosts={getPosts}
                              />
-                            <Link to={`/post/${post._id}`} className='text-center'>View more</Link>
                         </>
                     }
+                             <div className="d-flex">
+                                <Link to={`/post/${post._id}`} className='text-center mx-auto'>View more</Link>
+                             </div>
                         
 
                     <AddComment updatePost={setForceReload}  post={post} auth={auth} />

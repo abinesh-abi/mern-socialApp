@@ -11,7 +11,10 @@ module.exports = {
         })
     },
     getPostById:(_id)=>{
-        return new Promise((resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
+            let {comments} =await postModel.findOne({_id})
+            if (comments.length) {
+            
             postModel.aggregate([
                 {
                     $match:{_id:mongoose.Types.ObjectId(_id)}
@@ -71,6 +74,47 @@ module.exports = {
             ])
             .then(data=>resolve(data))
             .catch(error=>reject(error))
+            }else{
+            postModel.aggregate([
+                {
+                    $match:{_id:mongoose.Types.ObjectId(_id)}
+                },
+                {
+                    $project:{
+                        comments:{$reverseArray:'$comments'},
+                        commentDetails:1,
+                        content:1,
+                        likes:1,
+                        user:1,
+                        userDetail:1,
+                    }
+                },
+                {
+                    $lookup:{
+                        from:'users',
+                        foreignField:'_id',
+                        localField:'user',
+                        pipeline:[
+                            {
+                                $project:{
+                                    username:1,
+                                    fullname:1,
+                                    avatar:1,
+                                }
+                            }
+                        ],
+                        as:"userDetail"
+                        
+                    }
+                },
+                {$unwind:'$userDetail'},
+                {
+                    $sort:{createdAt:-1}
+                },
+            ])
+            .then(data=>resolve(data))
+            .catch(error=>reject(error))
+            }
         })
     },
     getPosts:(userId,following)=>{

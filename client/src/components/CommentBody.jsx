@@ -41,7 +41,7 @@ function CommentBody({postId,userDetail,comment,commentId ,findPosts}) {
                   <small>{comment.message}</small>
               </div>
               {
-                comment.like.includes(auth.user._id)?
+                comment?.like?.includes(auth.user._id)?
                   <i onClick={unLikeComment} className="fa fa-heart text-danger mx-2"></i>  
                 :
                   <i onClick={likeComment} className="fa fa-heart text-secondary mx-2"></i>
