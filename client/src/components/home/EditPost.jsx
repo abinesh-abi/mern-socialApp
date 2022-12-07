@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from '../../redux/actions/postAction'
 import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
 
-function EditPost( {editValue}) {
+function EditPost( {editValue ,reFresh}) {
     const [image, setImage] = useState([])
     const [content, setContent] = useState('')
     const [err, setErr] = useState('')

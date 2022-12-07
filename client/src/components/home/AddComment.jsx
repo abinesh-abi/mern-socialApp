@@ -12,14 +12,14 @@ function AddComment({ post, auth,updatePost}) {
     let postId = post._id
     patchDataAPI('/user/post/newComment',{postUser,comment,postId},auth.token)
     .then(data=>{
-      updatePost()
       setComment('')
+      updatePost(new Date())
     })
   }
   return (
     <div className='d-flex px-3 my-2 pb-3'>
         <div>
-        <img src={`http://127.0.0.1:5000/images/profile/${auth.user.avatar}.jpg`}
+        <img src={`http://127.0.0.1:5000/images/profile/${auth.user?.avatar}.jpg`}
           className="rounded-circle" 
           style={{width:'30px'}}
           alt="" />

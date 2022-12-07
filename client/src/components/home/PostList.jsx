@@ -4,34 +4,37 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
 import { getPost } from '../../redux/actions/postAction'
-import { deleteDataAPI, patchDataAPI} from '../../utils/fetchData'
+import { getProfileUsers } from '../../redux/actions/profileActions'
+import { deleteDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetchData'
+import CommentBody from '../CommentBody'
 import AddComment from './AddComment'
 import EditPost from './EditPost'
 
 function PostList() {
 
-  const {auth,posts} = useSelector(state=>state)
-  const [postsList, setPostsList] = useState([])
+  const {auth,posts,profile} = useSelector(state=>state)
+  const [postsList, setPostsList] = useState(posts.posts || [])
   const [editPost,setEditPost] = useState({})
+  const [forceReload, setForceReload] = useState(0)
   const dispatch = useDispatch()
 
 //   console.log(posts?.posts[0]?.comments[0].message)
 //   console.log(posts?.posts[0])
 
     function getPosts(){
-        dispatch(getPost(auth.token))
-        setPostsList(posts.posts)
-    //    postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
-    //     setPosts(data.data)
-    //    })
+        // dispatch(getPost(auth.token))
+        // setPostsList(posts.posts)
+       postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
+        setPostsList(data.data)
+       })
     }
 
 
     useEffect(()=>{
         getPosts()
-        // dispatch(getPost(auth.token))
-        // setPostsList(posts.posts)
-    },[dispatch,posts.posts.length])
+        dispatch(getPost(auth.token))
+        setPostsList(posts.posts)
+    },[dispatch,posts.posts.length,forceReload])
 
    const deletePost = (id)=>{
         swal({
@@ -52,19 +55,50 @@ function PostList() {
     const likePost = (id)=>{
         patchDataAPI(`/user/post/like`,{postId:id},auth.token)
         .then(({data})=>{
+            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
             dispatch(getPost(auth.token))
             setPostsList(posts.posts)
+            // setForceReload(new Date())
         }
         )
     }
     const unLikePost = (id)=>{
         patchDataAPI(`/user/post/unLike`,{postId:id},auth.token)
         .then(({data})=>{
+            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+            dispatch(getPost(auth.token))
+            setPostsList(posts.posts)
+            // setForceReload(new Date())
+        })
+    }
+
+
+    function unFollow(id) {
+        patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
+        .then(({data})=>{
+            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
             dispatch(getPost(auth.token))
             setPostsList(posts.posts)
         })
     }
 
+    function savePost(postId) {
+        postDataAPI('/user/post/savePost/add',{postId},auth.token)
+        .then(({data})=>{
+            dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
+            dispatch(getPost(auth.token))
+            setPostsList(posts.posts)
+        })
+        
+    }
+    function removeFromSaved(postId) {
+        patchDataAPI('/user/post/savePost/remove',{postId},auth.token)
+        .then(({data})=>{
+            dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
+            dispatch(getPost(auth.token))
+            setPostsList(posts.posts)
+        })
+    }
   return (
     <>
     {!postsList.length ? <h3 className='text-center mt-5' >No post to show</h3> :
@@ -85,7 +119,7 @@ return <section key={index} className="profile-feed py-2" >
                                 {
                                     auth.user._id !== post.user ?
                                     <>
-                                     <Link className="dropdown-item" to="/">Stop following</Link> 
+                                     <Link className="dropdown-item" onClick={()=>unFollow(post.user)} >Stop following</Link> 
                                      <Link className="dropdown-item" to="/">Report</Link>
                                     </> :
 
@@ -128,12 +162,18 @@ return <section key={index} className="profile-feed py-2" >
                         <ul className="float-right">
                             <li><a><i className="fa fa-message"></i></a></li>
                             <li><a><em className="mr-5">{post.comments?.length}</em></a></li>
-                            <li><a><i className="fa fa-bookmark"></i></a></li>
-                            <li><a><em className="mr-3">0</em></a></li>
+                            {
+                                profile.users.saved.includes(post._id)?
+                            <li><a onClick={e=>removeFromSaved(post._id)}><i className="fa fa-bookmark mr-4 text-success"></i></a></li>
+                            :
+                            <li><a onClick={e=>savePost(post._id)}><i className="fa fa-bookmark mr-4"></i></a></li>
+
+                            }
+                            {/* <li><a><em className="mr-3">0</em></a></li> */}
                         </ul>
                         <ul>
                             {
-                                post.likes.includes(auth.user._id)?
+                                post.likes.includes(profile?.users._id)?
                             <li onClick={()=>unLikePost(post._id)}><a><i className="fa fa-heart text-danger"></i></a></li>
                                 :
                             <li onClick={()=>likePost(post._id)}><a><i className="fa fa-heart"></i></a></li>
@@ -150,7 +190,7 @@ return <section key={index} className="profile-feed py-2" >
                      post?.comments[0]  && 
                         <>
                             <h5 className='text-secondary mx-3'>Comments</h5>
-                            <div className=' px-3 my-2 mx-4 pb-3 '>
+                            {/* <div className=' px-3 my-2 mx-4 pb-3 '>
                                 <div className='d-flex'>
                                     <img src={`http://127.0.0.1:5000/images/profile/${post?.commentDetails[0]?.avatar}.jpg`}
                                     className="rounded-circle" 
@@ -164,12 +204,21 @@ return <section key={index} className="profile-feed py-2" >
                                 </div>
                                 
 
-                            </div>
+                            </div> */}
+                            {/* {console.log(post?.commentDetails[0].fullname,post?.comments[0].message)} */}
+                            <CommentBody  
+                            userDetail={post?.commentDetails[0]} 
+                            comment={post?.comments[0]} 
+                            postId={post._id} 
+                            commentId={post?.comments[0].commentId}
+                            findPosts={getPosts}
+                             />
+                            <Link to={`/post/${post._id}`} className='text-center'>View more</Link>
                         </>
                     }
                         
 
-                    <AddComment updatePost={getPost}  post={post} auth={auth} />
+                    <AddComment updatePost={setForceReload}  post={post} auth={auth} />
                 </div>
 
             </div>

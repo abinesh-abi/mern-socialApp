@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const getDataAPI = async (url, token) => {
     const res = await axios.get(config.SERVER_URL+url, {
-        headers: { Authorization: token}
+        headers: { Authorization: token},
     })
     return res;
 }

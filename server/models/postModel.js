@@ -10,9 +10,13 @@ const schema = new mongoose.Schema({
     likes: [{ type: mongoose.Types.ObjectId, ref: 'user' }],
     comments: [
         {
+            commentId:{
+                type: mongoose.Types.ObjectId,
+                default:mongoose.Types.ObjectId()
+            },
             message:String,
             user: mongoose.Types.ObjectId,
-            // username:String
+            like:[{ type: mongoose.Types.ObjectId, ref: 'user' }]
         }
         ]
 }, {

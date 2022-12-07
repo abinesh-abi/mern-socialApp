@@ -100,6 +100,38 @@ const postControll ={
          return res.json({status:false, message:error.message})
         }
     },
+    savedPosts:async(req,res)=>{
+        try {
+            const {postId}= req.body
+            const userId= req.user._id
+            let save = await postService.savedPost(userId,postId)
+            res.json({status:true,data:save})
+        } catch (error) {
+         return res.json({status:false, message:error.message})
+        }
+    },
+    getSavedPosts:async(req,res)=>{
+        try {
+            const userId = req.user._id
+            let posts = await postService.getSavedPost(userId)
+            res.json({status:true,data:posts})
+            
+        } catch (error) {
+         return res.json({status:false, message:error.message})
+        }
+
+    },
+    removeFromSaved:async(req,res)=>{
+        try {
+            let userId= req.user._id
+            let {postId} = req.body
+            const data = await postService.removeFromSaved(userId,postId)
+            
+            res.json({status:true,data})
+        } catch (error) {
+         return res.json({status:false, message:error.message})
+        }
+    }
 }
 
 module.exports = postControll

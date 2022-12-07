@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { getProfileUsers } from '../redux/actions/profileActions'
 import { patchDataAPI } from '../utils/fetchData'
 
 function FollowersListItems({id , name , avatar , isFollows ,updaeFollowers}) {
@@ -17,17 +18,18 @@ function FollowersListItems({id , name , avatar , isFollows ,updaeFollowers}) {
                 }
 
   const {auth} = useSelector(state=>state)
+  const dispatch =  useDispatch()
     
     function follow() {
         patchDataAPI(`/user/${id}/follow`,{},auth.token)
         .then(({data})=>{
-            updaeFollowers()
+            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
         })
     }
     function unFollow() {
         patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
         .then(({data})=>{
-            updaeFollowers()
+            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
         })
     }
   return (

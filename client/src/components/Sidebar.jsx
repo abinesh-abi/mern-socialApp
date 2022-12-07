@@ -12,6 +12,7 @@ function Sidebar() {
       <div className='mt-5 d-flex flex-column' style={{background:'#868B8E'}}>
           <SidebarItems path={'/'} name={'Home'} icon={'fa-solid fa-house'}/>
           <SidebarItems path={`/profile/${auth?.user?._id}`} name={'Profile'} icon={"fa-solid fa-user"}/>
+          <SidebarItems path={`/saved`} name={'Saved Posts'} icon={"fa-solid fa-bookmark"}/>
           <SidebarItems path={'/message'} name={'Message'} icon={'fa-solid fa-message'}/>
           <SidebarItems path={'/notification'} name={'Notification'} icon={'fa-solid fa-bell '}/>
     </div>

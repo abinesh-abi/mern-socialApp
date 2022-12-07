@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { getDataAPI, postDataAPI } from '../utils/fetchData'
+import { useDispatch, useSelector } from 'react-redux'
+import { getProfileUsers } from '../redux/actions/profileActions'
+import { postDataAPI } from '../utils/fetchData'
 import FollowersListItems from './FollowersListItems'
 
 function Followers() {
@@ -9,21 +10,21 @@ function Followers() {
          'position' :'relative'
 }
     const [followers, setFollowers] = useState([])
-  const {auth} = useSelector(state=>state)
+  const {auth,profile} = useSelector(state=>state)
     
+  const dispatch =  useDispatch()
     let getFollowers=async()=>{
 
       postDataAPI('/user/followers',{},auth.token)
       .then(({data})=>{
         setFollowers(data.data)
+        dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
       })
     }
     useEffect(()=>{
       getFollowers()
-    },[])
-
-     
-
+      dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
+    },[dispatch,followers?.length])
 
   return (
 <div className="card py-3 my-4 shadowmt-3 round" style={{height:'47%'}}>
@@ -31,11 +32,15 @@ function Followers() {
         <div className=" d-flex mb-3  align-items-center shadow-sm px-4 mx-1" style={listDiv}>
             <h4 className='mx-3'>Followers</h4>
         </div>
-
         {
-          followers?.map((user,index)=>{
-            let isFollows = auth?.user?.following.includes(user.values._id)
-           return <FollowersListItems updaeFollowers={getFollowers} key={index} id={user?.values?._id} name={user?.values?.fullname} avatar={user.values.avatar} isFollows={isFollows} />
+         followers?.length !== 0 && followers?.map((user,index)=>{
+            let isFollows = profile.users?.following?.includes(user.values._id)
+
+           return <FollowersListItems 
+           key={index} id={user?.values?._id}
+           name={user?.values?.fullname} 
+           avatar={user.values.avatar} 
+           isFollows={isFollows} />
           })
         }
      </div>

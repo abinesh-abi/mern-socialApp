@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
-import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import swal from 'sweetalert'
+import { getPost } from '../../redux/actions/postAction'
+import { deleteDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
 import AddComment from './AddComment'
 import EditPost from './EditPost'
@@ -10,8 +12,10 @@ function ViewPosts() {
   const {auth} =  useSelector(state=>state)
   
   const [post, setPost] = useState([])
+  const [editPost,setEditPost] = useState({})
 
   const dispatch = useDispatch()
+  const navigator = useNavigate()
   let {id} = useParams()
 
 
@@ -38,10 +42,27 @@ function ViewPosts() {
             findPosts()
         })
     }
+   const deletePost = (id)=>{
+        swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this post !",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    deleteDataAPI(`/user/post/delete/${id}`,auth.token)
+                    dispatch(getPost(auth.token))
+                    navigator('/')
+                }
+            });
+    }
 
   return (
     <>
-    {!post[0]?._id  ? <h3 className='text-center mt-5' >No post to show</h3> :
+    {
+    // !post[0] ? <h3 className='text-center mt-5' >No post to show</h3> :
       <section className="profile-feed py-2" >
           <div className="">
               <div className="row">
@@ -56,7 +77,7 @@ function ViewPosts() {
                                   <div className="dropdown-menu dropdown-scale dropdown-menu-right" role="menu" style={{position: 'absolute', transform: 'translate3d(-136px, 28px, 0px)', top: "0px", left: "0px", "willChange": "transform"}}>
                                       {/* <Link className="dropdown-item" to="/">Hide post</Link> */}
                                       {
-                                          auth.user._id !== post.user ?
+                                          auth.user?._id !== post[0]?.user ?
                                           <>
                                           <Link className="dropdown-item" to="/">Stop following</Link> 
                                           <Link className="dropdown-item" to="/">Report</Link>
@@ -65,10 +86,10 @@ function ViewPosts() {
                                           <>
                                             <Link className="dropdown-item" 
                                             data-toggle="modal" data-target="#edit-post"
-                                            // onClick={()=>setEditPost(post)}
+                                            onClick={()=>setEditPost(post[0])}
                                             >Edit Post</Link> 
                                             <Link className="dropdown-item" 
-                                            // onClick={()=>deletePost(post._id)}
+                                            onClick={()=>deletePost(post[0]._id)}
                                             >Delete Post</Link> 
                                           </>
 
@@ -77,14 +98,14 @@ function ViewPosts() {
                               </div>
                               <div className="media m-0">
                                   <div className="d-flex mr-3">
-                                      <Link to={`/profile/${post[0].user}`} >
+                                      <Link to={`/profile/${post[0]?.user}`} >
                                           {
-                                              <img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post[0].userDetail.avatar}.jpg`} alt="User" />
+                                              <img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post[0]?.userDetail.avatar}.jpg`} alt="User" />
                                           }
                                       </Link>
                                   </div>
                                   <div className="media-body">
-                                      <p className="m-0">{post[0].userDetail.fullname}</p>
+                                      <p className="m-0">{post[0]?.userDetail.fullname}</p>
                                       {/* <small><span><i className="icon ion-md-pin"></i> London, England</span></small>
                                       <small><span><i className="icon ion-md-time"></i> 1 hour ago</span></small> */}
                                   </div>
@@ -97,7 +118,7 @@ function ViewPosts() {
                               />
                           </div>
                           <div className='cardbox-heading '>
-                              <p className='text-secondary' >{post[0].content}</p>
+                              <p className='text-secondary' >{post[0]?.content}</p>
                           </div>
                           <div className="cardbox-base">
                               <ul className="float-right">
@@ -108,9 +129,9 @@ function ViewPosts() {
                               </ul>
                               <ul>
                                   {
-                                      post[0].likes?.includes(auth.user._id)?
+                                      post[0]?.likes?.includes(auth.user._id)?
                                   <li 
-                                  onClick={()=>unLikePost(post[0]._id)}
+                                  onClick={()=>unLikePost(post[0]?._id)}
                                   ><a><i className="fa fa-heart text-danger"></i></a></li>
                                       :
                                   <li 
@@ -122,14 +143,20 @@ function ViewPosts() {
                                   <li><Link to="/"><img src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
                                   <li><Link to="/"><img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
                                   <li><Link to="/"><img src="https://images.pexels.com/photos/6962108/pexels-photo-6962108.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li> */}
-                                  <li><a><span>{post[0].likes?.length} Likes</span></a></li>
+                                  <li><a><span>{post[0]?.likes?.length} Likes</span></a></li>
                               </ul>
                           </div>
                           <AddComment updatePost={findPosts}  post={post[0]} auth={auth} />
                          <h5 className='text-secondary mx-3'>Comments</h5>
                           {
                           post.map((values,index)=>{
-                            return <CommentBody key={index} userDetail={values?.commentDetails} comment={values?.comments?.message} postId={post._id} />
+                            return <CommentBody key={index} 
+                            userDetail={values?.commentDetails} 
+                            comment={values?.comments} 
+                            postId={post[0]._id} 
+                            commentId={values?.comments?.commentId}
+                            findPosts={findPosts}
+                             />
                           })
                           }
                           
@@ -141,7 +168,7 @@ function ViewPosts() {
       </section>
     }
 
-<EditPost editValue={'ad'}/>
+<EditPost editValue={editPost} reFresh={findPosts}/>
 </>
   )
 }
