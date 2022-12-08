@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
-const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers } = require("../services/userService")
+const { setNotification } = require('../services/notificationService')
+const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification } = require("../services/userService")
 
 const postControll ={
     searchUser: async(req,res)=>{
@@ -79,6 +80,8 @@ const postControll ={
             let folloUserId = req.params.id
 
             let followed = await  followUser(id,folloUserId)
+
+            let setNotify = await  setNotification(id,req.user.followers,'followed','this user followed you',id)
             if (followed) {
                 res.json({status:true,message:'followed'});
             }
@@ -109,6 +112,25 @@ const postControll ={
            res.json({status:false,message:error.message});
         }
         
+    },
+    getNotificatins:async(req,res)=>{
+        try {
+            let userId = req.user._id
+            let notifications = await getNotifications(userId)
+            res.json({status:true,data:notifications})
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
+    },
+    deleteNotification:async(req,res)=>{
+        try {
+            let userId = req.user._id
+            let notificationId = req.params.id
+            let data = await deleteNotification(userId,notificationId)
+            res.json({status:true,data})
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
     }
 }
 

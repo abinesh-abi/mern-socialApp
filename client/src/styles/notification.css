@@ -1,0 +1,4 @@
+
+ #notification-Item :hover + #notification-dropdown {
+    display: block !important;
+}

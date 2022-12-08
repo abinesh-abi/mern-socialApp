@@ -52,7 +52,7 @@ export const refreshToken = () => async (dispatch) => {
       dispatch({
         type: GLOBALTYPES.ALERT,
         payload: {
-          error: err.response.data.msg,
+          error: err.response.data.message,
         },
       });
     }

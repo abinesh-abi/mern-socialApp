@@ -69,7 +69,6 @@ function SavePost() {
         )
     }
     const unLikePost = (id)=>{
-        console.log(id)
         patchDataAPI(`/user/post/unLike`,{postId:id},auth.token)
         .then(({data})=>{
             getPosts()

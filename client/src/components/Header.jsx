@@ -6,6 +6,7 @@ import { logout } from '../redux/actions/authAction'
 import { postDataAPI } from '../utils/fetchData'
 import SearchModel from './SearchModel'
 import '../../src/styles/seacrchModel.css'
+import Notification from './Notification'
 
 function Header() {
   const {auth,adminAuth} = useSelector(state=>state)
@@ -24,6 +25,7 @@ function Header() {
 
 
   return (
+  <>
     <div className='w-100' style={{position:'fixed',zIndex:'1'}}>
 <nav className="mb-1 navbar navbar-expand-lg navbar-dark bg-dark lighten-1 " >
   <Link className="navbar-brand" to={'/'}>SocialApp</Link>
@@ -73,7 +75,7 @@ function Header() {
         <Link className="fa-solid fa-bell nav-link" to="/admin/notification"></Link>
       </li>:
       <li className={`nav-item  px-3 ${isActive('/notification')}`}>
-        <Link className="fa-solid fa-bell nav-link" to="/notification"></Link>
+        {/* <Link className="fa-solid fa-bell nav-link" to="/notification"></Link> */}
       </li>
       }
       
@@ -153,6 +155,7 @@ function Header() {
 </div> */}
 </nav>
 </div>
+</>
   )
 }
 

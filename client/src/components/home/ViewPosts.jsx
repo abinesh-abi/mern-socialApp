@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import swal from 'sweetalert'
 import { getPost } from '../../redux/actions/postAction'
+import { getProfileUsers } from '../../redux/actions/profileActions'
 import { deleteDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
 import AddComment from './AddComment'
 import EditPost from './EditPost'
 
 function ViewPosts() {
-  const {auth} =  useSelector(state=>state)
+  const {auth , profile} =  useSelector(state=>state)
   
   const [post, setPost] = useState([])
   const [editPost,setEditPost] = useState({})
@@ -58,6 +59,21 @@ function ViewPosts() {
                 }
             });
     }
+    function savePost(postId) {
+        postDataAPI('/user/post/savePost/add',{postId},auth.token)
+        .then(({data})=>{
+            dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
+        })
+        
+    }
+    function removeFromSaved(postId) {
+        patchDataAPI('/user/post/savePost/remove',{postId},auth.token)
+        .then(({data})=>{
+            dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
+        })
+    }
+
+
 
   return (
     <>
@@ -124,9 +140,15 @@ function ViewPosts() {
                           <div className="cardbox-base">
                               <ul className="float-right">
                                   <li><a><i className="fa fa-message"></i></a></li>
-                                  <li><a><em className="mr-5">{!post[0]?.comments.length && '0' || post.length}</em></a></li>
-                                  <li><a><i className="fa fa-bookmark"></i></a></li>
-                                  <li><a><em className="mr-3">0</em></a></li>
+                                  <li><a><em className="mr-5">{post[0]?.comments.length && '0' || post.length}</em></a></li>
+
+                                    {
+                                        profile?.users?.saved?.includes(post[0]._id)?
+                                    <li><a onClick={e=>removeFromSaved(post[0]._id)}><i className="fa fa-bookmark mr-4 text-success"></i></a></li>
+                                    :
+                                    <li><a onClick={e=>savePost(post[0]._id)}><i className="fa fa-bookmark mr-4"></i></a></li>
+
+                                    }
                               </ul>
                               <ul>
                                   {

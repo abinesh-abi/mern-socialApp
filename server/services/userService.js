@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const notificationModel = require("../models/notificationModel");
 const userModel = require("../models/userModel");
 
 module.exports = {
@@ -134,6 +135,52 @@ module.exports = {
           }
         },
       ])
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
+  getNotifications:(id)=>{
+    return new Promise((resolve, reject) => {
+    notificationModel.aggregate([
+      {
+        $addFields:{
+          elementExists:{
+            $cond:[{$in:[id,'$recipients']},true,false]
+          }
+        }
+      },
+      {
+        $match:{elementExists:true}
+      },
+      {
+        $lookup:{
+          from:"users",
+          localField:'userId',
+          foreignField:"_id",
+          as:'userDetail',
+          pipeline:[
+            {
+              $project:{
+                fullname:1,
+              }
+            }
+          ]
+        }
+      },
+      {
+        $sort:{createdAt:-1}
+      }
+    ]).then(data=>resolve(data))
+    .catch(error=>reject(error))
+    })
+  },
+  deleteNotification:(userId,notificationId)=>{
+    return new Promise((resolve, reject) => {
+      notificationModel.updateOne({_id:notificationId},{
+        $pull:{
+          recipients:userId
+        }
+      })
       .then(data=>resolve(data))
       .catch(error=>reject(error))
     })

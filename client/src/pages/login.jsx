@@ -39,10 +39,15 @@ function Login() {
         <div className="container">
           <div className="row">
             <div className="col-md-6">
+              <div className="d-flex">
+                <h1 className="mx-auto">SocialApp</h1>
+              </div>
+                <p className="mx-auto">A feature rich social media platform</p>
+                <p className="mx-auto">you can connect othre peoples on a single click</p>
               <img
                 src="https://preview.colorlib.com/theme/bootstrap/login-form-07/images/undraw_remotely_2j6y.svg"
                 alt=""
-                className="img-fluid"
+                className="img-fluid w-75"
               />
             </div>
             <div className="col-md-6 contents" style={{ marginTop: "5vh" }}>

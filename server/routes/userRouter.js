@@ -25,6 +25,10 @@ router.delete('/user/post/delete/:id',auth,postControll.deletePost)
 router.patch('/user/post/like',auth,postControll.likePost)
 router.patch('/user/post/unLike',auth,postControll.unLikePost)
 
+// notification
+router.get('/user/notification/get',auth,userControl.getNotificatins)
+router.delete('/user/notification/delete/:id',auth,userControl.deleteNotification)
+
 // save posts
 router.post('/user/post/savePost/add',auth,postControll.savedPosts)
 router.get('/user/post/savePost/get',auth,postControll.getSavedPosts)
