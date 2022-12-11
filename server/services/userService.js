@@ -162,6 +162,7 @@ module.exports = {
             {
               $project:{
                 fullname:1,
+                avatar:1
               }
             }
           ]

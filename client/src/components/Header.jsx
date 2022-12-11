@@ -1,12 +1,9 @@
 import React from 'react'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, } from 'react-router-dom'
 import { logout } from '../redux/actions/authAction'
-import { postDataAPI } from '../utils/fetchData'
 import SearchModel from './SearchModel'
 import '../../src/styles/seacrchModel.css'
-import Notification from './Notification'
 
 function Header() {
   const {auth,adminAuth} = useSelector(state=>state)
@@ -48,7 +45,14 @@ function Header() {
             <i className="fas fa-search"></i>
           </button>
         </div> */}
-        <a className="fa-solid nav-link active fa-magnifying-glass" href='#search'></a>
+        {/* <a className="fa-solid nav-link active fa-magnifying-glass" href='#search'></a> */}
+        <a className="fa-solid nav-link active fa-magnifying-glass" 
+          onClick={e=>{
+            let sercModel = document.getElementById('search')
+            sercModel.style.visibility = 'visible'
+            sercModel.style.opacity = '1'
+          }}
+        ></a>
         {/* <Link className="fa-solid nav-link active fa-magnifying-glass" data-toggle="modal" data-target="#search"></Link>
         <div className="">
           <a href="#search">Open Demo Modal</a>

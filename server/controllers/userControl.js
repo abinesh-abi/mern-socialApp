@@ -81,7 +81,11 @@ const postControll ={
 
             let followed = await  followUser(id,folloUserId)
 
-            let setNotify = await  setNotification(id,req.user.followers,'followed','this user followed you',id)
+            // set notificatins
+            const type = 'followed'
+            const content = 'This user followed you'
+            let setNotify = await  setNotification(id,req.user.followers,type,content,id)
+
             if (followed) {
                 res.json({status:true,message:'followed'});
             }

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { deleteDataAPI, getDataAPI } from '../utils/fetchData'
 import ImageRounded from './ImageRounded'
 import '../styles/notification.css'
+import NotificationContent from './profile/NotificationContent'
 
 function Notification() {
   const {auth} = useSelector(state=>state)
@@ -24,6 +25,25 @@ function Notification() {
       getNotification()
     })
   }
+  
+  // calculate notification time
+  function timeDifference(date1 , date2) {
+    let diffInMilliSeconds = Math.abs(date1 - date2) / 1000;
+
+    // calculate minutes
+    const minutes = Math.floor(diffInMilliSeconds / 60)
+
+    // minutes
+    if(minutes < 60) return minutes + ' M'
+
+    // hour
+    if(minutes < 24 * 60) return Math.floor(minutes / 60) + ' H'
+
+    // days
+    if(minutes < 10 * 60 * 24) return Math.floor(minutes / 60 / 24 ) + ' D'
+
+  }
+
 
   useEffect(()=>{
     if(auth.token) getNotification()
@@ -37,27 +57,40 @@ function Notification() {
       </div>
       :
     notifications?.map((values,index)=>{
-    return <div key={index} style={{position:'relative'}} id='notification-Item'>
-    
+    return <div  key={index} style={{position:'relative'}} id='notification-Item'>
 
     <div className='card'>
         <div className='d-flex'>
           <div className='ml-4 my-2 d-flex'>
             <div className="my-auto">
-              <ImageRounded size='55' />
+            <Link to={`/profile/${values.userId}`} style={{color:'black',textDecoration:'none'}}>
+              <ImageRounded size='55' src={`http://127.0.0.1:5000/images/profile/${values.userDetail[0].avatar}.jpg`} />
+            </Link>
             </div>
           </div>
-          <div className='mt-2 ml-3 '>
-            <div className="d-flex ">
-              <p className='mx-1 h6 my-auto'>{values.userDetail[0].fullname}</p>
-              <span className='my-auto'>{values.type} you</span>
-            </div>
-            <div>
-              <p>{values.content}</p>
-            </div>
-          </div>
-          <div className='ml-auto mr-3'>
-            <p >3d</p>
+          {
+            values?.type ==='followed' && 
+            <Link to={`/profile/${values.viewId}`} style={{color:'black',textDecoration:'none'}}>
+              <NotificationContent 
+              name={values.userDetail[0].fullname}  
+              headContent='followed you'
+              content={'This user followed you'}
+              />
+            </Link>
+          }
+          {
+            values?.type ==='post' && 
+            <Link to={`/post/${values.viewId}`} style={{color:'black',textDecoration:'none'}}>
+              <NotificationContent 
+              name={values.userDetail[0].fullname}  
+              headContent='Added new Post'
+              content={'This user this user Added new post'}
+              />
+            </Link>
+          }
+          <div className='ml-auto mr-3 mt-2'>
+            <p >{timeDifference(new Date(Date.now()),new Date(values.createdAt)) }</p>
+            {/* <p >3d</p> */}
               {/* <div className='bg-success' style={{width:'15px',height:'15px',borderRadius:'50%'}}></div>  */}
             
           </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { createPost, getPost } from '../../redux/actions/postAction'
+import { getPost } from '../../redux/actions/postAction'
 import { postDataAPI } from '../../utils/fetchData'
 
 function Addpost() {
@@ -45,7 +45,11 @@ function Addpost() {
           if (!data.status)  return setErr(data.message)
           
         dispatch(getPost(auth.token))
-        document.getElementById("add-post").classList.remove("show", "d-block");
+        let modal = document.getElementById("add-post")
+        console.log(modal)
+        modal.classList.remove("show");
+        modal.classList.remove( "d-block");
+        modal.classList.remove( 'fade');
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
         })

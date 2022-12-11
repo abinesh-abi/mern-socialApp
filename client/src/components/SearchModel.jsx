@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { postDataAPI } from '../utils/fetchData'
 
 function SearchModel() {
@@ -24,6 +24,11 @@ function SearchModel() {
 
   const {auth} = useSelector(state=>state)
 
+  function closeModel() {
+    let modal = document.getElementById('search')
+        modal.style.visibility = 'hidden'
+        modal.style.opacity = '0'
+  }
 
   function serchUser(e) {
     e.preventDefault()
@@ -94,7 +99,8 @@ function SearchModel() {
             </div>	
             </div>
 
-        <a href="#" className="modal__close">&times;</a>
+        {/* <a href="#" className="modal__close">&times;</a> */}
+        <Link onClick={closeModel} className="modal__close">&times;</Link>
     </div>
 </div>
 {/* modada+++++++++++++ */}

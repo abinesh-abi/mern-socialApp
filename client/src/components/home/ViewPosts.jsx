@@ -143,8 +143,8 @@ function ViewPosts() {
                                   <li><a><em className="mr-5">{post[0]?.comments.length && '0' || post.length}</em></a></li>
 
                                     {
-                                        profile?.users?.saved?.includes(post[0]._id)?
-                                    <li><a onClick={e=>removeFromSaved(post[0]._id)}><i className="fa fa-bookmark mr-4 text-success"></i></a></li>
+                                        profile?.users?.saved?.includes(post[0]?._id)?
+                                    <li><a onClick={e=>removeFromSaved(post[0]?._id)}><i className="fa fa-bookmark mr-4 text-success"></i></a></li>
                                     :
                                     <li><a onClick={e=>savePost(post[0]._id)}><i className="fa fa-bookmark mr-4"></i></a></li>
 

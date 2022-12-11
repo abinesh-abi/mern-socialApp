@@ -3,6 +3,7 @@ const multer = require("multer")
 const postService = require("../services/postService")
 const fs = require('fs')
 const { getPostById } = require("../services/postService")
+const { setNotification } = require("../services/notificationService")
 const postControll ={
     getPosts:async(req,res)=>{
         const user = req.user
@@ -25,10 +26,17 @@ const postControll ={
             let {body} =req
             let user = req.user._id
             let content =body.content 
+
             let data = await postService.createPost(user,content)
+
+            // set notificatins
+            const type = 'post'
+            const notfiContent = 'This user liked your post'
+            let setNotify = await  setNotification(user,req.user.followers,type,notfiContent,data._id)
+
             res.json({status:true,data})
         } catch (error) {
-         return res.json({message:err.message})
+         return res.json({message:error.message})
         }
     },
     editImage:async (req,res)=>{

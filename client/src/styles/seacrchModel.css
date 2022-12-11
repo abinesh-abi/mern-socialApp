@@ -16,7 +16,12 @@
   transition: all .4s;
 }
 
-.custom-model:target {
+/* .custom-model:target {
+  visibility: visible;
+  opacity: 1;
+} */
+
+show-modal{
   visibility: visible;
   opacity: 1;
 }

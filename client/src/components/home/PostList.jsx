@@ -55,10 +55,10 @@ function PostList() {
     const likePost = (id)=>{
         patchDataAPI(`/user/post/like`,{postId:id},auth.token)
         .then(({data})=>{
-            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            dispatch(getPost(auth.token))
-            setPostsList(posts.posts)
-            // setForceReload(new Date())
+            // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+            // dispatch(getPost(auth.token))
+            // setPostsList(posts.posts)
+            getPosts()
         }
         )
     }
@@ -66,9 +66,9 @@ function PostList() {
         patchDataAPI(`/user/post/unLike`,{postId:id},auth.token)
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            dispatch(getPost(auth.token))
-            setPostsList(posts.posts)
-            // setForceReload(new Date())
+            // dispatch(getPost(auth.token))
+            // setPostsList(posts.posts)
+            getPosts()
         })
     }
 
