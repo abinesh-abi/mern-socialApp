@@ -4,18 +4,40 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 var logger = require('morgan');
 const { PORT } = require('./config/basicConfig')
-const mongodbConnection = require('./config/db')
+const mongodbConnection = require('./config/db');
+const basicConfig = require('./config/basicConfig');
 
 
 const app = express()
 
 app.use(express.json());
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(cors({
-    origin:'http://127.0.0.1:3000',
+    origin:basicConfig.CLIENT_URL,
     credentials: true,
 }))
 app.use('/images', express.static('uploads'))
+
+
+
+// socket
+const http = require('http').createServer(app)
+const io = require('socket.io')(http,{
+    pingTimeout:60000,
+    cors:{
+        origin:'*',
+    }
+})
+module.exports = {io}
+
+// io.on('connection',(socket)=>{
+//     socket.on('setup',userData =>{
+//         socket.join(userData._id)
+//         console.log(userData._id)
+//         socket.emit('connected')
+//     })
+// })
+
 
 // app.use(function(req, res, next) {
 //   res.header('Content-Type', 'application/json;charset=UTF-8')
@@ -31,7 +53,6 @@ app.use(cookieParser());
 
 
 
-
 // mongodb
 mongodbConnection()
 
@@ -39,5 +60,6 @@ mongodbConnection()
 app.use('/',require("./routes/authRouter"))
 app.use('/',require("./routes/userRouter"))
 app.use('/',require("./routes/adminRouter"))
+app.use('/user/chat',require("./routes/chatRouter"))
 
-app.listen(PORT,()=>console.log('server running on port '+PORT))
+http.listen(PORT,()=>console.log('server running on port '+PORT))

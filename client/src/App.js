@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
+
+
 import Header from "./components/Header";
 import PageRender from "./PageRender";
 import Home from "./pages/home";
@@ -22,6 +24,7 @@ function App() {
     dispatch(refreshToken())
     dispatch(adminRefreshToken())
   },[dispatch])
+
 
   return (
     <>

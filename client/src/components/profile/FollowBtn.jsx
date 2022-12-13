@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import config from '../../utils/config'
 import { patchDataAPI } from '../../utils/fetchData'
 
 function FollowBtn({user,updateUser}) {

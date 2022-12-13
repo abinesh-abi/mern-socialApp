@@ -69,8 +69,8 @@ function Header() {
       }
       
       {
-        !isAdmin && <li className={`nav-item  px-3 ${isActive('/message')}`}>
-        <Link className="fa-solid fa-message nav-link" to="/message"></Link>
+        !isAdmin && <li className={`nav-item  px-3 ${isActive('/chat')}`}>
+        <Link className="fa-solid fa-message nav-link" to="/chat"></Link>
       </li>
       }
       {
