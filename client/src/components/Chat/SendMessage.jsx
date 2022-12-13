@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { postDataAPI } from '../../utils/fetchData'
 
-function SendMessage({currentChat,updateMsg,socket}) {
+function SendMessage({currentChat,updateMsg}) {
     const { auth} =  useSelector(state=>state)
     const [newMessage, setNewMessage] = useState('')
     function submit(e) {
@@ -12,7 +12,6 @@ function SendMessage({currentChat,updateMsg,socket}) {
         .then(({data})=>{
             updateMsg()
             setNewMessage('')
-            socket.current.emit('new message',{message:data.data,chat:currentChat})
         })
     }
 

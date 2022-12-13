@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getDataAPI } from '../../utils/fetchData'
-import ChatContent from './ChatContent'
 import ChatSearch from './ChatSearch'
 import ChatSideItems from './ChatSideItems'
 import config from '../../utils/config' 
@@ -14,7 +13,7 @@ function ChatHome() {
     const { auth } = useSelector((state) => state);
     const [chatItems, setchatItems] = useState([])
     const [currentChat, setCurrentChat] = useState(null)
-    const socket = useRef(io(config.SERVER_URL))
+    // const socket = useRef(io(config.SERVER_URL))
 
 
 
@@ -22,13 +21,14 @@ function ChatHome() {
     const scrollRef = useRef()
 
     // socket
-    useEffect(()=>{
-     socket.current.emit('setup',{_id:auth?.user?._id})
-     socket.current.on('connected',console.log('socket connected'))
-    },[])
+    // useEffect(()=>{
+    //     socket.current.emit('addUser',auth?.user?._id)
+    // },[auth?.user])
+
+    console.log('hi')
 
     function getChat() {
-        getDataAPI('/user/chat/get',auth.token)
+        getDataAPI('/user/chat/get',auth?.token)
         .then(({data})=>{
             setchatItems(data.data)
         })
@@ -36,11 +36,10 @@ function ChatHome() {
 
     function joinChat(val) {
         setCurrentChat(val)
-        socket.current.emit('join chat',val._id)
     }
-    useEffect(()=>{
-       auth.token && getChat()
-    },[auth?.user?._id,auth.token])
+    // useEffect(()=>{
+    //    auth?.token && getChat()
+    // },[auth?.user?._id,auth.token])
 
 
     function getMessages() {
@@ -48,19 +47,13 @@ function ChatHome() {
         .then(({data})=>setMessages(data.data))
     }
 
-    useEffect(()=>{
-       auth.token && getMessages()
-    },[auth?.token])
+    // useEffect(()=>{
+    //    auth?.token && getMessages()
+    // },[auth?.token])
 
-    useEffect(()=>{
-        scrollRef?.current?.scrollIntoView({behavior:'smooth'})
-    },[messages])
-
-    useEffect(()=>{
-        socket?.current.on('message recieved',(data=>{
-            console.log(data)
-        }))
-    })
+    // useEffect(()=>{
+    //     scrollRef?.current?.scrollIntoView({behavior:'smooth'})
+    // },[messages])
 
 
 
@@ -101,7 +94,7 @@ function ChatHome() {
                                     messages.map((message,index)=>{
                                     return <div key={index} ref={scrollRef}>
                                         {
-                                        message?.sender === auth.user._id
+                                        message?.sender === auth?.user?._id
                                             ? <Messages  message={message} self /> 
                                             : <Messages message={message} />
                                         }
@@ -113,7 +106,7 @@ function ChatHome() {
                                 <Messages /> */}
                             </ul>
                         </div>
-                        <SendMessage updateMsg={getMessages} currentChat={currentChat} socket={socket} />
+                        <SendMessage updateMsg={getMessages} currentChat={currentChat} />
                     </div>
                     :
                     <div className="chat" style={{height:'100vh'}}>
