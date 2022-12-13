@@ -27,7 +27,7 @@ export const login = (data) => async (dispatch) => {
     dispatch({
       type: GLOBALTYPES.ALERT,
       payload: {
-        error: err.response.data.msg,
+        error: err.message,
       },
     });
   }
@@ -52,7 +52,7 @@ export const refreshToken = () => async (dispatch) => {
       dispatch({
         type: GLOBALTYPES.ALERT,
         payload: {
-          error: err.response.data.message,
+          error: err.message,
         },
       });
     }
