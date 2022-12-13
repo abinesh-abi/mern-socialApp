@@ -7,6 +7,8 @@ const router = require('express').Router()
 
 let users =[]
 const addUser = (userId, socketId) => {
+  if(userId === null) return
+  if(!socketId === null) return
   !users.some((user) => user.userId === userId) &&
     users.push({ userId, socketId });
 };
@@ -22,14 +24,26 @@ const getUser = (userId) => {
 io.on('connection',socket=>{
     console.log('socket connected')
 
-
+    // take userid and socketId from user
     socket.on("addUser",(userId) => {
-    console.log(userId,socket.id)
-    addUser(userId._id, socket.id);
-    io.emit("connected", users);
+    addUser(userId, socket.id);
+    io.emit("getUsers", users);
   });
 
+  // send and get message
+   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    const user = getUser(receiverId)
+    io.to(user.socketId).emit('getMessage',{
+      senderId,
+      text
+    })
+   })
 
+//  disconnect
+  socket.on("disconnect",()=>{
+    console.log('a user disconnected')
+    removeUser(socket.id)
+  })
 })
 
 

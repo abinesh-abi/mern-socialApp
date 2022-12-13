@@ -13,19 +13,35 @@ function ChatHome() {
     const { auth } = useSelector((state) => state);
     const [chatItems, setchatItems] = useState([])
     const [currentChat, setCurrentChat] = useState(null)
-    // const socket = useRef(io(config.SERVER_URL))
-
-
-
     const [messages, setMessages] = useState([])
+    const [arrivalMessage, setArrivalMessage] = useState(null)
     const scrollRef = useRef()
+    const socket = useRef()
+
+    useEffect(()=>{
+        socket.current=io(config.SERVER_URL)
+        socket.current.on("getMessage",data=>{
+            setArrivalMessage({
+                sender:data.senderId,
+                text:data.text,
+                createdAt:Date.now()
+            })
+        })
+    },[])
 
     // socket
-    // useEffect(()=>{
-    //     socket.current.emit('addUser',auth?.user?._id)
-    // },[auth?.user])
+    useEffect(()=>{
+        socket.current.emit('addUser',auth?.user?._id)
+        socket.current.on('getUsers',users=>{
+        })
+    },[auth?.user])
 
-    console.log('hi')
+    useEffect(()=>{
+        arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) &&
+        setMessages(prev=>[...prev,arrivalMessage])
+    },[arrivalMessage,currentChat])
+    
+
 
     function getChat() {
         getDataAPI('/user/chat/get',auth?.token)
@@ -37,9 +53,9 @@ function ChatHome() {
     function joinChat(val) {
         setCurrentChat(val)
     }
-    // useEffect(()=>{
-    //    auth?.token && getChat()
-    // },[auth?.user?._id,auth.token])
+    useEffect(()=>{
+       auth?.token && getChat()
+    },[auth?.user?._id,auth.token])
 
 
     function getMessages() {
@@ -47,13 +63,13 @@ function ChatHome() {
         .then(({data})=>setMessages(data.data))
     }
 
-    // useEffect(()=>{
-    //    auth?.token && getMessages()
-    // },[auth?.token])
+    useEffect(()=>{
+       auth?.token && getMessages()
+    },[auth?.token])
 
-    // useEffect(()=>{
-    //     scrollRef?.current?.scrollIntoView({behavior:'smooth'})
-    // },[messages])
+    useEffect(()=>{
+        scrollRef?.current?.scrollIntoView({behavior:'smooth'})
+    },[messages])
 
 
 
@@ -106,7 +122,7 @@ function ChatHome() {
                                 <Messages /> */}
                             </ul>
                         </div>
-                        <SendMessage updateMsg={getMessages} currentChat={currentChat} />
+                        <SendMessage updateMsg={getMessages} currentChat={currentChat} socket={socket} />
                     </div>
                     :
                     <div className="chat" style={{height:'100vh'}}>
