@@ -44,7 +44,6 @@ function Notification() {
 
   }
 
-
   useEffect(()=>{
     if(auth.token) getNotification()
   },[auth.token])
@@ -85,6 +84,16 @@ function Notification() {
               name={values.userDetail[0].fullname}  
               headContent='Added new Post'
               content={'This user this user Added new post'}
+              />
+            </Link>
+          }
+          {
+            values?.type ==='followRequest' && 
+            <Link to={`/post/${values.viewId}`} style={{color:'black',textDecoration:'none'}}>
+              <NotificationContent 
+              name={values.userDetail[0].fullname}  
+              headContent='send follow Request'
+              content={'This user this user send A follow Request'}
               />
             </Link>
           }

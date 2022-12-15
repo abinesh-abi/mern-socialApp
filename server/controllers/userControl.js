@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
 const { setNotification } = require('../services/notificationService')
-const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification } = require("../services/userService")
+const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification, followRequest, getFollowRequest, acceptRequest } = require("../services/userService")
 
 const postControll ={
     searchUser: async(req,res)=>{
@@ -78,17 +78,29 @@ const postControll ={
         try {
             let id = req.user.id
             let folloUserId = req.params.id
-
-            let followed = await  followUser(id,folloUserId)
+            let followed = await  followRequest(id,folloUserId)
 
             // set notificatins
-            const type = 'followed'
-            const content = 'This user followed you'
+            const type = 'followRequest'
+            const content = 'This user sent a follow reqrest'
             let setNotify = await  setNotification(id,req.user.followers,type,content,id)
 
             if (followed) {
                 res.json({status:true,message:'followed'});
             }
+            // let id = req.user.id
+            // let folloUserId = req.params.id
+
+            // let followed = await  followUser(id,folloUserId)
+
+            // // set notificatins
+            // const type = 'followed'
+            // const content = 'This user followed you'
+            // let setNotify = await  setNotification(id,req.user.followers,type,content,id)
+
+            // if (followed) {
+            //     res.json({status:true,message:'followed'});
+            // }
         } catch (error) {
             res.json({status:false,message:error.message});
         }
@@ -115,7 +127,36 @@ const postControll ={
         } catch (error) {
            res.json({status:false,message:error.message});
         }
-        
+    },
+    getFollowRequests:async(req,res)=>{
+        try {
+            let user= req.user.id
+
+            let reqrests = await getFollowRequest(user)
+            res.json({status:true,data:reqrests})
+
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
+    },
+    acceptRequest:async(req,res)=>{
+        try {
+            let id = req.user.id
+            let folloUserId = req.params.id
+
+
+            let followed = await  acceptRequest(id,folloUserId)
+
+            // // set notificatins
+            // const type = 'followed'
+            // const content = 'This user followed you'
+            // let setNotify = await  setNotification(id,req.user.followers,type,content,id)
+
+                res.json({status:true,message:'followed'});
+            
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
     },
     getNotificatins:async(req,res)=>{
         try {

@@ -14,6 +14,8 @@ router.post('/user/editImage',auth,userControl.editImage)
 router.patch('/user/:id/follow',auth,userControl.follow)
 router.patch('/user/:id/unFollow',auth,userControl.unFollow)
 router.post('/user/followers',auth,userControl.getFollowers)
+router.post('/user/followRequest',auth,userControl.getFollowRequests)
+router.patch('/user/:id/acceptRequest',auth,userControl.acceptRequest)
 
 // posts
 router.post('/user/posts',auth,postControll.getPosts)

@@ -27,8 +27,8 @@ function Followers() {
     },[dispatch,followers?.length])
 
   return (
-<div className="card py-3 my-4 shadowmt-3 round" style={{height:'47%'}}>
-{/* <div className="py-3 shadow round mt-3"> */}
+    <div className="card py-3 my-4 shadowmt-3 round" > 
+    {/* <div className="card py-3 my-4 shadowmt-3 round" style={{height:'47%'}}>  */}
         <div className=" d-flex mb-3  align-items-center shadow-sm px-4 mx-1" style={listDiv}>
             <h4 className='mx-3'>Followers</h4>
         </div>

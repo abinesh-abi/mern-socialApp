@@ -100,7 +100,6 @@ function ChatHome() {
         .then(({data})=>{
            setMessages(data.data)
         })
-
         setCurrentChat(data.data)
         setchatItems((chats)=>[...chats,data.data])
         setSearchInput('')
@@ -138,7 +137,6 @@ function ChatHome() {
                          onClick={()=>{
                             setSearchInput('')
                         }}
-
                         ></i>
                         <button type='submit' className="input-group-text chat-search-button" ><i className="fa fa-search"></i></button>
                     </div>

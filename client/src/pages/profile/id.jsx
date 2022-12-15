@@ -1,5 +1,6 @@
 import React from "react";
 import Followers from "../../components/Followers";
+import FollowRequest from "../../components/FollowRequest";
 import ProfileBody from "../../components/profile/ProfileBody";
 import Sidebar from "../../components/Sidebar";
 
@@ -25,8 +26,9 @@ function Profile() {
         <ProfileBody  />
       </div>
       {/* friends */}
-      <div className="col-11 col-md-3" style={{height:'100px'}}>
-      <Followers />
+      <div className="col-11 col-md-3 " style={{height:'100px'}}>
+        <Followers />
+      {/* <FollowRequest /> */}
       </div>
     </div>
   );

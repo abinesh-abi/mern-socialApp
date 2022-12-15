@@ -66,6 +66,36 @@ module.exports = {
       .catch(error=>reject(error))
     })
   },
+  followRequest:(userId,folloId)=>{
+    return new Promise(async(resolve, reject) => {
+      let addToFollowings = await userModel.findOneAndUpdate({_id:folloId},{
+        $addToSet:{followRequest: userId}
+      }).then(data=>resolve(data))
+      .catch(error=>reject(error))
+      // let addToFollowers = await userModel.findOneAndUpdate({_id:folloId},{
+      //   $addToSet:{followers:userId}
+      // })
+    })
+  },
+  acceptRequest:(userId,folloId)=>{
+    return new Promise(async(resolve, reject) => {
+      let addToFollowings = await userModel.findOneAndUpdate({_id:userId},{
+        $addToSet:{followers: folloId}
+      })
+      let addToFollowers = await userModel.findOneAndUpdate({_id:folloId},{
+        $addToSet:{following:userId}
+      })
+      let removeRequest= await userModel.findOneAndUpdate({_id:userId},{
+        $pull:{followRequest:folloId}
+      })
+      if (addToFollowings || addToFollowers) {
+        resolve(true)
+      }else{
+        reject(false)
+      }
+
+    })
+  },
   followUser:(userId,folloId)=>{
     return new Promise(async(resolve, reject) => {
       let addToFollowings = await userModel.findOneAndUpdate({_id:userId},{
@@ -73,6 +103,9 @@ module.exports = {
       })
       let addToFollowers = await userModel.findOneAndUpdate({_id:folloId},{
         $addToSet:{followers:userId}
+      })
+      let removeRequest= await userModel.findOneAndUpdate({_id:userId},{
+        $pull:{followRequest:folloId}
       })
       if (addToFollowings || addToFollowers) {
         resolve(true)
@@ -96,6 +129,47 @@ module.exports = {
         reject(false)
       }
 
+    })
+  },
+  getFollowRequest:(userId)=>{
+    return new Promise((resolve, reject) => {
+      userModel.aggregate([
+        {
+          $match:{
+            "_id":mongoose.Types.ObjectId(userId)
+          }
+        },
+
+        {
+          $lookup:{
+            from:'users',
+            localField:'followRequest',
+            foreignField:"_id",
+            as:'values'
+          }
+        },
+        {
+          $project:{
+            values:1,
+            _id:0
+          }
+        },
+        { $limit : 5 },
+        {
+          $unwind:'$values'
+        },
+        {
+          $project:{
+            fullname:1,
+            username:1,
+            values:1,
+            avatar:1,
+            _id:0
+          }
+        },
+      ])
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
     })
   },
   getFollowers:(userId)=>{

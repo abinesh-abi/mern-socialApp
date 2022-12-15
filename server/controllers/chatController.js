@@ -13,7 +13,6 @@ module.exports ={
     searchChat:async(req,res)=>{
         try {
             let {userId} = req.params
-            console.log(userId)
             let isChatExits = await chatServie.isChatExitst([userId,req.user._id])
             if(isChatExits) return res.json({status:true,data:isChatExits})
             const newChat = await chatServie.newChat([req.user._id,userId])
