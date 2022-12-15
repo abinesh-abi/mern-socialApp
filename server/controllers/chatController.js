@@ -10,6 +10,19 @@ module.exports ={
             res.json({status:false,message:error.message});
         }
     },
+    searchChat:async(req,res)=>{
+        try {
+            let {userId} = req.params
+            console.log(userId)
+            let isChatExits = await chatServie.isChatExitst([userId,req.user._id])
+            if(isChatExits) return res.json({status:true,data:isChatExits})
+            const newChat = await chatServie.newChat([req.user._id,userId])
+            res.json({status:true,data:newChat})
+        } catch (error) {
+            res.json({status:false,message:error.message});
+        }
+
+    },
     getChats:async(req,res)=>{
         let id = req.user._id
         try {

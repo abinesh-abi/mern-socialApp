@@ -52,6 +52,7 @@ io.on('connection',socket=>{
 // Chat
 router.post('/new',auth,chatController.newChat)
 router.get('/get',auth,chatController.getChats)
+router.get('/searchChat/:userId',auth,chatController.searchChat)
 
 // messages
 router.post('/message/new',auth,chatController.newMessage)

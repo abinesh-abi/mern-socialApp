@@ -22,6 +22,21 @@ module.exports = {
             .catch(error=>reject(error))
         })
     },
+    isChatExitst : (ids)=>{
+        return new Promise((resolve, reject) => {
+            // chatModel.aggregate([
+            //     {
+            //         $match:{
+            //             members:{ $tags: ids }
+            //         },
+            //     },
+            // ])
+            chatModel.findOne({members:{$all:ids}})
+            .then(data=>resolve(data))
+            .catch(error=>reject(error))
+            
+        })
+    },
     newMessage:(value)=>{
         return new Promise((resolve, reject) => {
             new messageModel(value).save()

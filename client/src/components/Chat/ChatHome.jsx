@@ -56,9 +56,7 @@ function ChatHome() {
             setchatItems(data.data)
         })
     }
-    // function joinChat(val) {
-    //     setCurrentChat(val)
-    // }
+
     useEffect(()=>{
        auth?.token && getChat()
     },[auth?.user?._id,auth.token])
@@ -80,10 +78,6 @@ function ChatHome() {
     }
 
 
-    // useEffect(()=>{
-    //    auth?.token && getMessages()
-    // })
-
     useEffect(()=>{
         scrollRef?.current?.scrollIntoView({behavior:'smooth'})
     },[messages])
@@ -92,31 +86,34 @@ function ChatHome() {
         e.preventDefault()
         postDataAPI(`/user/search`,{name:searchInput},auth.token)
         .then(({data})=>{
-            // setchatItems(data.users)
             setisSearch(true)
-            setSearchItems(data.users)
+            let users = data.users.filter(value=>value._id !== auth.user._id)
+            setSearchItems(users)
         })
     }
 
    async function getSerchMessages(val){
-        let isChatExists = chatItems.filter(data=>{
-           let res= data.members.includes(val._id)
-            if (!res) return val
-            return null
-        })
-
-        if (!isChatExists.length){
-            postDataAPI('/user/chat/new',{senderId:auth.user._id,receiverId:val._id},auth.token)
-            .then(({data})=>{
-                setCurrentChat(data.data)
-                let oUsr= searchItems.find(data=>data._id === val._id)
-                console.log(oUsr,"ousr++=")
-                setOtherUser(oUsr)
-
-                
-            })
-        }
+    getDataAPI(`/user/chat/searchChat/${val._id}`,auth.token)
+    .then(({data})=>{
+        let oUsr= searchItems.find(data=>data._id === val._id)
+        setCurrentChat(data.data)
+        setchatItems((chats)=>[...chats,data.data])
+        setSearchInput('')
+        setOtherUser(oUsr)
+    })
     }
+
+    // know search or not search 
+    useEffect(()=>{
+        let closeSearch =document.getElementById('close-search')
+        if (!searchInput) {
+            setisSearch(false)
+            closeSearch.style.display='none'
+        }else{
+            closeSearch.style.display='block'
+        }
+    })
+
     
   return (
     <>
@@ -131,16 +128,25 @@ function ChatHome() {
                 <form onSubmit={searchSubmit}>
                     <input type="text" className="form-control" placeholder="Search..." value={searchInput} onChange={e=>setSearchInput(e.target.value)} />
                     <div className="input-group-prepend position-relative">
-                        <button type='submit' className="input-group-text "style={{position:'absolute',top:'-34px',right:'4px'}} ><i className="fa fa-search"></i></button>
+                        <i id='close-search'
+                         class="fa-sharp fa-solid fa-xmark position-absolute text-danger chat-search-close"
+                         onClick={()=>{
+                            setSearchInput('')
+                        }}
+
+                        ></i>
+                        <button type='submit' className="input-group-text chat-search-button" ><i className="fa fa-search"></i></button>
                     </div>
                 </form>
             </div>
             {/* search end*/}
             <ul className="list-unstyled chat-list mt-2 mb-0">
-                    <p className='pt-1'>Current Chat</p>
                 <div className='friend-lst-scrollable'>
                     {
-                        !isSearch ? chatItems.map((val,index)=>{
+                        !isSearch ?
+                        <>
+                        <p className='pt-1'>Current Chat</p>
+                         {chatItems.map((val,index)=>{
                             return <div key={index} onClick={()=>getMessages(val)}>
                                 <ChatSideItems 
                                     status={true ? 'online':'7'}
@@ -148,19 +154,21 @@ function ChatHome() {
                                     auth={auth}
                                 />
                             </div>
-                        })
+                        })}
+                        </>
                         :
-                        searchItems.map((val,index)=>{
+                        <>
+                        <p className='pt-1'>Search Items</p>
+                        {searchItems.map((val,index)=>{
                             return <div key={index} onClick={()=>getSerchMessages(val)}>
-                                hh
                                 <ChatSeachItems 
                                     status={true ? 'online':'7'}
                                     details={val}
                                     auth={auth}
                                 />
                             </div>
-                        })
-                        
+                        })}
+                        </>
                     }
                 </div>
                 {/* <p>Other friends</p>

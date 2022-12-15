@@ -216,6 +216,19 @@
     height: 0
 }
 
+
+/* my */
+.chat-search-button{
+    position: absolute;
+    top: -34px;
+    right: 4px;
+}
+.chat-search-close{
+    top:-28px;
+    right: 55px;
+}
+/* my end */
+
 @media only screen and (max-width: 767px) {
     .chat-app .people-list {
         height: 465px;
