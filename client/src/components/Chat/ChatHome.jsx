@@ -96,6 +96,12 @@ function ChatHome() {
     getDataAPI(`/user/chat/searchChat/${val._id}`,auth.token)
     .then(({data})=>{
         let oUsr= searchItems.find(data=>data._id === val._id)
+        // get messages
+        getDataAPI(`/user/chat/message/getChat/${data.data?._id}`,auth.token)
+        .then(({data})=>{
+           setMessages(data.data)
+        })
+
         setCurrentChat(data.data)
         setchatItems((chats)=>[...chats,data.data])
         setSearchInput('')
