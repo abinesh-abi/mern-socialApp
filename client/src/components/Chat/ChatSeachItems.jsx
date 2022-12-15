@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import config from '../../utils/config'
 import { getDataAPI } from '../../utils/fetchData'
 
-function ChatSeachItems({details,auth}) {
+function ChatSeachItems({details,auth,status}) {
     const [otherUser, setOtherUser] = useState({})
 
     const getOtherUser = ()=>{
@@ -25,6 +25,7 @@ function ChatSeachItems({details,auth}) {
         <div className="about">
             <div className="name">{otherUser.fullname}</div>
             {
+                 status &&  <div className="status"> <i className="fa fa-circle online"></i> {status} </div>                                            
                 // status === 'online' ?
                 //     <div className="status"> <i className="fa fa-circle online"></i> {status} </div>                                            
                 //     :

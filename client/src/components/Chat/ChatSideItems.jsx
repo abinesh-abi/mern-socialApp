@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import config from '../../utils/config'
 import { getDataAPI } from '../../utils/fetchData'
 
-function ChatSideItems({details,auth}) {
+function ChatSideItems({details,auth,status}) {
     const [otherUser, setOtherUser] = useState({})
 
     const getOtherUser = ()=>{
@@ -18,9 +18,10 @@ function ChatSideItems({details,auth}) {
   return (
     <li className="clearfix">
         <img src={`${config.SERVER_URL}/images/profile/${otherUser?.avatar}.jpg`} alt="avatar" />
-        <div className="about">
+        <div className="about ">
             <div className="name">{otherUser.fullname}</div>
             {
+                 status &&  <div className="status"> <i className="fa fa-circle online"></i> {status} </div>                                            
                 // status === 'online' ?
                 //     <div className="status"> <i className="fa fa-circle online"></i> {status} </div>                                            
                 //     :

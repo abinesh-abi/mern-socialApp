@@ -9,7 +9,6 @@ import Messages from './Messages'
 import SendMessage from './SendMessage'
 import ChatContentHedder from './ChatContentHedder'
 import ChatSeachItems from './ChatSeachItems'
-import { computeHeadingLevel } from '@testing-library/react'
 
 function ChatHome() {
     const { auth } = useSelector((state) => state);
@@ -39,7 +38,8 @@ function ChatHome() {
     useEffect(()=>{
         socket.current.emit('addUser',auth?.user?._id)
         socket.current.on('getUsers',users=>{
-            setOnlineUsers(users)
+            let userIds = users?.map(data=>data.userId)
+            setOnlineUsers(userIds)
         })
     },[auth?.user])
 
@@ -56,7 +56,6 @@ function ChatHome() {
             setchatItems(data.data)
         })
     }
-
     useEffect(()=>{
        auth?.token && getChat()
     },[auth?.user?._id,auth.token])
@@ -135,7 +134,7 @@ function ChatHome() {
                     <input type="text" className="form-control" placeholder="Search..." value={searchInput} onChange={e=>setSearchInput(e.target.value)} />
                     <div className="input-group-prepend position-relative">
                         <i id='close-search'
-                         class="fa-sharp fa-solid fa-xmark position-absolute text-danger chat-search-close"
+                         className="fa-sharp fa-solid fa-xmark position-absolute text-danger chat-search-close"
                          onClick={()=>{
                             setSearchInput('')
                         }}
@@ -155,7 +154,7 @@ function ChatHome() {
                          {chatItems.map((val,index)=>{
                             return <div key={index} onClick={()=>getMessages(val)}>
                                 <ChatSideItems 
-                                    status={true ? 'online':'7'}
+                                    status={onlineUsers.includes(val.members.find(data=>data != auth.user._id))}
                                     details={val}
                                     auth={auth}
                                 />
@@ -168,7 +167,7 @@ function ChatHome() {
                         {searchItems.map((val,index)=>{
                             return <div key={index} onClick={()=>getSerchMessages(val)}>
                                 <ChatSeachItems 
-                                    status={true ? 'online':'7'}
+                                    status={onlineUsers.includes(val._id)}
                                     details={val}
                                     auth={auth}
                                 />
@@ -177,21 +176,6 @@ function ChatHome() {
                         </>
                     }
                 </div>
-                {/* <p>Other friends</p>
-                <div>
-                    {
-                        chatItems.map((val,index)=>{
-                            return <div key={index} onClick={()=>getMessages(val)}>
-                                <ChatSideItems src={"https://bootdey.com/img/Content/avatar/avatar1.png" }
-                                    status={true ? 'online':'7'}
-                                    details={val}
-                                    auth={auth}
-                                />
-                            </div>
-                        })
-                    }
-                    
-                </div> */}
             </ul>
            </div>
                 {/* {currentChat && <ChatContent currentChat={currentChat} socket={socket} />}  */}
@@ -224,7 +208,7 @@ function ChatHome() {
                         <SendMessage updateMsg={getMessages} currentChat={currentChat} socket={socket} />
                     </div>
                     :
-                    <div className="chat" style={{height:'100vh'}}>
+                    <div className="chat h-100vh" >
                         <p className='text-center my-5 h4 text-secondary'>open chat to continue</p>
                     </div>
                 }

@@ -178,10 +178,6 @@
     padding: 20px
 }
 
-.friend-lst-scrollable{
-    height: 230px;
-    overflow-y: scroll;
-}
 
 .online,
 .offline,
@@ -218,6 +214,10 @@
 
 
 /* my */
+.friend-lst-scrollable{
+    height: 370px;
+    overflow-y: scroll;
+}
 .chat-search-button{
     position: absolute;
     top: -34px;
@@ -226,6 +226,9 @@
 .chat-search-close{
     top:-28px;
     right: 55px;
+}
+.h-100vh{
+    height: 100vh;
 }
 /* my end */
 
