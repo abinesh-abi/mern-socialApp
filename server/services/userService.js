@@ -26,7 +26,7 @@ module.exports = {
   },
   getUserByUserId: (_id) => {
     return new Promise((resolve, reject) => {
-        userModel.findOne({_id})
+        userModel.findOne({_id}).select('-password')
         .then(data=>resolve(data))
         .catch(error=>reject(error))
     });

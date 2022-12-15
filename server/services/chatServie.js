@@ -11,7 +11,13 @@ module.exports = {
     },
     getChat:(_id)=>{
         return new Promise((resolve, reject) => {
-            chatModel.find({members: { $in: [_id] }})
+            chatModel.aggregate([
+                {
+                    $match:{
+                        members:{ $in: [_id] }
+                    },
+                },
+            ])
             .then(data=>resolve(data))
             .catch(error=>reject(error))
         })
@@ -23,9 +29,9 @@ module.exports = {
             .catch(error => reject(error))
         })
     },
-    getMessage:(chatId)=>{
+    getMessage:(ChatId)=>{
         return new Promise((resolve, reject) => {
-            messageModel.find({chatId})
+            messageModel.find({ChatId})
             .then(data=>resolve(data))
             .catch(error=>reject(error))
         })
