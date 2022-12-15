@@ -66,6 +66,24 @@ module.exports = {
       .catch(error=>reject(error))
     })
   },
+  blockUser:(userId,blocUsr)=>{
+    return new Promise((resolve, reject) => {
+      userModel.updateOne({_id:userId},{
+        $addToSet:{blockedUsers:blocUsr} 
+      })
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
+  unBlockUser:(userId,blocUsr)=>{
+    return new Promise((resolve, reject) => {
+      userModel.updateOne({_id:userId},{
+        $pull:{blockedUsers:blocUsr} 
+      })
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
   followRequest:(userId,folloId)=>{
     return new Promise(async(resolve, reject) => {
       let addToFollowings = await userModel.findOneAndUpdate({_id:folloId},{

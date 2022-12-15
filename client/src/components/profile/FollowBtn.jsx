@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import swal from 'sweetalert'
 import { patchDataAPI } from '../../utils/fetchData'
 
 function FollowBtn({user,updateUser}) {
@@ -9,8 +10,16 @@ function FollowBtn({user,updateUser}) {
 
 
   useEffect(()=>{
+
+    // check blocked or not
+    let blocked = user?.blockedUsers?.includes(auth?.user?._id)
+    if (blocked) return setFollowed('blocked')
+  
+    //find followed
   let isfollowed = profile?.users?.following?.includes(user?._id)
   if(isfollowed)return setFollowed('followed')
+
+  // check whether send follow reqest before
   let isRequest = user?.followRequest?.includes(auth?.user?._id)
   if(isRequest)return setFollowed('requested')
   },[profile?.users?._id,user?._id])
@@ -32,6 +41,14 @@ function FollowBtn({user,updateUser}) {
 
   return (
     <>
+    {
+      followed == 'blocked' &&
+    <Link className="btn btn-primary mx-auto "
+    onClick={()=>swal("This User Blocked you")}
+    >
+      Follow
+    </Link> 
+    }
     {
       followed == 'follow' &&
     <Link className="btn btn-primary mx-auto"
@@ -59,5 +76,7 @@ function FollowBtn({user,updateUser}) {
 </>
   )
 }
+
+
 
 export default FollowBtn

@@ -30,7 +30,6 @@ export const getProfileUsers = ({id, auth}) => async (dispatch) => {
 
 export const updateProfileUser = (data,auth,closeModel) =>async(dispatch)=>{
     const res = await postDataAPI('/user/edit',data,auth.token)
-    console.log(res.data)
     if (!res.data.status) {
            return dispatch({
             type: GLOBALTYPES.SHOW_ERR,

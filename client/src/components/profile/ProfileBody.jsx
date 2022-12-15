@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getProfileUsers } from "../../redux/actions/profileActions";
 import { getDataAPI } from "../../utils/fetchData";
+import BlockOrUnBlock from "./BlockOrUnBlock";
 import EditFromModal from "./EditFromModal";
 import EditPassword from "./EditPassword";
 import FollowBtn from "./FollowBtn";
@@ -86,7 +87,12 @@ const ProfileBody = ()=>{
           data-toggle="modal"
           data-target="#editDetails"
           >Edit User Details</a> :
-          <FollowBtn updateUser={getUsers} user={user} />
+          <div className="d-flex justify-content-center">
+            <div >
+              <FollowBtn updateUser={getUsers} user={user} />
+              <BlockOrUnBlock user={user} />
+            </div>
+          </div>
         }
 
         {

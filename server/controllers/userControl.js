@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
 const { setNotification } = require('../services/notificationService')
-const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification, followRequest, getFollowRequest, acceptRequest } = require("../services/userService")
+const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification, followRequest, getFollowRequest, acceptRequest, blockUser, unBlockUser } = require("../services/userService")
 
 const postControll ={
     searchUser: async(req,res)=>{
@@ -157,6 +157,30 @@ const postControll ={
         } catch (error) {
            res.json({status:false,message:error.message});
         }
+    },
+    blockUser:async(req,res)=>{
+        try {
+            let {user} = req.body
+            let id = req.user._id
+            let data = await blockUser(id,user)
+            res.json({status:true,data})
+            
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
+        
+    },
+    unBlockUser:async(req,res)=>{
+        try {
+            let {user} = req.body
+            let id = req.user._id
+            let data = await unBlockUser(id,user)
+            res.json({status:true,data})
+            
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
+        
     },
     getNotificatins:async(req,res)=>{
         try {

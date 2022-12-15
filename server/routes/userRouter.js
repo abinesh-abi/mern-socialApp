@@ -17,6 +17,11 @@ router.post('/user/followers',auth,userControl.getFollowers)
 router.post('/user/followRequest',auth,userControl.getFollowRequests)
 router.patch('/user/:id/acceptRequest',auth,userControl.acceptRequest)
 
+// Block And Unblock
+router.patch('/user/block',auth,userControl.blockUser)
+router.patch('/user/unBlock',auth,userControl.unBlockUser)
+
+
 // posts
 router.post('/user/posts',auth,postControll.getPosts)
 router.post('/user/post/:id',auth,postControll.getSinglePost)
