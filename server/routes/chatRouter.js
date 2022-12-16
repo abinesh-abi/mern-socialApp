@@ -2,6 +2,7 @@ const chatController = require('../controllers/chatController')
 const { newChat } = require('../controllers/chatController')
 const auth = require('../middleware/auth')
 const { io } = require('../server')
+const userService = require('../services/userService')
 
 const router = require('express').Router()
 
@@ -14,8 +15,10 @@ const addUser = (userId, socketId) => {
 };
 
 const removeUser = (socketId) => {
+  let user = users.filter((value)=>value.socketId == socketId)
   users = users.filter((user) => user.socketId !== socketId);
-};
+  user[0]?.userId && userService.setLastSeen(user[0].userId)
+}
 
 const getUser = (userId) => {
   return users.find((user) => user.userId === userId);
@@ -41,7 +44,7 @@ io.on('connection',socket=>{
    })
 
 //  disconnect
-  socket.on("disconnect",()=>{
+  socket.on("disconnect",async()=>{
     console.log('a user disconnected')
     removeUser(socket.id)
   })

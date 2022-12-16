@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { format } from 'timeago.js'
 import config from '../../utils/config'
 import { getDataAPI } from '../../utils/fetchData'
 
@@ -21,11 +22,9 @@ function ChatSideItems({details,auth,status}) {
         <div className="about ">
             <div className="name">{otherUser.fullname}</div>
             {
-                 status &&  <div className="status"> <i className="fa fa-circle online"></i> {status} </div>                                            
-                // status === 'online' ?
-                //     <div className="status"> <i className="fa fa-circle online"></i> {status} </div>                                            
-                //     :
-                //     <div className="status"> <i className="fa fa-circle offline"></i> left {status} mins ago </div>                                            
+                 status ?  <div className="status"> <i className="fa fa-circle online"></i> <span className='text-success'>Online</span>  </div>                                            
+                 :
+                  <small className='text-secondary'>{format(otherUser?.updatedAt)}</small>
             }
         </div>
     </li>

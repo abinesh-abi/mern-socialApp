@@ -39,6 +39,7 @@ const schema = new mongoose.Schema({
         default: '',
         maxlength: 200
     },
+    lastSeen:{type:Date,default:Date.now()},
     website: {type: String, default: ''},
     followRequest: [{type: mongoose.Types.ObjectId, ref: 'user'}],
     followers: [{type: mongoose.Types.ObjectId, ref: 'user'}],

@@ -335,5 +335,14 @@ module.exports = {
       .then(data=>resolve(data))
       .catch(error=>reject(error))
     })
-  }
+  },
+  setLastSeen:(_id)=>{
+    return new Promise((resolve, reject) => {
+      const lastSeen =  userModel.updateOne({_id},{
+        lastSeen:Date.now()
+      })
+      .then(data=>resolve(lastSeen))
+      .catch(error=>reject(error))
+    })
+  },
 };

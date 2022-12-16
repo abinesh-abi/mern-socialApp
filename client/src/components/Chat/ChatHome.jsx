@@ -184,7 +184,7 @@ function ChatHome() {
 
                     currentChat ?
                     <div className="chat">
-                        <ChatContentHedder  otherUser={otherUser} />
+                        <ChatContentHedder  otherUser={otherUser} onlineUsers={onlineUsers} />
                         <div className="chat-history">
                             <ul className="m-b-0">
                                 {
