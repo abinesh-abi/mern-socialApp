@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import swal from 'sweetalert'
 import { getProfileUsers } from '../redux/actions/profileActions'
 import { patchDataAPI } from '../utils/fetchData'
 
-function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
-    const [status, setStatus] = useState(false)
+function FollowingsListItems({id , name , avatar}) {
+    const [status, setStatus] = useState(true)
 
     let listDiv ={height:'50px',borderRadius: "3%",
          'position' :'relative'
@@ -21,17 +22,11 @@ function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
   const {auth} = useSelector(state=>state)
   const dispatch =  useDispatch()
     
-    function accept() {
-        patchDataAPI(`/user/${id}/acceptRequest`,{},auth.token)
+    function removeFromFollowings() {
+        patchDataAPI(`/user/followings/remove`,{removeId:id},auth.token)
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            setStatus(true)
-        })
-    }
-    function unFollow() {
-        patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
-        .then(({data})=>{
-            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+            setStatus(false)
         })
     }
   return (
@@ -50,14 +45,13 @@ function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
         <div className='d-flex justify-content-end'>
             {
                 status ?
-            <Link className='mx-3' style={{'lineHeight': '45px',}}>Accepted</Link>
-            :
-            <Link onClick={accept} className='mx-3' style={{'lineHeight': '45px',}}>Accept</Link>
-
+                <Link onClick={removeFromFollowings} className='mx-3' style={{'lineHeight': '45px',}}>Remove</Link>
+                :
+                <Link  className='mx-3' style={{'lineHeight': '45px',}}>Removed</Link>
             }
         </div>
         </div>
   )
 }
 
-export default FollowRequestItems
+export default FollowingsListItems

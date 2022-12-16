@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
 const { setNotification } = require('../services/notificationService')
-const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification, followRequest, getFollowRequest, acceptRequest, blockUser, unBlockUser } = require("../services/userService")
+const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification, followRequest, getFollowRequest, acceptRequest, blockUser, unBlockUser, getFollowings, retmoveFollowing } = require("../services/userService")
 
 const postControll ={
     searchUser: async(req,res)=>{
@@ -124,6 +124,26 @@ const postControll ={
             let followers = await getFollowers(user)
             res.json({status:true,data:followers})
 
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
+    },
+    getFollowings:async(req,res)=>{
+        try {
+            let user= req.user.id
+            let followings = await getFollowings(user)
+            res.json({status:true,data:followings})
+
+        } catch (error) {
+           res.json({status:false,message:error.message});
+        }
+    },
+    removeFollowings:async(req,res)=>{
+        try {
+            let {removeId} = req.body
+            let id = req.user._id
+            let removed = await retmoveFollowing(id,removeId)
+            res.json({status:true,message:"removed"})
         } catch (error) {
            res.json({status:false,message:error.message});
         }

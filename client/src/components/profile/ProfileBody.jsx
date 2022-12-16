@@ -9,6 +9,7 @@ import EditFromModal from "./EditFromModal";
 import EditPassword from "./EditPassword";
 import FollowBtn from "./FollowBtn";
 import ImageEditModal from "./ImageEditModal";
+import '../../styles/profile.css'
 
 const ProfileBody = ()=>{
   let imageStyle = {
@@ -24,7 +25,7 @@ const ProfileBody = ()=>{
     top:"60px"
   };
 
-  const {auth,profile} = useSelector(state=>state)
+  const {auth} = useSelector(state=>state)
   let [user,setUser] = useState({})
   const {id} = useParams()
   let dispatch  = useDispatch()
@@ -53,17 +54,17 @@ const ProfileBody = ()=>{
 
   return (
   <div className="d-flex flex-column bg-white">
-    <div className="d-flex shadow-lg" style={{ position: "relative" }}>
+    <div className="d-flex shadow-lg">
       <div className="container" style={imageStyle}></div>
       <img
-      className="img-fluid shadow"
+      className="img-fluid shadow "
         src={`http://127.0.0.1:5000/images/profile/${user?.avatar}.jpg`}
         style={profileStyle}
         alt=""
       />
       {
         auth.user?._id ===id ?
-      <a className="fa-regular fa-pen-to-square"
+      <Link className="fa-regular fa-pen-to-square"
        data-toggle="modal"
        data-target="#exampleModalCenter"
        style={
@@ -72,7 +73,7 @@ const ProfileBody = ()=>{
           left: 'calc(50% - 10px)',
           top:"155px",
         }
-        }></a> :''
+        }></Link> :''
       }
      </div>
      <div className="row mt-5 align-self-center shadow w-100">
@@ -82,11 +83,11 @@ const ProfileBody = ()=>{
         <UserDetailFeild feild={'Date Of Birth'} value={new Date(user?.dob).toLocaleDateString() } />
         {
           auth.user?._id ===id ?
-          <a className="btn btn-primary mx-auto"
+          <Link className="btn btn-primary mx-auto"
           // href="#profile-edit"
           data-toggle="modal"
           data-target="#editDetails"
-          >Edit User Details</a> :
+          >Edit User Details</Link> :
           <div className="d-flex justify-content-center">
             <div >
               <FollowBtn updateUser={getUsers} user={user} />

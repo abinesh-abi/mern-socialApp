@@ -70,7 +70,7 @@ function Addpost() {
                  alt="" />
               </Link>
             </div>
-            <input type="text"className='form-control mt-1 mx-3' placeholder='Whats Happening' disabled />
+            <div type="text"className='border border-primary mt-1 mx-3 py-2 px-5 rounded shadow'><span>Whats Happening</span></div>
             <Link className='btn btn-primary w-25' data-toggle="modal" data-target="#add-post">Add Post</Link>
         </div>
     </div>

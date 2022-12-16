@@ -1,6 +1,5 @@
 import React from 'react'
-import Followers from '../components/Followers'
-import FollowRequest from '../components/FollowRequest'
+import Community from '../components/Community'
 import HomeBody from '../components/home/HomeBody'
 import Sidebar from '../components/Sidebar'
 
@@ -16,9 +15,8 @@ function Home(){
           <HomeBody /> 
       </div>
       {/* friends */}
-      <div className="col-11 col-md-3 mt-3  rounded" >
-      <Followers />
-      <FollowRequest />
+      <div className="col-11 col-md-3 mt-3 rounded" >
+        <Community />
       </div>
     </div>
   )

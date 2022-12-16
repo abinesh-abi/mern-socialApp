@@ -231,6 +231,64 @@ module.exports = {
       .catch(error=>reject(error))
     })
   },
+  getFollowings:(userId)=>{
+    return new Promise((resolve, reject) => {
+      userModel.aggregate([
+        {
+          $match:{
+            "_id":mongoose.Types.ObjectId(userId)
+          }
+        },
+
+        {
+          $lookup:{
+            from:'users',
+            localField:'following',
+            foreignField:"_id",
+            as:'values'
+          }
+        },
+        {
+          $project:{
+            values:1,
+            _id:0
+          }
+        },
+        { $limit : 5 },
+        {
+          $unwind:'$values'
+        },
+        {
+          $project:{
+            fullname:1,
+            username:1,
+            values:1,
+            avatar:1,
+            _id:0
+          }
+        },
+      ])
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
+  retmoveFollowing:(userId,removeId)=>{
+    return new Promise(async(resolve, reject) => {
+      let removeFromFollowings = await userModel.findOneAndUpdate({_id:userId},{
+        $pull:{following: removeId}
+      })
+      let removeFromFollowers = await userModel.findOneAndUpdate({_id:removeId},{
+        $pull:{followers:userId}
+      })
+      if (removeFromFollowings || removeFromFollowers) {
+        resolve(true)
+      }else{
+        reject(false)
+      }
+
+    })
+    
+  },
   getNotifications:(id)=>{
     return new Promise((resolve, reject) => {
     notificationModel.aggregate([

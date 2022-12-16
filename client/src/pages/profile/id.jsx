@@ -1,6 +1,5 @@
 import React from "react";
-import Followers from "../../components/Followers";
-import FollowRequest from "../../components/FollowRequest";
+import Community from "../../components/Community";
 import ProfileBody from "../../components/profile/ProfileBody";
 import Sidebar from "../../components/Sidebar";
 
@@ -16,7 +15,7 @@ function Profile() {
   // console.log(userData,"userdata+++++++=")
 
   return (
-    <div className="container-fluid row justify-content-center">
+    <div className=" row justify-content-center">
       {/* side bar */}
       <div className="col-11 col-md-2">
         <Sidebar />
@@ -26,9 +25,8 @@ function Profile() {
         <ProfileBody  />
       </div>
       {/* friends */}
-      <div className="col-11 col-md-3 " style={{height:'100px'}}>
-        <Followers />
-      {/* <FollowRequest /> */}
+      <div className="col-11 col-md-3 rounded" style={{height:'100px'}}>
+        <Community />
       </div>
     </div>
   );

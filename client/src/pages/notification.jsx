@@ -1,8 +1,7 @@
 
 import React from 'react'
+import Community from '../components/Community'
 import Notification from '../components/Notification'
-import Followers from './../components/Followers'
-import ViewPosts from './../components/home/ViewPosts'
 import Sidebar from './../components/Sidebar'
 
 function Post(){
@@ -18,7 +17,7 @@ function Post(){
       </div>
       {/* friends */}
       <div className="col-11 col-md-3 mt-3  rounded" >
-      <Followers />
+      <Community />
       {/* <Followers /> */}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
@@ -6,6 +6,7 @@ import { getProfileUsers } from '../redux/actions/profileActions'
 import { patchDataAPI } from '../utils/fetchData'
 
 function FollowersListItems({id , name , avatar,followStatus}) {
+    const [status, setStatus] = useState('')
 
     let listDiv ={height:'50px',borderRadius: "3%",
          'position' :'relative'
@@ -20,11 +21,16 @@ function FollowersListItems({id , name , avatar,followStatus}) {
 
   const {auth} = useSelector(state=>state)
   const dispatch =  useDispatch()
+
+  useEffect(()=>{
+    setStatus(followStatus)
+  },[])
     
     function follow() {
         patchDataAPI(`/user/${id}/follow`,{},auth.token)
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+            setStatus('requested')
         })
     }
     function unFollow() {
@@ -54,19 +60,19 @@ function FollowersListItems({id , name , avatar,followStatus}) {
             // <Link onClick={follow} className='mx-3' style={{'lineHeight': '45px',}}>Follow Back</Link>
             }
             {
-                followStatus === 'blocked' &&
+                status === 'blocked' &&
                 <Link onClick={()=>swal(`${name} is blocked you to follow`)} className='mx-3' style={{'lineHeight': '45px',}}>Follow</Link>
             }
             {
-                followStatus === 'follow' &&
+                status === 'follow' &&
                 <Link onClick={follow} className='mx-3' style={{'lineHeight': '45px',}}>Follow</Link>
             }
             {
-                followStatus === 'requested' &&
+                status === 'requested' &&
                 <Link  className='mx-3' style={{'lineHeight': '45px',}}>Requested</Link>
             }
             {
-                followStatus === 'following' &&
+                status === 'following' &&
                 <Link onClick={unFollow} className='mx-3' style={{'lineHeight': '45px',}}>Unfollow</Link>
             }
         </div>

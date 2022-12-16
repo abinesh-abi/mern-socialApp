@@ -14,8 +14,10 @@ router.post('/user/editImage',auth,userControl.editImage)
 router.patch('/user/:id/follow',auth,userControl.follow)
 router.patch('/user/:id/unFollow',auth,userControl.unFollow)
 router.post('/user/followers',auth,userControl.getFollowers)
+router.post('/user/followings',auth,userControl.getFollowings)
 router.post('/user/followRequest',auth,userControl.getFollowRequests)
 router.patch('/user/:id/acceptRequest',auth,userControl.acceptRequest)
+router.patch('/user/followings/remove',auth,userControl.removeFollowings)
 
 // Block And Unblock
 router.patch('/user/block',auth,userControl.blockUser)

@@ -18,8 +18,6 @@ function PostList() {
   const [forceReload, setForceReload] = useState(0)
   const dispatch = useDispatch()
 
-//   console.log(posts?.posts[0]?.comments[0].message)
-//   console.log(posts?.posts[0])
 
     function getPosts(){
         // dispatch(getPost(auth.token))
