@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import swal from 'sweetalert'
 import { getProfileUsers } from '../redux/actions/profileActions'
 import { patchDataAPI } from '../utils/fetchData'
 
-function FollowersListItems({id , name , avatar , isFollows ,updaeFollowers}) {
+function FollowersListItems({id , name , avatar,followStatus}) {
 
     let listDiv ={height:'50px',borderRadius: "3%",
          'position' :'relative'
@@ -47,10 +48,26 @@ function FollowersListItems({id , name , avatar , isFollows ,updaeFollowers}) {
          </Link>
         <div className='d-flex justify-content-end'>
             {
-                isFollows ?
-            <Link onClick={unFollow} className='mx-3' style={{'lineHeight': '45px',}}>Unfollow</Link>
-            :
-            <Link onClick={follow} className='mx-3' style={{'lineHeight': '45px',}}>Follow Back</Link>
+            //     isFollows ?
+            // <Link onClick={unFollow} className='mx-3' style={{'lineHeight': '45px',}}>Unfollow</Link>
+            // :
+            // <Link onClick={follow} className='mx-3' style={{'lineHeight': '45px',}}>Follow Back</Link>
+            }
+            {
+                followStatus === 'blocked' &&
+                <Link onClick={()=>swal(`${name} is blocked you to follow`)} className='mx-3' style={{'lineHeight': '45px',}}>Follow</Link>
+            }
+            {
+                followStatus === 'follow' &&
+                <Link onClick={follow} className='mx-3' style={{'lineHeight': '45px',}}>Follow</Link>
+            }
+            {
+                followStatus === 'requested' &&
+                <Link  className='mx-3' style={{'lineHeight': '45px',}}>Requested</Link>
+            }
+            {
+                followStatus === 'following' &&
+                <Link onClick={unFollow} className='mx-3' style={{'lineHeight': '45px',}}>Unfollow</Link>
             }
         </div>
         </div>

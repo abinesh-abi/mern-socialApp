@@ -34,13 +34,24 @@ function Followers() {
         </div>
         {
          followers?.length !== 0 && followers?.map((user,index)=>{
+            let followStatus = 'follow'
+            // chek user follows
             let isFollows = profile.users?.following?.includes(user.values._id)
+            if (isFollows) followStatus = 'following'
+            // check requested
+            let retquested = user?.values?.followRequest?.includes(profile?.users?._id)
+            if(retquested) followStatus = 'requested'
+
+            // Check user Blocked
+            let blocked = user?.values?.blockedUsers?.includes(profile?.users?._id)
+            if(blocked) followStatus = 'blocked'
 
            return <FollowersListItems 
            key={index} id={user?.values?._id}
            name={user?.values?.fullname} 
            avatar={user.values.avatar} 
-           isFollows={isFollows} />
+           isFollows={isFollows} 
+           followStatus={followStatus} />
           })
         }
      </div>
