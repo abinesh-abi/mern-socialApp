@@ -1,24 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDataAPI, postDataAPI } from '../../utils/fetchData'
-import ChatSearch from './ChatSearch'
 import ChatSideItems from './ChatSideItems'
 import config from '../../utils/config' 
 import io from 'socket.io-client'
-import Messages from './Messages'
-import SendMessage from './SendMessage'
-import ChatContentHedder from './ChatContentHedder'
 import ChatSeachItems from './ChatSeachItems'
-import { fetchMessages, getAllChat, getCurretChat, getOtherUser } from '../../redux/actions/chatAction'
+import { CHAT_TYPES, fetchMessages, getAllChat, getCurretChat, getOtherUser } from '../../redux/actions/chatAction'
 import ChatContent from './ChatContent'
 
 function ChatHome() {
     const { auth ,chat } = useSelector((state) => state);
     const state = useSelector((state) => state);
-    const [chatItems, setchatItems] = useState([])
     const [currentChat, setCurrentChat] = useState(null)
     const [messages, setMessages] = useState([])
-    const [otherUser, setOtherUser] = useState({})
     const [onlineUsers, setOnlineUsers] = useState([])
     const [searchInput, setSearchInput] = useState('')
     const [isSearch, setisSearch] = useState(false)
@@ -49,17 +43,11 @@ function ChatHome() {
 
     useEffect(()=>{
         setMessages(state.chat.messages)
-        setOtherUser(state.chat.otherUser)
     },[state.chat.messages?.length,state.chat.otherUser])
 
 
     function getMessages(val) {
-        setCurrentChat(val)
         dispatch(getCurretChat({chatDetails:val}))
-        // getDataAPI(`/user/chat/message/getChat/${val?._id}`,auth.token)
-        // .then(({data})=>{
-        //    setMessages(data.data)
-        // })
 
         dispatch(fetchMessages({id:val._id,auth}))
 
@@ -67,10 +55,6 @@ function ChatHome() {
         const friendId = val?.members?.find((data)=> data !== auth?.user._id)
         dispatch(getOtherUser({id:friendId,auth}))
 
-        // getDataAPI(`/user/${friendId}`,auth?.token)
-        // .then(({data})=>{
-        //     setOtherUser(data.user)
-        // })
     }
 
 
@@ -92,18 +76,17 @@ function ChatHome() {
     getDataAPI(`/user/chat/searchChat/${val._id}`,auth.token)
     .then(({data})=>{
         let oUsr= searchItems.find(data=>data._id === val._id)
-        // get messages
-        getDataAPI(`/user/chat/message/getChat/${data.data?._id}`,auth.token)
-        .then(({data})=>{
-           setMessages(data.data)
-        })
-        setCurrentChat(data.data)
-        setchatItems((chats)=>[...chats,data.data])
+            dispatch({
+                type:CHAT_TYPES.GET_OTHER_USER,
+                payload:{otherUser:oUsr}
+            })
+        dispatch(fetchMessages({id:data.data._id,auth}))
+        dispatch(getCurretChat({chatDetails:val}))
+        dispatch(getAllChat({auth}))
         setSearchInput('')
-        setOtherUser(oUsr)
     })
     }
-
+    console.log(state.chat.messages)
     // know search or not search 
     useEffect(()=>{
         let closeSearch =document.getElementById('close-search')
@@ -178,7 +161,7 @@ function ChatHome() {
             </ul>
            </div>
             {
-            currentChat && <ChatContent currentChat={currentChat} socket={socket} />
+            state.chat.currentChat && <ChatContent currentChat={state.chat.currentChat} socket={socket} />
             }
             </div>
         </div>

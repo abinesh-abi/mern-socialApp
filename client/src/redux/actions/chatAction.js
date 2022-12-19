@@ -1,4 +1,3 @@
-import { type } from "@testing-library/user-event/dist/type"
 import { getDataAPI } from "../../utils/fetchData"
 
 export const CHAT_TYPES = {

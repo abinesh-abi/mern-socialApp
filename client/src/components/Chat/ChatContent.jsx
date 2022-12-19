@@ -33,7 +33,6 @@ useEffect(()=>{
         arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) &&
         setMessages(prev=>[...prev,arrivalMessage])
     },[arrivalMessage,currentChat])
-    console.log(messages.length)
 
   return (
     <div className="chat">

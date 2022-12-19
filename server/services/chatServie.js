@@ -24,13 +24,6 @@ module.exports = {
     },
     isChatExitst : (ids)=>{
         return new Promise((resolve, reject) => {
-            // chatModel.aggregate([
-            //     {
-            //         $match:{
-            //             members:{ $tags: ids }
-            //         },
-            //     },
-            // ])
             chatModel.findOne({members:{$all:ids}})
             .then(data=>resolve(data))
             .catch(error=>reject(error))
