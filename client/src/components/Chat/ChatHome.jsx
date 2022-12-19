@@ -18,7 +18,6 @@ function ChatHome() {
     const [chatItems, setchatItems] = useState([])
     const [currentChat, setCurrentChat] = useState(null)
     const [messages, setMessages] = useState([])
-    const [arrivalMessage, setArrivalMessage] = useState(null)
     const [otherUser, setOtherUser] = useState({})
     const [onlineUsers, setOnlineUsers] = useState([])
     const [searchInput, setSearchInput] = useState('')
@@ -30,13 +29,6 @@ function ChatHome() {
 
     useEffect(()=>{
         socket.current=io(config.SERVER_URL)
-        socket.current.on("getMessage",data=>{
-            setArrivalMessage({
-                sender:data.senderId,
-                text:data.text,
-                createdAt:Date.now()
-            })
-        })
     },[])
     // socket
     useEffect(()=>{
@@ -47,10 +39,6 @@ function ChatHome() {
         })
     },[auth?.user])
 
-    useEffect(()=>{
-        arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) &&
-        setMessages(prev=>[...prev,arrivalMessage])
-    },[arrivalMessage,currentChat])
     
 
 

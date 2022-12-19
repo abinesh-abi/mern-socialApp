@@ -12,7 +12,7 @@ function SendMessage({socket}) {
         if (!newMessage.trim()) return 
         postDataAPI('/user/chat/message/new',{ChatId:chat?.currentChat?._id,sender:auth.user._id,text:newMessage},auth.token)
         .then(({data})=>{
-            // dispatch(fetchMessages({id:chat?.currentChat._id,auth}))
+            dispatch(fetchMessages({id:chat?.currentChat._id,auth}))
             setNewMessage('')
             const receiverId = chat?.currentChat.members.find(
                 member =>member !== auth.user._id

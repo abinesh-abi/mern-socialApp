@@ -7,27 +7,32 @@ import SendMessage from './SendMessage'
 
 function ChatContent({socket,currentChat}) {
     const [messages, setMessages] = useState([])
+    const [arrivalMessage, setArrivalMessage] = useState(null)
     const {auth,chat} =  useSelector(state=>state)
     const scrollRef = useRef()
-    
-    // function getMessages() {
-    //     getDataAPI(`/user/chat/message/getChat/${currentChat?._id}`,auth.token)
-    //     .then(({data})=>setMessages(data.data))
-    // }
-    // useEffect(()=>{
-    //    auth.token && getMessages()
-    // },[auth?.token])
+
+useEffect(()=>{
+    setMessages(chat.messages)
+},[chat.messages])
 
     useEffect(()=>{
-        setMessages(chat.messages)
         scrollRef?.current?.scrollIntoView({behavior:'smooth'})
-    },[chat?.messages])
+    },[messages,chat.messages])
 
     useEffect(()=>{
-        socket.current.on('getMessage',(data=>{
-            setMessages(val=>[...val,data])
-        }))
+        socket.current.on("getMessage",data=>{
+            setArrivalMessage({
+                sender:data.senderId,
+                text:data.text,
+                createdAt:Date.now()
+            })
+        })
     },[])
+
+    useEffect(()=>{
+        arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) &&
+        setMessages(prev=>[...prev,arrivalMessage])
+    },[arrivalMessage,currentChat])
     console.log(messages.length)
 
   return (
