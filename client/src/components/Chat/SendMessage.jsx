@@ -1,23 +1,25 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchMessages } from '../../redux/actions/chatAction'
 import { postDataAPI } from '../../utils/fetchData'
 
-function SendMessage({currentChat,updateMsg,socket}) {
-    const { auth} =  useSelector(state=>state)
+function SendMessage({socket}) {
+    const { auth , chat} =  useSelector(state=>state)
     const [newMessage, setNewMessage] = useState('')
+    const dispatch = useDispatch()
     function submit(e) {
         e.preventDefault()
         if (!newMessage.trim()) return 
-        postDataAPI('/user/chat/message/new',{ChatId:currentChat?._id,sender:auth.user._id,text:newMessage},auth.token)
+        postDataAPI('/user/chat/message/new',{ChatId:chat?.currentChat?._id,sender:auth.user._id,text:newMessage},auth.token)
         .then(({data})=>{
-            updateMsg(currentChat)
+            // dispatch(fetchMessages({id:chat?.currentChat._id,auth}))
             setNewMessage('')
-            const receiverId =currentChat.members.find(
+            const receiverId = chat?.currentChat.members.find(
                 member =>member !== auth.user._id
             )
             socket.current.emit('sendMessage',{
                 senderId:auth?.user?._id,
-                receiverId,
+                receiverId:receiverId,
                 text:newMessage
             })
         })

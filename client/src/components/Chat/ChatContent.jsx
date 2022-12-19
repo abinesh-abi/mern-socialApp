@@ -5,38 +5,38 @@ import ChatContentHedder from './ChatContentHedder'
 import Messages from './Messages'
 import SendMessage from './SendMessage'
 
-function ChatContent({currentChat,socket}) {
+function ChatContent({socket,currentChat}) {
     const [messages, setMessages] = useState([])
-    const {auth} =  useSelector(state=>state)
+    const {auth,chat} =  useSelector(state=>state)
     const scrollRef = useRef()
     
-    function getMessages() {
-        getDataAPI(`/user/chat/message/getChat/${currentChat?._id}`,auth.token)
-        .then(({data})=>setMessages(data.data))
-    }
-    useEffect(()=>{
-       auth.token && getMessages()
-    },[auth?.token])
+    // function getMessages() {
+    //     getDataAPI(`/user/chat/message/getChat/${currentChat?._id}`,auth.token)
+    //     .then(({data})=>setMessages(data.data))
+    // }
+    // useEffect(()=>{
+    //    auth.token && getMessages()
+    // },[auth?.token])
 
     useEffect(()=>{
+        setMessages(chat.messages)
         scrollRef?.current?.scrollIntoView({behavior:'smooth'})
-    },[messages])
+    },[chat?.messages])
 
     useEffect(()=>{
-        socket.on('message recieved',(data=>{
-            console.log(data)
+        socket.current.on('getMessage',(data=>{
+            setMessages(val=>[...val,data])
         }))
-    })
-
+    },[])
+    console.log(messages.length)
 
   return (
-    currentChat ?
     <div className="chat">
-        <ChatContentHedder  details={currentChat} />
+        <ChatContentHedder />
         <div className="chat-history">
             <ul className="m-b-0">
                 {
-                    messages.map((message,index)=>{
+                    messages?.map((message,index)=>{
                        return <div key={index} ref={scrollRef}>
                         {
                         message?.sender === auth.user._id
@@ -51,11 +51,7 @@ function ChatContent({currentChat,socket}) {
                 <Messages /> */}
             </ul>
         </div>
-        <SendMessage updateMsg={getMessages} currentChat={currentChat} socket={socket} />
-    </div>
-    :
-    <div className="chat" style={{height:'100vh'}}>
-        <p className='text-center my-5 h4 text-secondary'>open chat to continue</p>
+        <SendMessage  currentChat={currentChat} socket={socket} />
     </div>
   )
 }

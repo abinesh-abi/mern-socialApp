@@ -7,7 +7,7 @@ function ChatSideItems({details,auth,status}) {
     const [otherUser, setOtherUser] = useState({})
 
     const getOtherUser = ()=>{
-        const friendId = details?.members.find((val)=> val !== auth?.user._id)
+        const friendId = details?.members?.find((val)=> val !== auth?.user._id)
         getDataAPI(`/user/${friendId}`,auth?.token)
         .then(({data})=>{
             setOtherUser(data.user)
@@ -20,7 +20,7 @@ function ChatSideItems({details,auth,status}) {
     <li className="clearfix">
         <img src={`${config.SERVER_URL}/images/profile/${otherUser?.avatar}.jpg`} alt="avatar" />
         <div className="about ">
-            <div className="name">{otherUser.fullname}</div>
+            <div className="name">{otherUser?.fullname}</div>
             {
                  status ?  <div className="status"> <i className="fa fa-circle online"></i> <span className='text-success'>Online</span>  </div>                                            
                  :

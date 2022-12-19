@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getDataAPI, postDataAPI } from '../../utils/fetchData'
 import ChatSearch from './ChatSearch'
 import ChatSideItems from './ChatSideItems'
@@ -9,9 +9,12 @@ import Messages from './Messages'
 import SendMessage from './SendMessage'
 import ChatContentHedder from './ChatContentHedder'
 import ChatSeachItems from './ChatSeachItems'
+import { fetchMessages, getAllChat, getCurretChat, getOtherUser } from '../../redux/actions/chatAction'
+import ChatContent from './ChatContent'
 
 function ChatHome() {
-    const { auth } = useSelector((state) => state);
+    const { auth ,chat } = useSelector((state) => state);
+    const state = useSelector((state) => state);
     const [chatItems, setchatItems] = useState([])
     const [currentChat, setCurrentChat] = useState(null)
     const [messages, setMessages] = useState([])
@@ -23,6 +26,7 @@ function ChatHome() {
     const [searchItems, setSearchItems] = useState('')
     const scrollRef = useRef()
     const socket = useRef()
+    const dispatch =  useDispatch()
 
     useEffect(()=>{
         socket.current=io(config.SERVER_URL)
@@ -50,30 +54,35 @@ function ChatHome() {
     
 
 
-    function getChat() {
-        getDataAPI('/user/chat/get',auth?.token)
-        .then(({data})=>{
-            setchatItems(data.data)
-        })
-    }
+
     useEffect(()=>{
-       auth?.token && getChat()
+       auth?.token && dispatch(getAllChat({auth}))
     },[auth?.user?._id,auth.token])
+
+    useEffect(()=>{
+        setMessages(state.chat.messages)
+        setOtherUser(state.chat.otherUser)
+    },[state.chat.messages?.length,state.chat.otherUser])
 
 
     function getMessages(val) {
         setCurrentChat(val)
-        getDataAPI(`/user/chat/message/getChat/${val?._id}`,auth.token)
-        .then(({data})=>{
-           setMessages(data.data)
-        })
+        dispatch(getCurretChat({chatDetails:val}))
+        // getDataAPI(`/user/chat/message/getChat/${val?._id}`,auth.token)
+        // .then(({data})=>{
+        //    setMessages(data.data)
+        // })
+
+        dispatch(fetchMessages({id:val._id,auth}))
 
         // getuserdetail
         const friendId = val?.members?.find((data)=> data !== auth?.user._id)
-        getDataAPI(`/user/${friendId}`,auth?.token)
-        .then(({data})=>{
-            setOtherUser(data.user)
-        })
+        dispatch(getOtherUser({id:friendId,auth}))
+
+        // getDataAPI(`/user/${friendId}`,auth?.token)
+        // .then(({data})=>{
+        //     setOtherUser(data.user)
+        // })
     }
 
 
@@ -125,6 +134,10 @@ function ChatHome() {
     <div className="row clearfix">
         <div className="col-lg-12">
             <div className="card chat-app">
+                {/* sideBar */}
+
+
+
             <div id="plist" className="people-list">
             {/* <ChatSearch /> */}
             {/* search */}
@@ -149,10 +162,10 @@ function ChatHome() {
                         !isSearch ?
                         <>
                         <p className='pt-1'>Current Chat</p>
-                         {chatItems.map((val,index)=>{
+                         {chat.allChat?.map((val,index)=>{
                             return <div key={index} onClick={()=>getMessages(val)}>
                                 <ChatSideItems 
-                                    status={onlineUsers.includes(val.members.find(data=>data != auth.user._id))}
+                                    status={onlineUsers.includes(val.members?.find(data=>data != auth.user?._id))}
                                     details={val}
                                     auth={auth}
                                 />
@@ -176,41 +189,9 @@ function ChatHome() {
                 </div>
             </ul>
            </div>
-                {/* {currentChat && <ChatContent currentChat={currentChat} socket={socket} />}  */}
-
-
-                {/* ------chat body -------- */}
-                {
-
-                    currentChat ?
-                    <div className="chat">
-                        <ChatContentHedder  otherUser={otherUser} onlineUsers={onlineUsers} />
-                        <div className="chat-history">
-                            <ul className="m-b-0">
-                                {
-                                    messages?.map((message,index)=>{
-                                    return <div key={index} ref={scrollRef}>
-                                        {
-                                        message?.sender === auth?.user?._id
-                                            ? <Messages  message={message} self /> 
-                                            : <Messages message={message} otherUser={otherUser} />
-                                        }
-                                        </div>
-                                    })
-                                }
-                                {/* <Messages  self/>
-                                <Messages />
-                                <Messages /> */}
-                            </ul>
-                        </div>
-                        <SendMessage updateMsg={getMessages} currentChat={currentChat} socket={socket} />
-                    </div>
-                    :
-                    <div className="chat h-100vh" >
-                        <p className='text-center my-5 h4 text-secondary'>open chat to continue</p>
-                    </div>
-                }
-            {/* -------chat body end --------- */}
+            {
+            currentChat && <ChatContent currentChat={currentChat} socket={socket} />
+            }
             </div>
         </div>
     </div>

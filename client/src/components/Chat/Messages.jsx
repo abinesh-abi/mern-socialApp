@@ -2,8 +2,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import {format} from 'timeago.js'
 
-function Messages({self,message,otherUser}) {
-  const { auth} =  useSelector(state=>state)
+function Messages({self,message}) {
+  const { auth , chat} =  useSelector(state=>state)
   return (
     self ?
     <li className="clearfix">
@@ -16,7 +16,7 @@ function Messages({self,message,otherUser}) {
     :
     <li className="clearfix">
         <div className="message-data">
-            <img src={`http://127.0.0.1:5000/images/profile/${otherUser?.avatar}.jpg`} alt="avatar" />
+            <img src={`http://127.0.0.1:5000/images/profile/${chat.otherUser?.avatar}.jpg`} alt="avatar" />
             <span className="message-data-time">{format(message.createdAt)}</span>
         </div>
         <div className="message my-message">{message.text}</div>                                    
