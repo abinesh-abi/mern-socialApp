@@ -33,7 +33,12 @@ function ChatHome() {
         })
     },[auth?.user])
 
-    
+    useEffect(()=>{
+        socket.current.on('getUsers',users=>{
+            let userIds = users?.map(data=>data.userId)
+            setOnlineUsers(userIds)
+    })
+    })
 
 
 
@@ -140,6 +145,7 @@ function ChatHome() {
                                     auth={auth}
                                 />
                             </div>
+                        
                         })}
                         </>
                         :
@@ -160,7 +166,13 @@ function ChatHome() {
             </ul>
            </div>
             {
-            state.chat.currentChat && <ChatContent currentChat={state.chat.currentChat} socket={socket} />
+            state.chat.currentChat && <ChatContent currentChat={state.chat.currentChat} socket={socket}  onlineUsers={onlineUsers}/>
+            }
+            {
+             !state.chat.currentChat &&
+            <div className="chat h-100vh text-center">
+                <p className='h5 mt-5'>Select Any chat to continue messaging</p>
+            </div>
             }
             </div>
         </div>

@@ -45,6 +45,7 @@ io.on('connection',socket=>{
 
 //  disconnect
   socket.on("disconnect",async()=>{
+    io.emit("getUsers", users);
     console.log('a user disconnected')
     removeUser(socket.id)
   })

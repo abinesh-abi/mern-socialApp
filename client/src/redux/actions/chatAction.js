@@ -6,7 +6,8 @@ export const CHAT_TYPES = {
     GET_MESSAGES:'GET_MESSAGES',
     GET_OTHER_USER:'GET_OTHER_USER',
     GET_ALL_CHAT:'GET_ALL_CHAT',
-    CURRENT_CHAT:'CURRENT_CHAT'
+    CURRENT_CHAT:'CURRENT_CHAT',
+    ONLINE_USERS:'ONLINE_USERS',
 }
 
 export const fetchMessages = ({id,auth})=>async dispatch =>{

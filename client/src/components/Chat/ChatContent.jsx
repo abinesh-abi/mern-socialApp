@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getDataAPI } from '../../utils/fetchData'
 import ChatContentHedder from './ChatContentHedder'
 import Messages from './Messages'
 import SendMessage from './SendMessage'
 
-function ChatContent({socket,currentChat}) {
+function ChatContent({socket,currentChat,onlineUsers}) {
     const [messages, setMessages] = useState([])
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const {auth,chat} =  useSelector(state=>state)
@@ -30,13 +29,12 @@ useEffect(()=>{
     },[])
 
     useEffect(()=>{
-        arrivalMessage && // currentChat?.members?.includes(arrivalMessage.sender) &&
+        arrivalMessage && 
         setMessages(prev=>[...prev,arrivalMessage])
     },[arrivalMessage,currentChat])
-
   return (
     <div className="chat">
-        <ChatContentHedder />
+        <ChatContentHedder onlineUsers={onlineUsers} />
         <div className="chat-history">
             <ul className="m-b-0">
                 {
@@ -50,9 +48,6 @@ useEffect(()=>{
                         </div>
                     })
                 }
-                {/* <Messages  self/>
-                <Messages />
-                <Messages /> */}
             </ul>
         </div>
         <SendMessage  currentChat={currentChat} socket={socket} />
