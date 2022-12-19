@@ -86,7 +86,6 @@ function ChatHome() {
         setSearchInput('')
     })
     }
-    console.log(state.chat.messages)
     // know search or not search 
     useEffect(()=>{
         let closeSearch =document.getElementById('close-search')

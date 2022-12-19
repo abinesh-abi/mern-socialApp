@@ -30,7 +30,7 @@ useEffect(()=>{
     },[])
 
     useEffect(()=>{
-        arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) &&
+        arrivalMessage && // currentChat?.members?.includes(arrivalMessage.sender) &&
         setMessages(prev=>[...prev,arrivalMessage])
     },[arrivalMessage,currentChat])
 

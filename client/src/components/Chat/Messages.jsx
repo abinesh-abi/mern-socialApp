@@ -17,9 +17,9 @@ function Messages({self,message}) {
     <li className="clearfix">
         <div className="message-data">
             <img src={`http://127.0.0.1:5000/images/profile/${chat.otherUser?.avatar}.jpg`} alt="avatar" />
-            <span className="message-data-time">{format(message.createdAt)}</span>
+            <span className="message-data-time">{format(message?.createdAt)}</span>
         </div>
-        <div className="message my-message">{message.text}</div>                                    
+        <div className="message my-message">{message?.text}</div>                                    
     </li>
   )
 }
