@@ -43,6 +43,15 @@ io.on('connection',socket=>{
     })
    })
 
+
+// video call
+socket.on("sendCall",({othterUserId,stream})=>{
+  const user = getUser(othterUserId)
+  if(user) socket.to(user.socketId).emit('callNotify',{stream})
+})
+
+
+
 //  disconnect
   socket.on("disconnect",async()=>{
     io.emit("getUsers", users);

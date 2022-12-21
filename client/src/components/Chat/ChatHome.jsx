@@ -23,6 +23,12 @@ function ChatHome() {
 
     useEffect(()=>{
         socket.current=io(config.SERVER_URL)
+        dispatch({
+            type:CHAT_TYPES.SOCKET,
+            payload:{
+                socket:socket.current
+            }
+        })
     },[])
     // socket
     useEffect(()=>{
@@ -30,6 +36,12 @@ function ChatHome() {
         socket.current.on('getUsers',users=>{
             let userIds = users?.map(data=>data.userId)
             setOnlineUsers(userIds)
+            dispatch({
+                type:CHAT_TYPES.ONLINE_USERS,
+                payload:{
+                    onlineUsers:userIds
+                }
+            })
         })
     },[auth?.user])
 
@@ -37,6 +49,12 @@ function ChatHome() {
         socket.current.on('getUsers',users=>{
             let userIds = users?.map(data=>data.userId)
             setOnlineUsers(userIds)
+            dispatch({
+                type:CHAT_TYPES.ONLINE_USERS,
+                payload:{
+                    onlineUsers:userIds
+                }
+            })
     })
     })
 

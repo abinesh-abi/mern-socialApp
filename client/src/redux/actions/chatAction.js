@@ -8,6 +8,11 @@ export const CHAT_TYPES = {
     GET_ALL_CHAT:'GET_ALL_CHAT',
     CURRENT_CHAT:'CURRENT_CHAT',
     ONLINE_USERS:'ONLINE_USERS',
+    IS_VIDEO_CALL:'IS_VIDEO_CALL',
+    IS_RECEVED_CALL:'IS_RECEVED_CALL',
+    SOCKET:'SOCKET',
+    CURRENT_STREAM:'CURRENT_STREAM',
+    OTHERS_STREAM:'OTHERS_STREAM',
 }
 
 export const fetchMessages = ({id,auth})=>async dispatch =>{
