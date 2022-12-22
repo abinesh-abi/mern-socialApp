@@ -45,9 +45,11 @@ io.on('connection',socket=>{
 
 
 // video call
-socket.on("sendCall",({othterUserId,stream})=>{
+socket.on("sendCall",({othterUserId,stream,peerId})=>{
+  console.log(peerId)
   const user = getUser(othterUserId)
-  if(user) socket.to(user.socketId).emit('callNotify',{stream})
+  if(user) socket.to(user.socketId).emit('callNotify',{peerId})
+  
 })
 
 

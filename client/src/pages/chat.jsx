@@ -13,13 +13,13 @@ function Chat() {
   const dispatch = useDispatch()
 
   useEffect(()=>{
-  chat?.socket?.on('callNotify',({stream})=>{
-    console.log(stream,'streame++++')
+  chat?.socket?.on('callNotify',({peerId})=>{
+    console.log(peerId)
     let confirmed = window.confirm('Accept Call')
     if (confirmed) {
       dispatch({
         type:CHAT_TYPES.OTHERS_STREAM,
-        payload:{otherStream:stream}
+        payload:{otherStream:peerId}
       })
       dispatch({
         type:CHAT_TYPES.IS_RECEVED_CALL,

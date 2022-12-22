@@ -1,71 +1,55 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux';
-import Options from './Options'
 import VideoPlayer from './VideoPlayer'
-import Peer from 'simple-peer'
+import Peer from 'peerjs'
+import config from '../../../utils/config'
+import { useSelector } from 'react-redux'
+
 
 function ReceveCall() {
-    const [stream, setStream] = useState(null)
-    const [call, setCall] = useState({});
-    const [isOtherUserOnline, setisOtherUserOnline] = useState(false)
-    let peer =useRef()
+const [ownVideo, setOwnVideo] = useState(null)
+const [myPeerId, setMyPeerId] = useState('')
+let { chat } =useSelector(state=>state)
 
-    const { chat} =  useSelector(state=>state)
+let myVideo = useRef()
+let userVideo = useRef()
+let myPeerRef = useRef()
+useEffect(()=>{
+  const myPeer = new Peer('',{
+    host: config.PEER_JS_URL,
+    port:config.PEER_JS_PORT
+  })
 
-    const myVideo = useRef();
-    const userVideo = useRef();
-    const connectionRef = useRef();
+  myPeer.on('open',(id)=>{
+    setMyPeerId(id)
+  })
 
-    useEffect(()=>{
-        navigator.mediaDevices.getUserMedia({video:true,audio:true})
-        .then((currentStream)=>{
-            setStream(currentStream)
-            myVideo.current.srcObject = currentStream;
-        })
+  // navigator.mediaDevices.getUserMedia({video:true})
+  // .then(stream=>{
+  //   setOwnVideo(stream)
+  //   myVideo.current.srcObject=stream
+  myPeerRef.current = myPeer
+  // chat.socket.emit('sendCall',{othterUserId:chat.otherUser._id,stream,peerId:myPeerId})
+  // })
+},[])
 
-        peer.current = new Peer({initiator:true,trickle: false, stream})
-        // const userOnline = chat.onlineUsers.includes(chat?.otherUser?._id)
-        // setisOtherUserOnline(userOnline)
+useEffect(()=>{
+  navigator.mediaDevices.getUserMedia({video:true})
+  .then(stream=>{
+    setOwnVideo(stream)
+    myVideo.current.srcObject=stream
+    
+  })
+  
+},[])
 
-        // if (userOnline) {
-        //   console.log(chat.socket)
-        //   chat?.socket?.emit('sendCall',{othterUserId:chat.otherUser._id,stream:chat.currentStream})
-        // }
-
-        
-    //     chat?.socket?.current?.on('callUser', ({ from, name: callerName, signal }) => {
-    //       setCall({ isReceivingCall: true, from, name: callerName, signal });
-    // });
-    },[])
-
-    // useEffect(()=>{
-    //   if (!peer.current) return
-    //   peer.current.on('stream', (currentStream) => {
-    //     console.log('currentStream','hi+++++++++++++++')
-    //    userVideo.current.srcObject = currentStream;
-    //   });
-
-    //   peer.current.signal(chat.otherStream)
-    //   connectionRef.current = peer.current
-    // },[])
-
-    function accept() {
-      peer.current.on('stream', (currentStream) => {
-        console.log('currentStream','hi+++++++++++++++')
-       userVideo.current.srcObject = currentStream;
-      });
-
-      peer.current.signal(chat.otherStream)
-      connectionRef.current = peer.current
-      
-    }
-
+function acceptCall() {
+  myPeerRef.current.call(chat.otherStream,ownVideo)
+}
   return (
     <div >
     <VideoPlayer myVideo={myVideo} userVideo={userVideo} />
-    <Options />
 
-    <button onClick={accept}>accept</button>
+    <button>accept</button>
     </div>
   )
 }
