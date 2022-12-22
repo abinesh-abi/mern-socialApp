@@ -25,7 +25,7 @@ const ProfileBody = ()=>{
     top:"60px"
   };
 
-  const {auth} = useSelector(state=>state)
+  const {auth ,profile} = useSelector(state=>state)
   let [user,setUser] = useState({})
   const {id} = useParams()
   let dispatch  = useDispatch()
@@ -43,14 +43,14 @@ const ProfileBody = ()=>{
    dispatch(getProfileUsers({id,auth})) 
       // setUser(profile?.user)
     if (ownProfile) {
-      setUser(auth?.user)
+      setUser(profile?.users)
     }else{
       //  getDataAPI(`/user/${id}`,auth.token).then(data=>{
       //   setUser(data.data.user)
       //  })
       getUsers()
     }
-    },[auth?.user,id,useParams])
+    },[profile?.users,id,useParams])
 
   return (
   <div className="d-flex flex-column bg-white">

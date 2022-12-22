@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProfilePhoto } from "../../redux/actions/profileActions";
+import { getProfileUsers, updateProfilePhoto } from "../../redux/actions/profileActions";
 
 const ImageEditModal =({image})=>{
 
@@ -27,6 +27,7 @@ const ImageEditModal =({image})=>{
         let data = new FormData()
         data.append('image',newImage)
         dispatch(updateProfilePhoto(data,auth,closeModel))
+        dispatch(getProfileUsers({id:auth.user._id,auth})) 
         // postDataAPI('/user/editImage',data,auth.token)
         // .then(({data})=>{
         // document.getElementById("exampleModalCenter").classList.remove("show", "d-block");

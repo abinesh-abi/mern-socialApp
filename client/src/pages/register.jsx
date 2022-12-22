@@ -206,7 +206,7 @@ function Register() {
 
                     <input
                       type="submit"
-                      value="Log In"
+                      value="Signup"
                       className="btn btn-block btn-primary"
                     />
                   </form>

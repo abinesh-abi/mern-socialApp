@@ -50,6 +50,7 @@ function Addpost() {
         modal.classList.remove("show");
         modal.classList.remove( "d-block");
         modal.classList.remove( 'fade');
+        modal.style.display = 'none'
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
         })

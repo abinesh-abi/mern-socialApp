@@ -17,11 +17,11 @@ function Profile() {
   return (
     <div className=" row justify-content-center">
       {/* side bar */}
-      <div className="col-11 col-md-2">
+      <div className="col-11 col-md-3">
         <Sidebar />
       </div>
       {/* body */}
-      <div className="col-12 col-md-6 mt-3">
+      <div className="col-12 col-md-4 mt-3">
         <ProfileBody  />
       </div>
       {/* friends */}

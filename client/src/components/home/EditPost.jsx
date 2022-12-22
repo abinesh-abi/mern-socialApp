@@ -52,11 +52,13 @@ function EditPost( {editValue ,reFresh}) {
           if (!data.status)  return setErr(data.message)
         })
        }
-
-
         dispatch(getPost(auth.token))
         setContent('')
-        document.getElementById("edit-post").classList.remove("show", "d-block");
+        let close = document.getElementById("edit-post")
+        close.classList.remove("show");
+        close.classList.remove( "d-block");
+        close.classList.remove('fade');
+        close.style.display='none'
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
     }
