@@ -6,6 +6,7 @@ import { patchDataAPI } from '../utils/fetchData'
 
 function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
     const [status, setStatus] = useState(false)
+    const [rejectStatus, setRejectStatus] = useState(false)
 
     let listDiv ={height:'50px',borderRadius: "3%",
          'position' :'relative'
@@ -28,12 +29,19 @@ function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
             setStatus(true)
         })
     }
-    function unFollow() {
-        patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
+    function reject() {
+        patchDataAPI(`/user/${id}/rejectRequest`,{},auth.token)
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+            setRejectStatus(true)
         })
     }
+    // function unFollow() {
+    //     patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
+    //     .then(({data})=>{
+    //         dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+    //     })
+    // }
   return (
         <div className=" d-flex justify-content-between shadow-sm px-3 mx-1" style={listDiv}>
             <Link to={`/profile/${id}`} style={{textDecoration:'none'}}>
@@ -48,13 +56,21 @@ function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
             </div>
          </Link>
         <div className='d-flex justify-content-end'>
-            {
+            { !rejectStatus&&(
                 status ?
             <Link className='mx-3' style={{'lineHeight': '45px',}}>Accepted</Link>
             :
-            <Link onClick={accept} className='mx-3' style={{'lineHeight': '45px',}}>Accept</Link>
+            // <Link onClick={accept} className='mx-3' style={{'lineHeight': '45px',}}>Accept</Link>
+            <i class="fa-solid fa-check text-success mx-2 h5" onClick={accept} style={{lineHeight:'45px'}}></i>
 
-            }
+            )}
+
+           { !status && (
+                rejectStatus ?
+             <Link  className='mx-3' style={{'lineHeight': '45px',}}>Rejected</Link>
+             :
+             <i class="fa-solid fa-xmark text-danger mx-2 h5"style={{'lineHeight': '45px',}}></i>
+            )}
         </div>
         </div>
   )

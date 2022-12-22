@@ -17,6 +17,7 @@ router.post('/user/followers',auth,userControl.getFollowers)
 router.post('/user/followings',auth,userControl.getFollowings)
 router.post('/user/followRequest',auth,userControl.getFollowRequests)
 router.patch('/user/:id/acceptRequest',auth,userControl.acceptRequest)
+router.patch('/user/:id/rejectRequest',auth,userControl.rejectRequest)
 router.patch('/user/followings/remove',auth,userControl.removeFollowings)
 
 // Block And Unblock

@@ -114,6 +114,17 @@ module.exports = {
 
     })
   },
+  rejectRequest:(userId,folloId)=>{
+    return new Promise(async(resolve, reject) => {
+      let addToFollowings = await userModel.findOneAndUpdate({_id:userId},{
+        $pull:{followRequest: folloId}
+      }).then(data=>resolve(data))
+      .catch(error=>reject(error))
+      // let addToFollowers = await userModel.findOneAndUpdate({_id:folloId},{
+      //   $addToSet:{followers:userId}
+      // })
+    })
+  },
   followUser:(userId,folloId)=>{
     return new Promise(async(resolve, reject) => {
       let addToFollowings = await userModel.findOneAndUpdate({_id:userId},{
