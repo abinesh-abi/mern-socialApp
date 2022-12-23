@@ -46,7 +46,6 @@ function CommentBody({postId,userDetail,comment,commentId ,findPosts}) {
                 :
                   <i onClick={likeComment} className="fa fa-heart text-secondary mx-2"></i>
               }
-                  {/* <i onClick={likeComment} className="fa fa-heart text-secondary mx-2"></i> */}
                   <small>{comment.like.length}</small>
 
            </div>
@@ -58,19 +57,13 @@ function CommentBody({postId,userDetail,comment,commentId ,findPosts}) {
            }
                   {/* dropdown */}
                    <div className="dropdown-menu dropdown-scale dropdown-menu-right" role="menu" style={{position: 'absolute', transform: 'translate3d(-136px, 28px, 0px)', top: "0px", left: "0px", "willChange": "transform"}}>
-                    {/* <Link className="dropdown-item" to="/">Hide post</Link> */}
                     {
                         auth.user._id !== userDetail._id ?
                         <>
                         <Link className="dropdown-item" to="/">Stop following</Link> 
-                        {/* <Link className="dropdown-item" to="/">Report</Link> */}
                         </> :
 
                         <>
-                          {/* <Link className="dropdown-item" 
-                          data-toggle="modal" data-target="#edit-post"
-                          // onClick={()=>setEditPost(post)}
-                          >Edit Post</Link>  */}
                           <Link className="dropdown-item" 
                           onClick={()=>deleteComent()}
                           >Delete Comment</Link> 

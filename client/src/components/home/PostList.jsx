@@ -20,8 +20,6 @@ function PostList() {
 
 
     function getPosts(){
-        // dispatch(getPost(auth.token))
-        // setPostsList(posts.posts)
        postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
         setPostsList(data.data)
        })
@@ -29,7 +27,6 @@ function PostList() {
 
 
     useEffect(()=>{
-        getPosts()
         dispatch(getPost(auth.token))
         setPostsList(posts.posts)
     },[dispatch,posts.posts.length,forceReload])
@@ -177,10 +174,6 @@ return <section key={index} className="profile-feed py-2" >
                             <li onClick={()=>likePost(post._id)}><a><i className="fa fa-heart"></i></a></li>
                                 
                             }
-                            {/* <li><Link to="/"><img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
-                            <li><Link to="/"><img src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
-                            <li><Link to="/"><img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
-                            <li><Link to="/"><img src="https://images.pexels.com/photos/6962108/pexels-photo-6962108.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li> */}
                             <li><a><span>{post.likes.length} Likes</span></a></li>
                         </ul>
                     </div>
@@ -188,23 +181,9 @@ return <section key={index} className="profile-feed py-2" >
                      post?.comments[0]  && 
                         <>
                             <h5 className='text-secondary mx-3'>Comments</h5>
-                            {/* <div className=' px-3 my-2 mx-4 pb-3 '>
-                                <div className='d-flex'>
-                                    <img src={`http://127.0.0.1:5000/images/profile/${post?.commentDetails[0]?.avatar}.jpg`}
-                                    className="rounded-circle" 
-                                    style={{width:'17px',height:'17px'}}
-                                    alt="" />
-                                    <small className='text-secondary px-2'>{post?.commentDetails[0]?.fullname}</small>
-                                </div>
-                                <div className='p-2 px-4' style={{background:'#e9e9e9'}}><small>{post?.comments[0]?.message}</small></div>
-                                <div className="text-center pt-2">
-                                    <Link to={`/post/${post._id}`} className='text-center'>View more</Link>
-                                </div>
-                                
 
-                            </div> */}
-                            {/* {console.log(post?.commentDetails[0].fullname,post?.comments[0].message)} */}
                             <CommentBody  
+
                             userDetail={post?.commentDetails[0]} 
                             comment={post?.comments[0]} 
                             postId={post._id} 
@@ -227,7 +206,7 @@ return <section key={index} className="profile-feed py-2" >
 </section>
     })}
 
-<EditPost editValue={editPost}/>
+<EditPost editValue={editPost} updatePost={getPosts}/>
 </>
   )
 }

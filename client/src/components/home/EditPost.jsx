@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from '../../redux/actions/postAction'
 import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
 
-function EditPost( {editValue ,reFresh}) {
+function EditPost( {editValue ,updatePost}) {
     const [image, setImage] = useState([])
     const [content, setContent] = useState('')
     const [err, setErr] = useState('')
@@ -45,6 +45,8 @@ function EditPost( {editValue ,reFresh}) {
         })
        }
 
+        dispatch(getPost(auth.token))
+        updatePost()
        if(content){
         let postId =currentValues._id
         patchDataAPI(`/user/post/editContent`,{postId,content},auth.token)
@@ -52,7 +54,6 @@ function EditPost( {editValue ,reFresh}) {
           if (!data.status)  return setErr(data.message)
         })
        }
-        dispatch(getPost(auth.token))
         setContent('')
         let close = document.getElementById("edit-post")
         close.classList.remove("show");
@@ -88,9 +89,9 @@ function EditPost( {editValue ,reFresh}) {
                 <img className='mx-auto p-3 m-3' width={400} height={250}  src={URL.createObjectURL(image[0])} alt="" />:
                 <img className='mx-auto p-3 m-3' width={400}  height={250} src={`http://127.0.0.1:5000/images/posts/${currentValues._id}.jpg`} alt="" />
                 }
-                <div className="d-flex">
+                <div>
                         <i 
-                        className="fa-solid fa-image h3 m-3 text-secondary d-flex"
+                        className="fa-solid fa-image h3 mt-3 text-secondary d-flex"
                         style={{
                             display:'inline-block',
                             position:"relative"
@@ -113,7 +114,9 @@ function EditPost( {editValue ,reFresh}) {
                         </i>
                         {
                             (image.length || content ) ? 
-                            <button type="submit" className="btn btn-primary m-3">Submit</button>
+                                <div className='d-flex'>
+                                 <button type="submit" className="btn btn-primary m-3 mx-auto">Post</button>
+                                </div>
                             :''
                         }
                 </div>

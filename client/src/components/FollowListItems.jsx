@@ -61,7 +61,7 @@ function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
             <Link className='mx-3' style={{'lineHeight': '45px',}}>Accepted</Link>
             :
             // <Link onClick={accept} className='mx-3' style={{'lineHeight': '45px',}}>Accept</Link>
-            <i class="fa-solid fa-check text-success mx-2 h5" onClick={accept} style={{lineHeight:'45px'}}></i>
+            <i className="fa-solid fa-check text-success mx-2 h5" onClick={accept} style={{lineHeight:'45px'}}></i>
 
             )}
 
@@ -69,7 +69,7 @@ function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
                 rejectStatus ?
              <Link  className='mx-3' style={{'lineHeight': '45px',}}>Rejected</Link>
              :
-             <i class="fa-solid fa-xmark text-danger mx-2 h5"style={{'lineHeight': '45px',}}></i>
+             <i onClick={reject} className="fa-solid fa-xmark text-danger mx-2 h5"style={{'lineHeight': '45px',}}></i>
             )}
         </div>
         </div>

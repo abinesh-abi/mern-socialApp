@@ -50,7 +50,7 @@ const ProfileBody = ()=>{
       //  })
       getUsers()
     }
-    },[profile?.users,id,useParams])
+    },[profile?.users?._id,id,useParams])
 
   return (
   <div className="d-flex flex-column bg-white">

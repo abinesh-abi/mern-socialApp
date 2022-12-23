@@ -4,16 +4,6 @@ import ProfileBody from "../../components/profile/ProfileBody";
 import Sidebar from "../../components/Sidebar";
 
 function Profile() {
-
-
-  // const [userData,setUserData] = useState()
-  // useEffect(()=>{
-  //   if (id === auth.user._id) {
-  //     setUserData(auth.user)
-  //   }
-  // },[id,auth.user])
-  // console.log(userData,"userdata+++++++=")
-
   return (
     <div className=" row justify-content-center">
       {/* side bar */}
@@ -25,7 +15,7 @@ function Profile() {
         <ProfileBody  />
       </div>
       {/* friends */}
-      <div className="col-11 col-md-3 rounded" style={{height:'100px'}}>
+      <div className="col-11 col-md-3 rounded">
         <Community />
       </div>
     </div>

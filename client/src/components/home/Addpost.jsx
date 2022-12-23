@@ -46,7 +46,6 @@ function Addpost() {
           
         dispatch(getPost(auth.token))
         let modal = document.getElementById("add-post")
-        console.log(modal)
         modal.classList.remove("show");
         modal.classList.remove( "d-block");
         modal.classList.remove( 'fade');
@@ -95,7 +94,7 @@ function Addpost() {
           onChange={e=>setContent(e.target.value)}
         ></textarea>
         {image.length !==0 && <img className='mx-auto p-3 m-3' width={400}   src={URL.createObjectURL(image[0])} alt="" />}
-        <div className="d-flex">
+        <div >
                 <i 
                 className="fa-solid fa-image h3 m-3 text-secondary d-flex"
                 style={{
@@ -118,7 +117,9 @@ function Addpost() {
                     />
                 <p className=' text-secondary mx-4' style={{lineHeight:'30px',fontSize:'13px'}}>Image</p>
                 </i>
-            <button type="submit" className="btn btn-primary m-3">Post</button>
+                <div className='d-flex'>
+                  <button type="submit" className="btn btn-primary m-3 mx-auto">Post</button>
+                </div>
          </div>
         </form>
       </div>
@@ -129,45 +130,6 @@ function Addpost() {
   </div>
 </div>
 </>
-    // <div className='px-3 bg-white p-3 rounded'>
-    //     <div className="d-flex">
-    //         <div className='rounded-circle'>
-    //             <img src={`http://127.0.0.1:5000/images/profile/${auth?.user?.avatar}.jpg`}
-    //              style={{width:'50px',height:'50px'}}
-    //              alt="" />
-    //         </div>
-    //         <input type="text"className='form-control mt-1 mx-3' placeholder='Whats Happening' />
-    //     </div>
-    //     <div className="d-flex justify-content-around mx-3 pt-1">
-    //         <div className='d-flex '>
-    //             {/* <i  className="fa-solid fa-image h3 mx-3 text-secondary"></i> */}
-    //             <div>
-    //                 <i 
-    //                 className="fa-solid fa-image h3 mx-3 text-secondary d-flex"
-    //                 style={{
-    //                     display:'inline-block',
-    //                     position:"relative"
-    //                 }}>
-    //                     <input type="file"
-    //                         style={{
-    //                             opacity:0,
-    //                             position:'absolute',
-    //                             top:0,
-    //                             left:0,
-    //                             right:0,
-    //                             bottom:0
-    //                         }}
-    //                     />
-    //                 <p className=' text-secondary mx-4' style={{lineHeight:'30px',fontSize:'13px'}}>Image</p>
-    //                 </i>
-    //             </div>
-    //         </div>
-    //         <div className='d-flex'>
-    //             <Link className='btn btn-primary'> Post </Link>
-    //         </div>
-    //     </div>
-        
-    // </div>
   )
 }
 

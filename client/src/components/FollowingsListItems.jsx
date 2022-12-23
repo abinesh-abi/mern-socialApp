@@ -45,7 +45,7 @@ function FollowingsListItems({id , name , avatar}) {
         <div className='d-flex justify-content-end'>
             {
                 status ?
-                <Link onClick={removeFromFollowings} className='mx-3' style={{'lineHeight': '45px',}}><i class="fa-solid fa-user-minus text-danger"></i></Link> //unfollow
+                <Link onClick={removeFromFollowings} className='mx-3' style={{'lineHeight': '45px',}}><i className="fa-solid fa-user-minus text-danger"></i></Link> //unfollow
                 :
                 <Link  className='mx-3' style={{'lineHeight': '45px',}}>Removed</Link>
             }

@@ -5,7 +5,6 @@ import { postDataAPI } from '../utils/fetchData'
 import FollowersListItems from './FollowersListItems'
 
 function Followers() {
-    
     const [followers, setFollowers] = useState([])
   const {auth,profile} = useSelector(state=>state)
     
