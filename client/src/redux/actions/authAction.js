@@ -59,11 +59,36 @@ export const refreshToken = () => async (dispatch) => {
   }
 };
 
-export const registerUser = (data) => async (dispatch) => {
+export const reqestOtp=(data)=>async dispatch =>{
+  try {
+    const val = await postDataAPI("/reqestOtp", data);
+    console.log(val.data)
+    if (val.data.status) {
+      dispatch({
+        type:GLOBALTYPES.OTP,
+        payload:{
+          otpPage:true
+        }
+      })
+    }
+  } catch (error) {
+    dispatch({
+      type: GLOBALTYPES.ALERT,
+      payload: {
+        error: error.message,
+        otpPage:true
+      },
+    });
+    
+  }
+}
+export const registerUser = ({otp,email}) => async (dispatch) => {
   try {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-    const val = await postDataAPI("/register", data);
-    console.log(val);
+    const val = await postDataAPI("/register", {otp,email});
+    console.log(val.data);
+    if(!val.data.status) return
+
     dispatch({
       type: GLOBALTYPES.AUTH,
       payload: {
@@ -84,7 +109,7 @@ export const registerUser = (data) => async (dispatch) => {
     dispatch({
       type: GLOBALTYPES.ALERT,
       payload: {
-        error: err.response.data.msg,
+        error: err.message,
       },
     });
   }

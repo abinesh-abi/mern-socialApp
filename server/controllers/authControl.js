@@ -5,9 +5,11 @@ const {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
 } = require("../config/basicConfig");
+const sendEmailOtp = require("../utils/sendEmailOtp");
+const otpModel = require("../models/otpModel");
 
 module.exports = {
-  register: async (req, res) => {
+  reqestOtp:async(req,res)=>{
     try {
       let { fullname, username, email, password } = req.body;
       let isUserexists = await userService.getUserByUserEmail(email);
@@ -24,9 +26,27 @@ module.exports = {
           status: false,
           message: "This User Name is Already taken by other user",
         });
+        let otp = Math.floor(Math.random()*1000000)
 
-      req.body.password = await bcrypt.hash(password, 10);
-      let user = await userService.saveUser(req.body);
+        password = await bcrypt.hash(password, 10);
+        let otpSet = new otpModel({email,otp,details:{...req.body,password}}).save()
+        // send otp to mail
+        let sendMail = sendEmailOtp.sendEmail(email,otp)
+      
+        res.json({status:true,message:'success'})
+    } catch (error) {
+      return res.status(500).json({ status: false, message: error });
+    }
+  },
+
+  register: async (req, res) => {
+    try {
+
+      let otpValied = await otpModel.findOne(req.body)
+
+      if(!otpValied) return res.json({status:false,message:'invalied Otp'})
+
+      let user = await userService.saveUser(otpValied.details);
 
       const acces_tocken = createAccessToken({
         name: user.fullname,
