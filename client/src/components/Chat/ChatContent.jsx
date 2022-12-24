@@ -19,7 +19,7 @@ useEffect(()=>{
     },[messages,chat.messages])
 
     useEffect(()=>{
-        socket.current.on("getMessage",data=>{
+        socket.current?.on("getMessage",data=>{
             setArrivalMessage({
                 sender:data.senderId,
                 text:data.text,

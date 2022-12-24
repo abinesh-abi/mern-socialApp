@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, } from 'react-router-dom'
 import { logout } from '../redux/actions/authAction'
@@ -9,6 +9,7 @@ function Header() {
   const {auth,adminAuth} = useSelector(state=>state)
 
 
+  const [searchOrNot, setSearchOrNot] = useState(false)
 
   let dispatch = useDispatch()
   const {pathname} =useLocation()
@@ -35,9 +36,10 @@ function Header() {
       <li className={`nav-item  px-2`}>
         <a className="fa-solid nav-link active fa-magnifying-glass" 
           onClick={e=>{
-            let sercModel = document.getElementById('search')
-            sercModel.style.visibility = 'visible'
-            sercModel.style.opacity = '1'
+            // let sercModel = document.getElementById('search')
+            // sercModel.style.visibility = 'visible'
+            // sercModel.style.opacity = '1'
+            setSearchOrNot(val=>!val)
           }}
         ></a>
       </li> 
@@ -88,7 +90,7 @@ function Header() {
   </div>
 
       {/* model */}
-      <SearchModel />
+     {searchOrNot && <SearchModel setSearchOrNot={setSearchOrNot} /> }  
 </nav>
 </div>
 </>

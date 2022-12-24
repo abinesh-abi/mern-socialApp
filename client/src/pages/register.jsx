@@ -127,7 +127,7 @@ function Register() {
                       <input
                         type="text"
                         className="form-control"
-                        id="name"
+                        id="userName"
                         {...register("username", {
                           required: true,
                           pattern: /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/,

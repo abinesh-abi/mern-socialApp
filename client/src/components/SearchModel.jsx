@@ -1,20 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { postDataAPI } from '../utils/fetchData'
 
-function SearchModel() {
+function SearchModel({setSearchOrNot}) {
 
-    let listDiv ={height:'50px',borderRadius: "3%",
-         'position' :'relative'
-}
-    let listImage = {
-                   borderRadius: "50%",
-                   width: "40px",
-                   height: "40px",
-                   position: 'relative',
-                   top:'4px'
-                }
+  let inputFocus = useRef()
 
   const [serch, setSerch] = useState('')
   const [userList,setUserList] = useState([])
@@ -24,10 +15,15 @@ function SearchModel() {
 
   const {auth} = useSelector(state=>state)
 
+  useEffect(()=>{
+    inputFocus.current.focus()
+  },[])
+
   function closeModel() {
-    let modal = document.getElementById('search')
-        modal.style.visibility = 'hidden'
-        modal.style.opacity = '0'
+    // let modal = document.getElementById('search')
+    //     modal.style.visibility = 'hidden'
+    //     modal.style.opacity = '0'
+    setSearchOrNot(val=>!val)
   }
 
   function serchUser(e) {
@@ -63,8 +59,9 @@ function SearchModel() {
                 <form onSubmit={serchUser}>
                     <div className="input-group mb-1">
                     <input type="text" className="form-control"
+                    ref={inputFocus}
                     defaultValue={serch}
-                        onChange={e=>setSerch(e.target.value)}
+                    onChange={e=>setSerch(e.target.value)}
                     />
                     <div className="input-group-append">
                         <button className="btn btn-primary">
@@ -77,13 +74,13 @@ function SearchModel() {
                 <p className='mx-auto text-danger'>{serchErr}</p>
                 {
                     userList.map((value,index)=>{
-                    return <div onClick={()=>viewProfile(value._id)}  key={index} className=" d-flex justify-content-between shadow-sm px-3 mx-1" style={listDiv}
+                    return <div onClick={()=>viewProfile(value._id)}  key={index} 
+                    className=" d-flex justify-content-between shadow-sm px-3 mx-1 listDiv" 
                     >
                             <div className='d-flex'>
                                 <img
-                                className="img-fluid"
+                                className="img-fluid listImage"
                                 src={`http://127.0.0.1:5000/images/profile/${value?.avatar}.jpg`}
-                                style={listImage}
                                 alt=""
                                 />
                                 <p className='mx-3' style={{'lineHeight': '45px',}}>{value.fullname}</p>

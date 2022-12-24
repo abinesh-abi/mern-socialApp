@@ -62,7 +62,6 @@ export const refreshToken = () => async (dispatch) => {
 export const reqestOtp=(data)=>async dispatch =>{
   try {
     const val = await postDataAPI("/reqestOtp", data);
-    console.log(val.data)
     if (val.data.status) {
       dispatch({
         type:GLOBALTYPES.OTP,
@@ -86,7 +85,6 @@ export const registerUser = ({otp,email}) => async (dispatch) => {
   try {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
     const val = await postDataAPI("/register", {otp,email});
-    console.log(val.data);
     if(!val.data.status) return
 
     dispatch({
