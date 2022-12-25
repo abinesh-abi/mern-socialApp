@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import AuthLeftPanel from "../components/AuthLeftPanel";
 import { registerUser, reqestOtp } from "../redux/actions/authAction";
 
 function Register() {
@@ -44,13 +45,7 @@ function Register() {
       <div className="content">
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
-              <img
-                src="https://preview.colorlib.com/theme/bootstrap/login-form-07/images/undraw_remotely_2j6y.svg"
-                alt="Image"
-                className="img-fluid"
-              />
-            </div>
+            <AuthLeftPanel />
             <div className="col-md-6 contents" style={{ marginTop: "5vh" }}>
               <div className="row justify-content-center">
                 <div className="col-md-8">
@@ -65,7 +60,7 @@ function Register() {
                         value={otp}
                         onChange={e=>setOtp(e.target.value)}
                          />
-                        <button onClick={sendOtp} className="btn btn-block btn-primary mt-3">Send Otp</button>
+                        <button onClick={sendOtp} className="btn btn-block btn-primary mt-3">Verify Otp</button>
 
                 </div>
               </div>
@@ -79,13 +74,7 @@ function Register() {
       <div className="content">
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
-              <img
-                src="https://preview.colorlib.com/theme/bootstrap/login-form-07/images/undraw_remotely_2j6y.svg"
-                alt="Image"
-                className="img-fluid"
-              />
-            </div>
+            <AuthLeftPanel />
             <div className="col-md-6 contents" style={{ marginTop: "5vh" }}>
               <div className="row justify-content-center">
                 <div className="col-md-8">

@@ -5,6 +5,7 @@ import { login } from "../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthLeftPanel from "../components/AuthLeftPanel";
 
 function Login() {
   const [err, setErr] = useState();
@@ -38,18 +39,7 @@ function Login() {
       <div className="content">
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
-              <div className="d-flex">
-                <h1 className="mx-auto">SocialApp</h1>
-              </div>
-                <p className="mx-auto">A feature rich social media platform</p>
-                <p className="mx-auto">you can connect othre peoples on a single click</p>
-              <img
-                src="https://preview.colorlib.com/theme/bootstrap/login-form-07/images/undraw_remotely_2j6y.svg"
-                alt=""
-                className="img-fluid w-75"
-              />
-            </div>
+            <AuthLeftPanel />
             <div className="col-md-6 contents" style={{ marginTop: "5vh" }}>
               <div className="row justify-content-center">
                 <div className="col-md-8">
