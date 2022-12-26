@@ -88,8 +88,8 @@ const ProfileBody = ()=>{
           data-toggle="modal"
           data-target="#editDetails"
           >Edit User Details</Link> :
-          <div className="d-flex justify-content-center">
-            <div >
+          <div className="d-flex w-100">
+            <div className="mx-auto">
               <FollowBtn updateUser={getUsers} user={user} />
               <BlockOrUnBlock user={user} />
             </div>
