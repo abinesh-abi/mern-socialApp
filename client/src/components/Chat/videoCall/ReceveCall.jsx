@@ -8,43 +8,35 @@ import { useSelector } from 'react-redux'
 function ReceveCall() {
 const [ownVideo, setOwnVideo] = useState(null)
 const [myPeerId, setMyPeerId] = useState('')
+const [call, setCall] = useState(null)
 let { chat , auth} =useSelector(state=>state)
 
 let myVideo = useRef()
 let userVideo = useRef()
-let myPeerRef = useRef()
-useEffect(()=>{
-  const myPeer = new Peer(auth.user._id,{
+let myPeerRef = useRef(
+   new Peer(auth.user._id,{
     host: config.PEER_JS_URL,
     port:config.PEER_JS_PORT
+  }))
+
+// useEffect(()=>{
+//   if (call) {
+//     console.log(call,'call++++++')
+//   }
+// },[call])
+
+useEffect(()=>{
+  chat.socket.on('calls',()=>{
+    console.log('call get++++++++++++')
+    myPeerRef.current.on('call',(call)=>{
+      console.log(call,'calll Peer+++++')
+    })
   })
-
-  myPeer.on('open',(id)=>{
-    setMyPeerId(id)
-    console.log(id,'own')
-  })
-
-  // navigator.mediaDevices.getUserMedia({video:true})
-  // .then(stream=>{
-  //   setOwnVideo(stream)
-  //   myVideo.current.srcObject=stream
-  myPeerRef.current = myPeer
-  // chat.socket.emit('sendCall',{othterUserId:chat.otherUser._id,stream,peerId:myPeerId})
-  // })
-
-
-  myPeer.on('call', function(call) {
-    console.log('asdfasdf')
-    // call.answer(stream); // Answer the call with an A/V stream.
-    call.on('stream', function(remoteStream) {
-      console.log(remoteStream,'remote Stream ++++++++')
-      userVideo.current.srcObject = remoteStream
-    });
-  }, function(err) {
-    console.log('Failed to get local stream' ,err);
-  });
-
-},[])
+    myPeerRef.current.on('call',(call)=>{
+      console.log(call,'calll Peer2+++++')
+    })
+})
+console.log(myPeerRef.current,'perrref--------')
 
 // useEffect(()=>{
 //   navigator.mediaDevices.getUserMedia({video:true})
@@ -56,9 +48,6 @@ useEffect(()=>{
   
 // },[])
 
-function acceptCall() {
-  myPeerRef.current.call(chat.otherStream,ownVideo)
-}
   return (
     <div >
     <VideoPlayer myVideo={myVideo} userVideo={userVideo} />

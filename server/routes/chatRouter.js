@@ -53,6 +53,12 @@ socket.on("sendCall",({othterUserId,stream,peerId})=>{
 })
 
 
+socket.on('calling',async({othterUserId})=>{
+  const user = getUser(othterUserId)
+  if (user)socket.to(user.socketId).emit('calls')
+})
+
+
 
 //  disconnect
   socket.on("disconnect",async()=>{
