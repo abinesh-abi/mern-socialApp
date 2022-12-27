@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
+import { useDispatch } from 'react-redux'
+import { getPost } from '../../redux/actions/postAction'
+import { patchDataAPI } from '../../utils/fetchData'
 
 function AddComment({ post, auth,updatePost}) {
   const [comment, setComment] = useState('')
+  const dispatch = useDispatch()
 
-  const sendComment=()=>{
-
+  const sendComment=(e)=>{
+    e.preventDefault()
     if (!comment.trim()) return
 
     let postUser = auth.user._id
@@ -13,7 +16,7 @@ function AddComment({ post, auth,updatePost}) {
     patchDataAPI('/user/post/newComment',{postUser,comment,postId},auth.token)
     .then(data=>{
       setComment('')
-      updatePost(new Date())
+       updatePost ? updatePost() : dispatch(getPost(auth.token))  
     })
   }
   return (
@@ -24,10 +27,12 @@ function AddComment({ post, auth,updatePost}) {
           style={{width:'30px'}}
           alt="" />
         </div>
+        <form className='d-flex' onSubmit={sendComment}>
           <input value={comment} onChange={(e)=>setComment(e.target.value)} type="text" className='form-control mx-3' placeholder='add comment' style={{top:'10px'}} />
-        <div>
-              <i onClick={sendComment}  className="fa-solid fa-paper-plane h3 text-primary mt-1 mx-3"></i>
-        </div>
+          <div>
+                <i onClick={sendComment} className="fa-solid fa-paper-plane h3 text-primary mt-1 mx-3"></i>
+          </div>
+        </form>
     </div>
   )
 }

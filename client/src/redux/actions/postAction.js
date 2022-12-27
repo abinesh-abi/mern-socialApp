@@ -1,4 +1,4 @@
-import { postDataAPI } from "../../utils/fetchData";
+import { patchDataAPI, postDataAPI } from "../../utils/fetchData";
 import { GLOBALTYPES } from "./globalTypes";
 
 
@@ -11,6 +11,18 @@ export const POST_TYPES ={
 //     console.log({content,image,auth},'onadf================')
 // }
 
+// const fetchPost = ({token,dispatch})=>{
+//     postDataAPI(`/user/posts`,{},token)
+//     .then(({data})=>{
+//         dispatch({
+//             type:POST_TYPES.GET_POST,
+//             payload:{
+//                 posts:data.data
+//             }
+//         })
+//     })
+// }
+
 export const getPost =(token)=>async dispatch=>{
     try {
         let {data} = await postDataAPI(`/user/posts`,{},token)
@@ -20,7 +32,6 @@ export const getPost =(token)=>async dispatch=>{
                 posts:data.data
             }
         })
-        
     } catch (err) {
     dispatch({
       type: GLOBALTYPES.ALERT,
@@ -31,3 +42,11 @@ export const getPost =(token)=>async dispatch=>{
     }
         
 }
+
+// export const likePost = ({auth,postId}) =>async dispatch=>{
+//         patchDataAPI(`/user/post/like`,{postId},auth.token)
+//         .then(({data})=>{
+//             fetchPost({token:auth.token,dispatch})
+//         }
+//         )
+// }

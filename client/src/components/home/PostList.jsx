@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
-import { getPost } from '../../redux/actions/postAction'
+import { getPost, likePost } from '../../redux/actions/postAction'
 import { getProfileUsers } from '../../redux/actions/profileActions'
 import { deleteDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
@@ -13,23 +13,20 @@ import EditPost from './EditPost'
 function PostList() {
 
   const {auth,posts,profile} = useSelector(state=>state)
-  const [postsList, setPostsList] = useState(posts.posts || [])
   const [editPost,setEditPost] = useState({})
-  const [forceReload, setForceReload] = useState(0)
   const dispatch = useDispatch()
 
 
-    function getPosts(){
-       postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
-        setPostsList(data.data)
-       })
-    }
+    // function getPosts(){
+    //    postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
+    //     setPostsList(data.data)
+    //    })
+    // }
 
 
     useEffect(()=>{
         dispatch(getPost(auth.token))
-        setPostsList(posts.posts)
-    },[dispatch,posts.posts.length,forceReload])
+    },[dispatch,posts.posts.length])
 
    const deletePost = (id)=>{
         swal({
@@ -42,28 +39,26 @@ function PostList() {
             .then((willDelete) => {
                 if (willDelete) {
                     deleteDataAPI(`/user/post/delete/${id}`,auth.token)
-                    dispatch(getPost(auth.token))
+                    .then(({data})=>{
+                        dispatch(getPost(auth.token))
+                    })
                 }
             });
     }
 
-    const likePost = (id)=>{
+    const like = (id)=>{
         patchDataAPI(`/user/post/like`,{postId:id},auth.token)
         .then(({data})=>{
-            // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            // dispatch(getPost(auth.token))
-            // setPostsList(posts.posts)
-            getPosts()
+            dispatch(getPost(auth.token))
         }
         )
+        // dispatch(likePost({postId,auth}))
     }
     const unLikePost = (id)=>{
         patchDataAPI(`/user/post/unLike`,{postId:id},auth.token)
         .then(({data})=>{
-            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            // dispatch(getPost(auth.token))
-            // setPostsList(posts.posts)
-            getPosts()
+            // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+            dispatch(getPost(auth.token))
         })
     }
 
@@ -71,9 +66,8 @@ function PostList() {
     function unFollow(id) {
         patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
         .then(({data})=>{
-            dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+            // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
             dispatch(getPost(auth.token))
-            setPostsList(posts.posts)
         })
     }
 
@@ -82,7 +76,6 @@ function PostList() {
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
             dispatch(getPost(auth.token))
-            setPostsList(posts.posts)
         })
         
     }
@@ -91,13 +84,12 @@ function PostList() {
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
             dispatch(getPost(auth.token))
-            setPostsList(posts.posts)
         })
     }
   return (
     <>
-    {!postsList.length ? <h3 className='text-center mt-5' >No post to show</h3> :
-    postsList.map((post,index)=>{
+    {!posts.posts.length ? <h3 className='text-center mt-5' >No post to show</h3> :
+    posts.posts.map((post,index)=>{
 return <section key={index} className="profile-feed py-2" >
     <div className="">
         <div className="row">
@@ -171,7 +163,7 @@ return <section key={index} className="profile-feed py-2" >
                                 post?.likes.includes(profile?.users._id)?
                             <li onClick={()=>unLikePost(post._id)}><a><i className="fa fa-heart text-danger"></i></a></li>
                                 :
-                            <li onClick={()=>likePost(post._id)}><a><i className="fa fa-heart"></i></a></li>
+                            <li onClick={()=>like(post._id)}><a><i className="fa fa-heart"></i></a></li>
                                 
                             }
                             <li><a><span>{post.likes.length} Likes</span></a></li>
@@ -183,12 +175,10 @@ return <section key={index} className="profile-feed py-2" >
                             <h5 className='text-secondary mx-3'>Comments</h5>
 
                             <CommentBody  
-
                             userDetail={post?.commentDetails[0]} 
                             comment={post?.comments[0]} 
                             postId={post._id} 
                             commentId={post?.comments[0].commentId}
-                            findPosts={getPosts}
                              />
                         </>
                     }
@@ -197,7 +187,7 @@ return <section key={index} className="profile-feed py-2" >
                              </div>
                         
 
-                    <AddComment updatePost={setForceReload}  post={post} auth={auth} />
+                    <AddComment post={post} auth={auth} />
                 </div>
 
             </div>
@@ -206,7 +196,7 @@ return <section key={index} className="profile-feed py-2" >
 </section>
     })}
 
-<EditPost editValue={editPost} updatePost={getPosts}/>
+<EditPost editValue={editPost}/>
 </>
   )
 }

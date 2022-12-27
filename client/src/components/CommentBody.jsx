@@ -1,29 +1,31 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { getPost } from '../redux/actions/postAction'
 import { patchDataAPI } from '../utils/fetchData'
 
-function CommentBody({postId,userDetail,comment,commentId ,findPosts}) {
+function CommentBody({postId,userDetail,comment,commentId,findPosts}) {
   const {auth} =  useSelector(state=>state)
+  const dispatch = useDispatch()
 
   function likeComment (){
       patchDataAPI(`/user/post/coment/like`,{postId,commentId},auth.token)
       .then(({data})=>{
-        findPosts()
+        findPosts ?findPosts() : dispatch(getPost(auth.token))
       }
       )
   }
   function unLikeComment (){
       patchDataAPI(`/user/post/coment/unLike`,{postId,commentId},auth.token)
       .then(({data})=>{
-        findPosts()
+        findPosts ?findPosts() : dispatch(getPost(auth.token))
       }
       )
   }
   function deleteComent() {
     patchDataAPI(`/user/post/coment/delete`,{postId,commentId},auth.token)
     .then(({data})=>{
-      findPosts()
+      findPosts ?findPosts() : dispatch(getPost(auth.token))
     })
   }
   return (
@@ -60,7 +62,7 @@ function CommentBody({postId,userDetail,comment,commentId ,findPosts}) {
                     {
                         auth.user._id !== userDetail._id ?
                         <>
-                        <Link className="dropdown-item" to="/">Stop following</Link> 
+                        <Link className="dropdown-item"  >Stop following</Link> 
                         </> :
 
                         <>

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from '../../redux/actions/postAction'
 import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
 
-function EditPost( {editValue ,updatePost}) {
+function EditPost( {editValue,updatePost}) {
     const [image, setImage] = useState([])
     const [content, setContent] = useState('')
     const [err, setErr] = useState('')
@@ -42,16 +42,16 @@ function EditPost( {editValue ,updatePost}) {
         postDataAPI(`/user/post/editImage/${currentValues._id}`,formdata,auth.token)
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
+            updatePost? updatePost() : dispatch(getPost(auth.token))
         })
        }
 
-        dispatch(getPost(auth.token))
-        updatePost()
        if(content){
         let postId =currentValues._id
         patchDataAPI(`/user/post/editContent`,{postId,content},auth.token)
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
+            updatePost? updatePost() : dispatch(getPost(auth.token))
         })
        }
         setContent('')

@@ -44,24 +44,8 @@ function SavePost() {
         })
     }
 
-   const deletePost = (id)=>{
-        // swal({
-        //         title: "Are you sure?",
-        //         text: "Once deleted, you will not be able to recover this post !",
-        //         icon: "warning",
-        //         buttons: true,
-        //         dangerMode: true,
-        //     })
-        //     .then((willDelete) => {
-        //         if (willDelete) {
-        //             deleteDataAPI(`/user/post/delete/${id}`,auth.token)
-        //             dispatch(getPost(auth.token))
-        //         }
-        //     });
-    }
 
     const likePost = (id)=>{
-        console.log(id)
         patchDataAPI(`/user/post/like`,{postId:id},auth.token)
         .then(({data})=>{
             getPosts()
@@ -75,23 +59,6 @@ function SavePost() {
         })
     }
 
-
-    function unFollow(id) {
-        // patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
-        // .then(({data})=>{
-        //     dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-        //     dispatch(getPost(auth.token))
-        //     setPostsList(posts.posts)
-        // })
-    }
-
-    function savePost(postId) {
-        // postDataAPI('/user/post/savePost/add',{postId},auth.token)
-        // .then(({data})=>{
-        //     console.log(data)
-        // })
-        
-    }
   return (
     <>
     {
@@ -156,10 +123,8 @@ return <section key={index} className="profile-feed py-2" >
                         <ul className="float-right">
                             <li><a><i className="fa fa-message"></i></a></li>
                             <li><a><em className="mr-5">{post.postDetails.comments?.length}</em></a></li>
-                            {
-
-                            }
-                            <li><a onClick={e=>savePost(post.postDetails._id)}><i className="fa fa-bookmark mr-4"></i></a></li>
+                            
+                            {/* <li><a onClick={e=>savePost(post.postDetails._id)}><i className="fa fa-bookmark mr-4"></i></a></li> */}
                         </ul>
                         <ul>
                             {
@@ -172,38 +137,6 @@ return <section key={index} className="profile-feed py-2" >
                             <li><a><span>{post.postDetails.likes?.length} Likes</span></a></li>
                         </ul>
                     </div>
-
-                    {
-                    // //  post?.userDetail?.comments[0]  && 
-                    //     <>
-                    //         <h5 className='text-secondary mx-3'>Comments</h5>
-                    //         {/* <div className=' px-3 my-2 mx-4 pb-3 '>
-                    //             <div className='d-flex'>
-                    //                 <img src={`http://127.0.0.1:5000/images/profile/${post?.commentDetails[0]?.avatar}.jpg`}
-                    //                 className="rounded-circle" 
-                    //                 style={{width:'17px',height:'17px'}}
-                    //                 alt="" />
-                    //                 <small className='text-secondary px-2'>{post?.commentDetails[0]?.fullname}</small>
-                    //             </div>
-                    //             <div className='p-2 px-4' style={{background:'#e9e9e9'}}><small>{post?.comments[0]?.message}</small></div>
-                    //             <div className="text-center pt-2">
-                    //                 <Link to={`/post/${post._id}`} className='text-center'>View more</Link>
-                    //             </div>
-                                
-
-                    //         </div> */}
-                    //         {/* {console.log(post?.commentDetails[0].fullname,post?.comments[0].message)} */}
-                    //         {/* <CommentBody  
-                    //         userDetail={post?.userDetail.commentDetails[0]} 
-                    //         comment={post?.comments[0]} 
-                    //         postId={post._id} 
-                    //         commentId={post?.comments[0].commentId}
-                    //         findPosts={getPosts}
-                    //          /> */}
-                    //         <Link to={`/post/${post.postDetails._id}`} className='text-center'>View more</Link>
-                    //     </>
-                    }
-                        
 
                     <div className="d-flex">
                          <Link  to={`/post/${post.postDetails._id}`} className='text-center mx-auto m-2 btn btn-primary'>View more</Link>
