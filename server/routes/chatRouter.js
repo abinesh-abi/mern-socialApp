@@ -10,7 +10,8 @@ let users =[]
 const addUser = (userId, socketId) => {
   if(userId === null) return
   if(!socketId === null) return
-  !users.some((user) => user.userId === userId) &&
+  const user = users.find((user) => user.userId === userId) 
+  if(user) removeUser(user.socketId)
     users.push({ userId, socketId });
 };
 
