@@ -12,7 +12,7 @@ import EditPost from './EditPost'
 
 function PostList() {
 
-  const {auth,posts,profile} = useSelector(state=>state)
+  const {auth,posts,profile } = useSelector(state=>state)
   const [editPost,setEditPost] = useState({})
   const dispatch = useDispatch()
 

@@ -6,6 +6,7 @@ import profile from "./profileReducer"
 import showErr from './showerrReduser'
 import posts from './postReducer'
 import chat from './chatReducer'
+import socket from './socketReducer'
 
 export default combineReducers ({
     auth,
@@ -14,5 +15,6 @@ export default combineReducers ({
     profile,
     showErr,
     posts,
-    chat
+    chat,
+    socket
 })
