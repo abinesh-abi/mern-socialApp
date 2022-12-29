@@ -28,10 +28,7 @@ function Chat() {
     }
     
   })
-
-  },[chat.socket])
-  console.log('hi')
-
+  },[])
   return (
 
     <>

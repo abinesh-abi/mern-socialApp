@@ -11,7 +11,6 @@ import ChatContent from './ChatContent'
 function ChatHome() {
     const { auth ,chat,socket} = useSelector((state) => state);
     const state = useSelector((state) => state);
-    const [currentChat, setCurrentChat] = useState(null)
     const [messages, setMessages] = useState([])
     const [onlineUsers, setOnlineUsers] = useState([])
     const [searchInput, setSearchInput] = useState('')
@@ -21,15 +20,15 @@ function ChatHome() {
     // const socket = useRef()
     const dispatch =  useDispatch()
 
-    useEffect(()=>{
-        socket.current=io(config.SERVER_URL)
-        dispatch({
-            type:CHAT_TYPES.SOCKET,
-            payload:{
-                socket:socket.current
-            }
-        })
-    },[])
+    // useEffect(()=>{
+    //     socket.current=io(config.SERVER_URL)
+    //     dispatch({
+    //         type:CHAT_TYPES.SOCKET,
+    //         payload:{
+    //             socket:socket.current
+    //         }
+    //     })
+    // },[])
     // socket
     useEffect(()=>{
         socket?.socket?.current?.emit('addUser',auth?.user?._id)

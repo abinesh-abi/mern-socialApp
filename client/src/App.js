@@ -31,6 +31,7 @@ function App() {
     //     socket
     //   }
     // })
+    console.log('app')
   },[])
   // useEffect(()=>{
   //   socket?.current?.emit('addUser',auth?.user?._id)
