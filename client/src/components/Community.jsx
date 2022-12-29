@@ -19,26 +19,10 @@ function Community() {
         <Link onClick={()=>setItems('requests')} 
         className={`btn ${items === 'requests'?'btn-success':'btn-primary'}`}
         >Requests</Link>
-        {/* <div>
-            <Link  onClick={()=>setItems('followers')} 
-            className={`btn ${items === 'followers'?'btn-success':'btn-primary'}`}
-            >Followers</Link>
-        </div>
-        <div>
-            <Link onClick={()=>setItems('following')} 
-            className={`btn ${items === 'following'?'btn-success':'btn-primary'}`}
-            >followings</Link>
-        </div>
-        <div>
-            <Link onClick={()=>setItems('requests')} 
-            className={`btn ${items === 'requests'?'btn-success':'btn-primary'}`}
-            >Requests</Link>
-        </div> */}
     </div>
     {
         items === 'followers' &&
         <Followers />
-
     }
     {
         items === 'requests' &&

@@ -65,7 +65,7 @@ const postControll ={
         try {
             const {postId,content} = req.body
             const val = await postService.editContent(postId,content)
-            res.json({stauts:true,data:val})
+            res.json({status:true,data:val})
         } catch (error) {
          return res.json({status:false, message:err.message})
         }

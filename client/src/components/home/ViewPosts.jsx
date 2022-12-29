@@ -30,7 +30,7 @@ function ViewPosts() {
        findPosts()
     },[auth.token,])
 
-    const likePost = (id)=>{
+    const like = (id)=>{
         patchDataAPI(`/user/post/like`,{postId:id},auth.token)
         .then(({data})=>{
             findPosts()
@@ -73,6 +73,12 @@ function ViewPosts() {
         })
     }
 
+    function unFollow(id) {
+        patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
+        .then(({data})=>{
+          navigator('/')
+        })
+    }
 
 
   return (
@@ -96,8 +102,8 @@ function ViewPosts() {
                                       {
                                           auth.user?._id !== post[0]?.user ?
                                           <>
-                                          <Link className="dropdown-item" to="/">Stop following</Link> 
-                                          <Link className="dropdown-item" to="/">Report</Link>
+                                          <Link className="dropdown-item" onClick={()=>unFollow(post[0]?.user)}>Stop following</Link> 
+                                          {/* <Link className="dropdown-item" to="/">Report</Link> */}
                                           </> :
 
                                           <>
@@ -158,7 +164,7 @@ function ViewPosts() {
                                   ><a><i className="fa fa-heart text-danger"></i></a></li>
                                       :
                                   <li 
-                                  onClick={()=>likePost(post[0]._id)}
+                                  onClick={()=>like(post[0]._id)}
                                   ><a><i className="fa fa-heart"></i></a></li>
                                       
                                   }
@@ -194,7 +200,7 @@ function ViewPosts() {
       </section>
     }
 
-<EditPost editValue={editPost} reFresh={findPosts}/>
+<EditPost editValue={editPost} updatePost={findPosts}/>
 </>
   )
 }

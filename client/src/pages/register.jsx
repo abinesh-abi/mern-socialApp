@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../redux/actions/authAction";
+import AuthLeftPanel from "../components/AuthLeftPanel";
+import { registerUser, reqestOtp } from "../redux/actions/authAction";
 
 function Register() {
   const [err, setErr] = useState('');
+  const [otp, setOtp] = useState('')
+  const [email, setEmail] = useState('')
   const { auth } = useSelector((state) => state);
   const navigate = useNavigate();
 
@@ -28,23 +31,50 @@ function Register() {
   } = useForm();
 
   const onSubmit = (data) => {
-    dispatch(registerUser(data))
-    
-    
+    dispatch(reqestOtp(data))
+    setEmail(data.email)
   };
 
+  function sendOtp() {
+    dispatch(registerUser({otp,email}))
+  }
+
   return (
+    auth?.otpPage ? 
+
+      <div className="content">
+        <div className="container">
+          <div className="row">
+            <AuthLeftPanel />
+            <div className="col-md-6 contents" style={{ marginTop: "5vh" }}>
+              <div className="row justify-content-center">
+                <div className="col-md-8">
+                  <div className="mb-4">
+                    <h3>Enter OTP</h3>
+                  </div>
+                  <p className="text-danger text-center">{err} </p>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="otp"
+                        value={otp}
+                        onChange={e=>setOtp(e.target.value)}
+                         />
+                        <button onClick={sendOtp} className="btn btn-block btn-primary mt-3">Verify Otp</button>
+
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    :
     <>
       <div className="content">
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
-              <img
-                src="https://preview.colorlib.com/theme/bootstrap/login-form-07/images/undraw_remotely_2j6y.svg"
-                alt="Image"
-                className="img-fluid"
-              />
-            </div>
+            <AuthLeftPanel />
             <div className="col-md-6 contents" style={{ marginTop: "5vh" }}>
               <div className="row justify-content-center">
                 <div className="col-md-8">
@@ -86,7 +116,7 @@ function Register() {
                       <input
                         type="text"
                         className="form-control"
-                        id="name"
+                        id="userName"
                         {...register("username", {
                           required: true,
                           pattern: /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/,
@@ -112,7 +142,7 @@ function Register() {
                     <div className="form-group first">
                       <label htmlFor="username">Email</label>
                       <input
-                        type="text"
+                        type="email"
                         className="form-control"
                         id="email"
                         {...register("email", {
@@ -206,7 +236,7 @@ function Register() {
 
                     <input
                       type="submit"
-                      value="Log In"
+                      value="Signup"
                       className="btn btn-block btn-primary"
                     />
                   </form>

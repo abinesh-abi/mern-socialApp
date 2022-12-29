@@ -4,10 +4,10 @@ import ChatContentHedder from './ChatContentHedder'
 import Messages from './Messages'
 import SendMessage from './SendMessage'
 
-function ChatContent({socket,currentChat,onlineUsers}) {
+function ChatContent({currentChat,onlineUsers}) {
     const [messages, setMessages] = useState([])
     const [arrivalMessage, setArrivalMessage] = useState(null)
-    const {auth,chat} =  useSelector(state=>state)
+    const {auth,chat,socket} =  useSelector(state=>state)
     const scrollRef = useRef()
 
 useEffect(()=>{
@@ -19,7 +19,7 @@ useEffect(()=>{
     },[messages,chat.messages])
 
     useEffect(()=>{
-        socket.current.on("getMessage",data=>{
+        socket?.socket?.current?.on("getMessage",data=>{
             setArrivalMessage({
                 sender:data.senderId,
                 text:data.text,
@@ -50,7 +50,7 @@ useEffect(()=>{
                 }
             </ul>
         </div>
-        <SendMessage  currentChat={currentChat} socket={socket} />
+        <SendMessage  currentChat={currentChat} />
     </div>
   )
 }

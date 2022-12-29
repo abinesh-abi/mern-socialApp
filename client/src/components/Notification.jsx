@@ -89,7 +89,7 @@ function Notification() {
           }
           {
             values?.type ==='followRequest' && 
-            <Link to={`/post/${values.viewId}`} style={{color:'black',textDecoration:'none'}}>
+            <Link to={`/profile/${values.viewId}`} style={{color:'black',textDecoration:'none'}}>
               <NotificationContent 
               name={values.userDetail[0].fullname}  
               headContent='send follow Request'

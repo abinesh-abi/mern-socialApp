@@ -9,7 +9,7 @@ import { CHAT_TYPES, fetchMessages, getAllChat, getCurretChat, getOtherUser } fr
 import ChatContent from './ChatContent'
 
 function ChatHome() {
-    const { auth ,chat } = useSelector((state) => state);
+    const { auth ,chat,socket} = useSelector((state) => state);
     const state = useSelector((state) => state);
     const [currentChat, setCurrentChat] = useState(null)
     const [messages, setMessages] = useState([])
@@ -18,7 +18,7 @@ function ChatHome() {
     const [isSearch, setisSearch] = useState(false)
     const [searchItems, setSearchItems] = useState('')
     const scrollRef = useRef()
-    const socket = useRef()
+    // const socket = useRef()
     const dispatch =  useDispatch()
 
     useEffect(()=>{
@@ -32,8 +32,8 @@ function ChatHome() {
     },[])
     // socket
     useEffect(()=>{
-        socket.current.emit('addUser',auth?.user?._id)
-        socket.current.on('getUsers',users=>{
+        socket?.socket?.current?.emit('addUser',auth?.user?._id)
+        socket?.socket?.current?.on('getUsers',users=>{
             let userIds = users?.map(data=>data.userId)
             setOnlineUsers(userIds)
             dispatch({
@@ -46,7 +46,7 @@ function ChatHome() {
     },[auth?.user])
 
     useEffect(()=>{
-        socket.current.on('getUsers',users=>{
+        socket?.socket?.current?.on('getUsers',users=>{
             let userIds = users?.map(data=>data.userId)
             setOnlineUsers(userIds)
             dispatch({

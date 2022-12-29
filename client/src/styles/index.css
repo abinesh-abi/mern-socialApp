@@ -4,3 +4,10 @@ body{
 ::-webkit-scrollbar {
     display: none;
 }
+
+.sideBarColor{
+    background: #868B8E !important;
+}
+.sideBarItemsActive{
+    color: red;
+}

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchMessages } from '../../redux/actions/chatAction'
 import { postDataAPI } from '../../utils/fetchData'
 
-function SendMessage({socket}) {
-    const { auth , chat} =  useSelector(state=>state)
+function SendMessage() {
+    const { auth , chat,socket} =  useSelector(state=>state)
     const [newMessage, setNewMessage] = useState('')
     const dispatch = useDispatch()
     function submit(e) {
@@ -17,7 +17,7 @@ function SendMessage({socket}) {
             const receiverId = chat?.currentChat.members.find(
                 member =>member !== auth.user._id
             )
-            socket.current.emit('sendMessage',{
+            socket?.socket?.current.emit('sendMessage',{
                 senderId:auth?.user?._id,
                 receiverId:receiverId,
                 text:newMessage

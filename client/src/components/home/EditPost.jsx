@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from '../../redux/actions/postAction'
 import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
 
-function EditPost( {editValue ,reFresh}) {
+function EditPost( {editValue,updatePost}) {
     const [image, setImage] = useState([])
     const [content, setContent] = useState('')
     const [err, setErr] = useState('')
@@ -42,6 +42,7 @@ function EditPost( {editValue ,reFresh}) {
         postDataAPI(`/user/post/editImage/${currentValues._id}`,formdata,auth.token)
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
+            updatePost? updatePost() : dispatch(getPost(auth.token))
         })
        }
 
@@ -50,13 +51,15 @@ function EditPost( {editValue ,reFresh}) {
         patchDataAPI(`/user/post/editContent`,{postId,content},auth.token)
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
+            updatePost? updatePost() : dispatch(getPost(auth.token))
         })
        }
-
-
-        dispatch(getPost(auth.token))
         setContent('')
-        document.getElementById("edit-post").classList.remove("show", "d-block");
+        let close = document.getElementById("edit-post")
+        close.classList.remove("show");
+        close.classList.remove( "d-block");
+        close.classList.remove('fade');
+        close.style.display='none'
         document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));
     }
@@ -86,9 +89,9 @@ function EditPost( {editValue ,reFresh}) {
                 <img className='mx-auto p-3 m-3' width={400} height={250}  src={URL.createObjectURL(image[0])} alt="" />:
                 <img className='mx-auto p-3 m-3' width={400}  height={250} src={`http://127.0.0.1:5000/images/posts/${currentValues._id}.jpg`} alt="" />
                 }
-                <div className="d-flex">
+                <div>
                         <i 
-                        className="fa-solid fa-image h3 m-3 text-secondary d-flex"
+                        className="fa-solid fa-image h3 mt-3 text-secondary d-flex"
                         style={{
                             display:'inline-block',
                             position:"relative"
@@ -111,7 +114,9 @@ function EditPost( {editValue ,reFresh}) {
                         </i>
                         {
                             (image.length || content ) ? 
-                            <button type="submit" className="btn btn-primary m-3">Submit</button>
+                                <div className='d-flex'>
+                                 <button type="submit" className="btn btn-primary m-3 mx-auto">Post</button>
+                                </div>
                             :''
                         }
                 </div>
