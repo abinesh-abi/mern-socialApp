@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom'
 import { format } from 'timeago.js'
 import { CHAT_TYPES } from '../../redux/actions/chatAction'
 
-function ChatContentHedder({onlineUsers}) {
+function ChatContentHedder({}) {
     const [isOnline, setIsOnline] = useState(false)
   const {chat} =  useSelector(state=>state)
   const dispatch = useDispatch()
     useEffect(()=>{
-        let online = onlineUsers?.includes(chat?.otherUser?._id)
+        let online = chat?.onlineUsers?.includes(chat?.otherUser?._id)
         if(online) setIsOnline(true)
     })
     function videoCall() {
@@ -44,7 +44,7 @@ function ChatContentHedder({onlineUsers}) {
             </div>
         </div>
     <div>
-           <i class="fa-solid fa-video" onClick={videoCall}></i>
+           <i className="fa-solid fa-video" onClick={videoCall}></i>
     </div>
     </div>
         </div>

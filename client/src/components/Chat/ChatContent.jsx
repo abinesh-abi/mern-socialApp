@@ -4,7 +4,7 @@ import ChatContentHedder from './ChatContentHedder'
 import Messages from './Messages'
 import SendMessage from './SendMessage'
 
-function ChatContent({currentChat,onlineUsers}) {
+function ChatContent() {
     const [messages, setMessages] = useState([])
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const {auth,chat,socket} =  useSelector(state=>state)
@@ -31,10 +31,10 @@ useEffect(()=>{
     useEffect(()=>{
         arrivalMessage && 
         setMessages(prev=>[...prev,arrivalMessage])
-    },[arrivalMessage,currentChat])
+    },[arrivalMessage,chat.currentChat])
   return (
     <div className="chat">
-        <ChatContentHedder onlineUsers={onlineUsers} />
+        <ChatContentHedder  />
         <div className="chat-history">
             <ul className="m-b-0">
                 {
@@ -50,7 +50,7 @@ useEffect(()=>{
                 }
             </ul>
         </div>
-        <SendMessage  currentChat={currentChat} />
+        <SendMessage  />
     </div>
   )
 }

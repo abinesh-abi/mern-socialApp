@@ -9,12 +9,11 @@ import { CHAT_TYPES } from '../redux/actions/chatAction';
 import ReceveCall from '../components/Chat/videoCall/ReceveCall';
 
 function Chat() {
-  const {chat} = useSelector(state=>state)
+  const {chat,socket} = useSelector(state=>state)
   const dispatch = useDispatch()
-
   useEffect(()=>{
-  chat?.socket?.on('callNotify',({peerId})=>{
-    console.log(peerId)
+    
+    socket?.socket?.current?.on('callNotify',({peerId})=>{
     let confirmed = window.confirm('Accept Call')
     if (confirmed) {
       dispatch({
@@ -26,9 +25,9 @@ function Chat() {
         payload:{isRecevedCall:true}
       })
     }
-    
   })
-  },[])
+
+  },[socket.socket.current])
   return (
 
     <>

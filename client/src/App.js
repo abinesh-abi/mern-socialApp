@@ -18,24 +18,35 @@ import Post from "./pages/post/id";
 import { io } from "socket.io-client";
 import config from "./utils/config";
 import { setSocket } from "./redux/actions/socketActions";
+import { CHAT_TYPES } from "./redux/actions/chatAction";
 
 function App() {
   const { auth ,adminAuth} = useSelector((state) => state);
   const dispatch = useDispatch()
-  let socket = useRef(io(config.SERVER_URL))
-  useEffect(()=>{
-    dispatch(setSocket({socket}))
-    // dispatch({
-    //   type:'socket',
-    //   payload:{
-    //     socket
-    //   }
-    // })
-    console.log('app')
-  },[])
+  let socket = useRef()
+
   // useEffect(()=>{
-  //   socket?.current?.emit('addUser',auth?.user?._id)
-  // },[auth?.user?._id])
+  //   socket.current = io(config.SERVER_URL)
+  //   dispatch(setSocket({socket}))
+  // },[])
+
+  useEffect(()=>{
+    if (auth?.user?._id) {
+      
+    socket.current = io(config.SERVER_URL)
+    dispatch(setSocket({socket}))
+    socket?.current?.emit('addUser',auth?.user?._id)
+        socket?.current?.on('getUsers',users=>{
+            let userIds = users?.map(data=>data.userId)
+            dispatch({
+                type:CHAT_TYPES.ONLINE_USERS,
+                payload:{
+                    onlineUsers:userIds
+                }
+            })
+        })
+    }
+  },[auth?.user?._id])
 
   useEffect(()=>{
     dispatch(refreshToken())

@@ -6,53 +6,38 @@ import { useSelector } from 'react-redux'
 
 
 function ReceveCall() {
-const [ownVideo, setOwnVideo] = useState(null)
-const [myPeerId, setMyPeerId] = useState('')
-const [call, setCall] = useState(null)
-let { chat , auth} =useSelector(state=>state)
+let { chat , auth, socket} =useSelector(state=>state)
 
 let myVideo = useRef()
 let userVideo = useRef()
-let myPeerRef = useRef(
-   new Peer(auth.user._id,{
-    host: config.PEER_JS_URL,
-    port:config.PEER_JS_PORT
-  }))
-
-// useEffect(()=>{
-//   if (call) {
-//     console.log(call,'call++++++')
-//   }
-// },[call])
 
 useEffect(()=>{
-  chat.socket.on('calls',()=>{
-    console.log('call get++++++++++++')
-    myPeerRef.current.on('call',(call)=>{
-      console.log(call,'calll Peer+++++')
-    })
+  const peer =  new Peer(auth.user._id,{
+    host: config.PEER_JS_URL,
+    port:config.PEER_JS_PORT
   })
-    myPeerRef.current.on('call',(call)=>{
-      console.log(call,'calll Peer2+++++')
-    })
-})
-console.log(myPeerRef.current,'perrref--------')
-
-// useEffect(()=>{
-//   navigator.mediaDevices.getUserMedia({video:true})
-//   .then(stream=>{
-//     setOwnVideo(stream)
-//     myVideo.current.srcObject=stream
-    
-//   })
   
-// },[])
+    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    getUserMedia({video:{ width: 1440, height: 720 }},ownStream=>{
+      myVideo.current.srcObject = ownStream
+      // send caller to call accepted
+      socket.socket.current.emit('callAccepted',{otherUserId:chat.otherStream})
+      peer.on('call',(call)=>{
+       call.answer(ownStream)
+       call.on('stream',(remotStream)=>{
+           userVideo.current.srcObject = remotStream
+           userVideo.current.play()
+      })
+  })
+})
+
+},[])
+
+
 
   return (
     <div >
     <VideoPlayer myVideo={myVideo} userVideo={userVideo} />
-
-    <button>accept</button>
     </div>
   )
 }

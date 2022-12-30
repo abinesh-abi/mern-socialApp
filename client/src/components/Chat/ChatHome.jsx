@@ -2,70 +2,22 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDataAPI, postDataAPI } from '../../utils/fetchData'
 import ChatSideItems from './ChatSideItems'
-import config from '../../utils/config' 
-import io from 'socket.io-client'
 import ChatSeachItems from './ChatSeachItems'
 import { CHAT_TYPES, fetchMessages, getAllChat, getCurretChat, getOtherUser } from '../../redux/actions/chatAction'
 import ChatContent from './ChatContent'
 
 function ChatHome() {
-    const { auth ,chat,socket} = useSelector((state) => state);
-    const state = useSelector((state) => state);
-    const [messages, setMessages] = useState([])
-    const [onlineUsers, setOnlineUsers] = useState([])
+    const { auth ,chat} = useSelector((state) => state);
     const [searchInput, setSearchInput] = useState('')
     const [isSearch, setisSearch] = useState(false)
     const [searchItems, setSearchItems] = useState('')
     const scrollRef = useRef()
-    // const socket = useRef()
     const dispatch =  useDispatch()
-
-    // useEffect(()=>{
-    //     socket.current=io(config.SERVER_URL)
-    //     dispatch({
-    //         type:CHAT_TYPES.SOCKET,
-    //         payload:{
-    //             socket:socket.current
-    //         }
-    //     })
-    // },[])
-    // socket
-    useEffect(()=>{
-        socket?.socket?.current?.emit('addUser',auth?.user?._id)
-        socket?.socket?.current?.on('getUsers',users=>{
-            let userIds = users?.map(data=>data.userId)
-            setOnlineUsers(userIds)
-            dispatch({
-                type:CHAT_TYPES.ONLINE_USERS,
-                payload:{
-                    onlineUsers:userIds
-                }
-            })
-        })
-    },[auth?.user])
-
-    useEffect(()=>{
-        socket?.socket?.current?.on('getUsers',users=>{
-            let userIds = users?.map(data=>data.userId)
-            setOnlineUsers(userIds)
-            dispatch({
-                type:CHAT_TYPES.ONLINE_USERS,
-                payload:{
-                    onlineUsers:userIds
-                }
-            })
-    })
-    })
-
 
 
     useEffect(()=>{
        auth?.token && dispatch(getAllChat({auth}))
     },[auth?.user?._id,auth.token])
-
-    useEffect(()=>{
-        setMessages(state.chat.messages)
-    },[state.chat.messages?.length,state.chat.otherUser])
 
 
     function getMessages(val) {
@@ -82,7 +34,7 @@ function ChatHome() {
 
     useEffect(()=>{
         scrollRef?.current?.scrollIntoView({behavior:'smooth'})
-    },[messages])
+    },[chat.messages.length,chat.otherUser])
 
     function searchSubmit(e) {
         e.preventDefault()
@@ -157,7 +109,7 @@ function ChatHome() {
                          {chat.allChat?.map((val,index)=>{
                             return <div key={index} onClick={()=>getMessages(val)}>
                                 <ChatSideItems 
-                                    status={onlineUsers.includes(val.members?.find(data=>data != auth.user?._id))}
+                                    status={chat?.onlineUsers?.includes(val.members?.find(data=>data != auth.user?._id))}
                                     details={val}
                                     auth={auth}
                                 />
@@ -171,7 +123,7 @@ function ChatHome() {
                         {searchItems.map((val,index)=>{
                             return <div key={index} onClick={()=>getSerchMessages(val)}>
                                 <ChatSeachItems 
-                                    status={onlineUsers.includes(val._id)}
+                                    status={chat?.onlineUsers?.includes(val._id)}
                                     details={val}
                                     auth={auth}
                                 />
@@ -183,10 +135,10 @@ function ChatHome() {
             </ul>
            </div>
             {
-            state.chat.currentChat && <ChatContent currentChat={state.chat.currentChat} socket={socket}  onlineUsers={onlineUsers}/>
+            chat.currentChat && <ChatContent />
             }
             {
-             !state.chat.currentChat &&
+             !chat.currentChat &&
             <div className="chat h-100vh text-center">
                 <p className='h5 mt-5'>Select Any chat to continue messaging</p>
             </div>

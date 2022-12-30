@@ -1,5 +1,4 @@
 const chatController = require('../controllers/chatController')
-const { newChat } = require('../controllers/chatController')
 const auth = require('../middleware/auth')
 const { io } = require('../server')
 const userService = require('../services/userService')
@@ -32,7 +31,6 @@ io.on('connection',socket=>{
     socket.on("addUser",(userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
-    console.log(users,socket.id)
   });
 
   // send and get message
@@ -47,17 +45,15 @@ io.on('connection',socket=>{
 
 
 // video call
-socket.on("sendCall",({othterUserId,stream,peerId})=>{
-  console.log(peerId)
+socket.on("sendCall",({othterUserId,ownId})=>{
   const user = getUser(othterUserId)
-  if(user) socket.to(user.socketId).emit('callNotify',{peerId})
-  
+  if(user) socket.to(user.socketId).emit('callNotify',{peerId:ownId})
 })
 
-
-socket.on('calling',async({othterUserId})=>{
-  const user = getUser(othterUserId)
-  if (user)socket.to(user.socketId).emit('calls')
+// send call accepted
+socket.on('callAccepted',({otherUserId})=>{
+  const user = getUser(otherUserId)
+  if(user) socket.to(user.socketId).emit('callAcepeddddd',{val:'Call Accepted'})
 })
 
 
