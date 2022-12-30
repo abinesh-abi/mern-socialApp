@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from 'react'
 
-function VideoPlayer({myVideo ,userVideo}) {
+function VideoPlayer({myVideo ,userVideo , stream,setCurrStream}) {
   // const [isMyVideoPause, setIsMyVideoPause] = useState(false)
   // const [isUserVideoPause, setisUserVideoPause] = useState(false)
 
   const [video, setVideo] = useState(true)
   const [audio, setAudio] = useState(true)
+  const [copyTrack, setCopyTrack] = useState(stream)
 
 
-  // useEffect(() => {
-  //   isMyVideoPause ? 
-  //     myVideo.current.pause()
-  //   :
-  //     myVideo.current.play()
-  // },[isMyVideoPause])
+  function stopVideo() {
+      // currStream.getTracks().forEach(track => track.stop())
+      stream?.getVideoTracks()[0].stop();
+      setVideo(false)
+  }
 
-  // useEffect(() => {
-  //   isUserVideoPause ? 
-  //     userVideo.current.pause()
-  //   :
-  //     userVideo.current.play()
-  // },[isUserVideoPause])
+  function stopAudio() {
+      // currStream.getTracks().forEach(track => track.stop())
+      stream?.getAudioTracks()[0].stop();
+      setAudio(false)
+  }
+
+function renewStream() {
+  navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
+    .then(stream=>{
+       setCurrStream(stream)
+    })
+    .catch(err=>console.log(err,'err____-----'))
+    setVideo(true)
+    setAudio(true)
+}
 
 
   return (
@@ -35,19 +44,22 @@ function VideoPlayer({myVideo ,userVideo}) {
       </div>
       <div className='small-size-div'>
           <video
-          ref={myVideo} id="myVideo" autoPlay
+          ref={myVideo} id="myVideo" autoPlay 
           className='small-size-video '
           ></video>
       </div>
       <div className='call-buttons d-flex justify-content-around'>
         <div className='video-action-div d-flex justify-content-center align-items-center'
-         onClick={()=>setVideo((val)=>!val)}
         >
           {
             video ?
-                <i className="fa-solid fa-video-slash"></i>
+                <i className="fa-solid fa-video-slash"
+                  onClick={stopVideo}
+                ></i>
               :
-                <i className="fa-solid fa-video"></i>
+                <i className="fa-solid fa-video"
+                onClick={renewStream}
+                ></i>
           }
         </div>
 
@@ -56,13 +68,16 @@ function VideoPlayer({myVideo ,userVideo}) {
         </div>
 
         <div className='audio-action-div d-flex justify-content-center align-items-center'
-         onClick={()=>setAudio((val)=>!val)}
         >
           {
             audio ?
-                <i className="fa-solid fa-microphone-slash"></i>
+                <i className="fa-solid fa-microphone-slash"
+                  onClick={stopAudio}
+                ></i>
               :
-                <i className="fa-solid fa-microphone"></i>
+                <i className="fa-solid fa-microphone"
+                  onClick={renewStream}
+                ></i>
           }
         </div>
       </div>

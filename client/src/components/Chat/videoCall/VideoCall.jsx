@@ -7,6 +7,10 @@ import { useSelector } from 'react-redux'
 function VideoCall() {
 let { chat ,auth,socket } =useSelector(state=>state)
 
+const [currStream, setCurrStream] = useState(null)
+const [copyStream, setCopyStream] = useState(null)
+
+const [peer, setPeer] = useState(null)
 let myVideo = useRef()
 let userVideo = useRef()
 
@@ -17,29 +21,40 @@ useEffect(()=>{
   // // if call accepted
   socket.socket.current.on('callAcepeddddd',({val})=>{
 
-  navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 }})
+  navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
     .then(stream=>{
-       myVideo.current.srcObject=stream
-      const peer = new Peer(auth.user._id,{
-         host: config.PEER_JS_URL,
-         port:config.PEER_JS_PORT
-      })
-      var call = peer.call(chat.otherUser._id, stream);
-      call.on('stream',(remotStreame)=>{
-        userVideo.current.srcObject = remotStreame
-      },function(err) {
-      console.log('Failed to get local stream' ,err);
-      })
+       setCurrStream(stream)
     })
     .catch(err=>console.log(err,'err____-----'))
   })
-
-
 },[])
+
+useEffect(()=>{
+  if (currStream) {
+      myVideo.current.srcObject=currStream
+      const newPeer = new Peer(auth.user._id,{
+         host: config.PEER_JS_URL,
+         port:config.PEER_JS_PORT
+      })
+      setPeer(newPeer)
+  }
+},[currStream])
+
+useEffect(()=>{
+  if (peer) {
+      var call = peer.call(chat.otherUser._id, currStream);
+    call.on('stream',(remotStreame)=>{
+      userVideo.current.srcObject = remotStreame
+    },function(err) {
+      console.log('Failed to get local stream' ,err);
+    })
+  }
+},[peer])
+
 
   return (
     <div >
-    <VideoPlayer myVideo={myVideo} userVideo={userVideo} />
+    <VideoPlayer myVideo={myVideo} userVideo={userVideo} stream={currStream} setCurrStream={setCurrStream}/>
     </div>
   )
 }
