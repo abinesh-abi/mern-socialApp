@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { EndCall } from '../../../redux/actions/chatAction';
 
 function VideoPlayer({myVideo ,userVideo , stream,setCurrStream}) {
-  // const [isMyVideoPause, setIsMyVideoPause] = useState(false)
-  // const [isUserVideoPause, setisUserVideoPause] = useState(false)
 
   const [video, setVideo] = useState(true)
   const [audio, setAudio] = useState(true)
-  const [copyTrack, setCopyTrack] = useState(stream)
+
+  let { chat , auth, socket} =useSelector(state=>state)
+  const dispatch = useDispatch()
 
 
   function stopVideo() {
@@ -25,12 +27,25 @@ function renewStream() {
   navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
     .then(stream=>{
        setCurrStream(stream)
+       setVideo(true)
+       setAudio(true)
     })
     .catch(err=>console.log(err,'err____-----'))
-    setVideo(true)
-    setAudio(true)
 }
 
+useEffect(()=>{
+  // end call
+  if (stream) {
+    socket?.socket?.current?.on('callEnded',({val})=>{
+      dispatch(EndCall({stream}))
+    })
+  }
+},[])
+
+function endCall() {
+  socket.socket.current.emit('endCall',{otherUser:chat?.otherUser?._id || chat?.otherStream})
+  dispatch(EndCall({stream}))
+}
 
   return (
     <>
@@ -50,6 +65,7 @@ function renewStream() {
       </div>
       <div className='call-buttons d-flex justify-content-around'>
         <div className='video-action-div d-flex justify-content-center align-items-center'
+        onClick={video ? stopVideo : renewStream}
         >
           {
             video ?
@@ -58,25 +74,28 @@ function renewStream() {
                 ></i>
               :
                 <i className="fa-solid fa-video"
-                onClick={renewStream}
+                // onClick={renewStream}
                 ></i>
           }
         </div>
 
-        <div className='rounded-circle call-hangup-div bg-danger d-flex justify-content-center align-items-center'>
+        <div className='rounded-circle call-hangup-div bg-danger d-flex justify-content-center align-items-center'
+          onClick={endCall}
+        >
           <i className="fa-solid fa-phone-slash text-white "></i>
         </div>
 
         <div className='audio-action-div d-flex justify-content-center align-items-center'
+        onClick={audio ? stopAudio : renewStream}
         >
           {
             audio ?
                 <i className="fa-solid fa-microphone-slash"
-                  onClick={stopAudio}
+                  // onClick={stopAudio}
                 ></i>
               :
                 <i className="fa-solid fa-microphone"
-                  onClick={renewStream}
+                  // onClick={renewStream}
                 ></i>
           }
         </div>

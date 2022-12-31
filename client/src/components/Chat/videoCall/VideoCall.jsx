@@ -8,7 +8,6 @@ function VideoCall() {
 let { chat ,auth,socket } =useSelector(state=>state)
 
 const [currStream, setCurrStream] = useState(null)
-const [copyStream, setCopyStream] = useState(null)
 
 const [peer, setPeer] = useState(null)
 let myVideo = useRef()

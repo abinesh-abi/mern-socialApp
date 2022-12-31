@@ -56,6 +56,10 @@ socket.on('callAccepted',({otherUserId})=>{
   if(user) socket.to(user.socketId).emit('callAcepeddddd',{val:'Call Accepted'})
 })
 
+socket.on('endCall',({otherUser})=>{
+  const user = getUser(otherUser)
+  if(user) socket.to(user.socketId).emit('callEnded',{val:'Call Ended'})
+})
 
 
 //  disconnect

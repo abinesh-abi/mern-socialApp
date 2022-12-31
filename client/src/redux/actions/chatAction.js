@@ -13,6 +13,7 @@ export const CHAT_TYPES = {
     SOCKET:'SOCKET',
     CURRENT_STREAM:'CURRENT_STREAM',
     OTHERS_STREAM:'OTHERS_STREAM',
+    ENDCALL:'ENDCALL',
 }
 
 export const fetchMessages = ({id,auth})=>async dispatch =>{
@@ -53,4 +54,26 @@ export const getCurretChat = ({chatDetails})=>async dispatch =>{
         payload:{currentChat:chatDetails}
 
     })
+}
+
+export const EndCall = ({stream})=>async dispatch =>{
+    stream.getTracks().forEach(track => track.stop())
+    // end streame
+    // navigator.mediaDevices.getUserMedia({video: true})
+    // .then(stream => {
+    //     stream.getTracks().forEach(track => track.stop())
+    // })
+    // end receved call
+    dispatch({
+    type:CHAT_TYPES.IS_RECEVED_CALL,
+    payload:{isRecevedCall:false}
+    })
+    // end videocall
+    dispatch({
+        type:CHAT_TYPES.IS_VIDEO_CALL,
+        payload:{
+            isVideoCall:false
+        }
+    })
+    
 }

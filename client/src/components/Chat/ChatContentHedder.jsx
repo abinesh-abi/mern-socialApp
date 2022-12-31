@@ -19,13 +19,6 @@ function ChatContentHedder({}) {
                 isVideoCall:true
             }
         })
-        // const peer = new Peer()
-        // dispatch({
-        //     type:CHAT_TYPES.CURRENT_STREAM,
-        //     payload:{
-        //         currentStream:peer
-        //     }
-        // })
     }
   return (
 <div className="chat-header clearfix">

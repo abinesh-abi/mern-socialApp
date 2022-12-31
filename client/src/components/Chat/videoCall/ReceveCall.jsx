@@ -49,11 +49,11 @@ useEffect(()=>{
 },[peer])
 
 
-
   return (
     <div >
     {/* <VideoPlayer myVideo={myVideo} userVideo={userVideo} /> */}
     <VideoPlayer myVideo={myVideo} userVideo={userVideo} stream={currStream} setCurrStream={setCurrStream}/>
+
     </div>
   )
 }
