@@ -11,7 +11,6 @@ import Profile from "./pages/profile/id";
 import { refreshToken } from "./redux/actions/authAction";
 
 import '../src/styles/index.css'
-import Dashboard from "./pages/admin/Dashboard";
 import AdminLogin from "./pages/admin/AdminLogin";
 import { adminRefreshToken } from "./redux/actions/adminAuthAction";
 import Post from "./pages/post/id";
@@ -19,6 +18,9 @@ import { io } from "socket.io-client";
 import config from "./utils/config";
 import { setSocket } from "./redux/actions/socketActions";
 import { CHAT_TYPES } from "./redux/actions/chatAction";
+import UserManagement from "./pages/admin/UserManagement";
+import PostManagement from "./pages/admin/PostManagement";
+import Reports from "./pages/admin/Reports";
 
 function App() {
   const { auth ,adminAuth} = useSelector((state) => state);
@@ -68,7 +70,9 @@ function App() {
           <Route path="/post/:id" element={ <Post /> } />
 
           {/* admin */}
-          <Route path="/admin" element={ adminAuth.token?<Dashboard />:<AdminLogin />} />
+          <Route path="/admin" element={ adminAuth.token?<UserManagement />:<AdminLogin />} />
+          <Route path="/admin/posts" element={ adminAuth.token?<PostManagement />:<AdminLogin />} />
+          <Route path="/admin/reports" element={ adminAuth.token?<Reports />:<AdminLogin />} />
           
         </Routes>
         </div>

@@ -45,8 +45,8 @@ const ProfileBody = ()=>{
     },[profile?.users?._id,id,useParams])
 
   return (
-  <div className="d-flex flex-column bg-white">
-    <div className="d-flex ">
+  <div className="d-flex flex-column bg-white profile-container">
+    <div className="d-flex image-div">
       <div className="container" style={imageStyle}></div>
       <img
       className="img-fluid shadow profileImage"
@@ -103,6 +103,17 @@ const ProfileBody = ()=>{
         <UserDetailFeild feild={'Followers'} value={user?.followers?.length} />
         <UserDetailFeild feild={'Followings'} value={user?.following?.length} />
      </div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
+     <div>ads</div>
 
 
 

@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import auth from './authReducer'
 import adminAuth from './adminAuthReducer'
+import admin from './adminReducer'
 import alert from "./alertReducer"
 import profile from "./profileReducer"
 import showErr from './showerrReduser'
@@ -10,11 +11,13 @@ import socket from './socketReducer'
 
 export default combineReducers ({
     auth,
-    adminAuth,
     alert,
     profile,
     showErr,
     posts,
     chat,
-    socket
+    socket,
+    adminAuth,
+    admin,
+
 })

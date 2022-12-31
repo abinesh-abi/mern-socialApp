@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { deleteDataAPI, getDataAPI } from '../utils/fetchData'
-import ImageRounded from './ImageRounded'
+import ImageRounded from './common/ImageRounded'
 import '../styles/notification.css'
 import NotificationContent from './profile/NotificationContent'
 
