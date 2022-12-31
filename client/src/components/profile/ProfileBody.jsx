@@ -14,15 +14,7 @@ import '../../styles/profile.css'
 const ProfileBody = ()=>{
   let imageStyle = {
     height: "130px",
-    backgroundImage: `url("http://thewowstyle.com/wp-content/uploads/2015/01/facebook-cover-balloons-sunset-view-facebook-cover.jpg")`,
-  };
-  const profileStyle = {
-    borderRadius: "50%",
-    width: "130px",
-    height: "130px",
-    position: "absolute",
-    left: 'calc(50% - 65px)',
-    top:"60px"
+    // backgroundImage: `url("http://thewowstyle.com/wp-content/uploads/2015/01/facebook-cover-balloons-sunset-view-facebook-cover.jpg")`,
   };
 
   const {auth ,profile} = useSelector(state=>state)
@@ -54,12 +46,11 @@ const ProfileBody = ()=>{
 
   return (
   <div className="d-flex flex-column bg-white">
-    <div className="d-flex shadow-lg">
+    <div className="d-flex ">
       <div className="container" style={imageStyle}></div>
       <img
-      className="img-fluid shadow "
+      className="img-fluid shadow profileImage"
         src={`http://127.0.0.1:5000/images/profile/${user?.avatar}.jpg`}
-        style={profileStyle}
         alt=""
       />
       {

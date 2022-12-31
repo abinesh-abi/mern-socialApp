@@ -1,8 +1,8 @@
 .profileImage{
-    border-radius: 50;
-    width: "130px";
-    height: "130px";
-    position: "absolute";
-    left: 'calc(50% - 65px)';
-    top:"60px";
+    border-radius: 50%;
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    left: calc(50% - 65px);
+    top:60px;
 }
