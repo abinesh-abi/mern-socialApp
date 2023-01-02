@@ -83,6 +83,12 @@ module.exports = {
           status: false,
           message: "You don't have account",
         });
+      if (user.isBanned){
+        return res.json({
+          status: false,
+          message: "you are banned to login",
+        });
+      }
 
       let passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch)

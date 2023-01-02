@@ -124,21 +124,10 @@ module.exports = {
                 {
                     $match:{user:{
                         $in:[...following,userId]
-                    }
+                    },
+                    isBanned:false
                 }
                 },
-                // {
-                //     $project:{
-                //         comments:{$reverseArray:'$comments'},
-                //         // comments:1,
-                //         // commentDetails:{$reverseArray:'$commentDetails'},
-                //         // commentDetails:1,
-                //         content:1,
-                //         likes:1,
-                //         user:1,
-                //         userDetail:1,
-                //     }
-                // },
                 {
                     $lookup:{
                         from:'users',
@@ -278,19 +267,6 @@ module.exports = {
                         from:'posts',
                         localField:'saved',
                         foreignField:"_id",
-                        // pipeline:[
-                        //     {
-                        //         $lookup:{
-                        //             from:"users",
-                        //             localField:"user",
-                        //             foreignField:'_id',
-                        //             as:"userDetail"
-                        //         }
-                        //     },
-                        //     {
-                        //         $unwind:'$postDetails'
-                        //     }
-                        // ],
                         as:"postDetails"
                     }
                 },

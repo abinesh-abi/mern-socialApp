@@ -5,7 +5,7 @@ import '../styles/chat.css'
 import ChatHome from '../components/Chat/ChatHome';
 import Sidebar from '../components/Sidebar';
 import VideoCall from '../components/Chat/videoCall/VideoCall';
-import { CHAT_TYPES, EndCall } from '../redux/actions/chatAction';
+import { CHAT_TYPES} from '../redux/actions/chatAction';
 import ReceveCall from '../components/Chat/videoCall/ReceveCall';
 
 function Chat() {

@@ -1,6 +1,5 @@
 import { GLOBALTYPES } from "./globalTypes";
 import { postDataAPI } from "../../utils/fetchData";
-import { useNavigate } from "react-router-dom";
 
 export const login = (data) => async (dispatch) => {
   try {

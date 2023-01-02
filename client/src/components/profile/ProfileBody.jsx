@@ -103,17 +103,6 @@ const ProfileBody = ()=>{
         <UserDetailFeild feild={'Followers'} value={user?.followers?.length} />
         <UserDetailFeild feild={'Followings'} value={user?.following?.length} />
      </div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
-     <div>ads</div>
 
 
 

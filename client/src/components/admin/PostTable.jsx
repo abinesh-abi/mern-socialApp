@@ -1,9 +1,26 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts } from "../../redux/actions/adminAction";
 import config from "../../utils/config";
+import { patchDataAPI } from "../../utils/fetchData";
 
-function PostTable() {
+function PostTable({pageNumber}) {
   const { admin } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  function ban(id) {
+    patchDataAPI('/admin/banPost',{id})
+    .then(({data})=>{
+      dispatch(getPosts({ pageNumber }));
+    })
+  }
+
+  function unBan(id) {
+    patchDataAPI('/admin/unBanPost',{id})
+    .then(({data})=>{
+      dispatch(getPosts({ pageNumber }));
+    })
+  }
 
   return (
     <div id="table">
@@ -19,10 +36,9 @@ function PostTable() {
             <th className="th-sm">User Name</th>
             <th className="th-sm">Discription</th>
             <th className="th-sm">Created At</th>
-            <th className="th-sm">Hide</th>
+            <th className="th-sm">Ban</th>
           </tr>
         </thead>
-        {console.log(admin)}
         <tbody>
           {
             admin?.searchPosts ?
@@ -34,7 +50,14 @@ function PostTable() {
                   <td>{val?.userDetail?.username}</td>
                   <td>{val.content}</td>
                   <td>{new Date(val.createdAt).toLocaleDateString()}</td>
-                  <td>{"hi"}</td>
+                  <td>
+                    {
+                      val.isBanned?
+                      <button onClick={()=>unBan(val._id)} className="btn btn-success">Unban</button>
+                      :
+                      <button onClick={()=>ban(val._id)} className="btn btn-danger" >Ban</button>
+                    }
+                  </td>
                 </tr>
               );
             })
@@ -47,7 +70,14 @@ function PostTable() {
                   <td>{val?.userDetail?.username}</td>
                   <td>{val.content}</td>
                   <td>{new Date(val.createdAt).toLocaleDateString()}</td>
-                  <td>{"hi"}</td>
+                  <td>
+                    {
+                      val.isBanned?
+                      <button onClick={()=>unBan(val._id)} className="btn btn-success">Unban</button>
+                      :
+                      <button onClick={()=>ban(val._id)} className="btn btn-danger" >Ban</button>
+                    }
+                  </td>
                 </tr>
               );
             })

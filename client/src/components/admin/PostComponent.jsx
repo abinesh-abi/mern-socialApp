@@ -31,7 +31,7 @@ function PostComponent() {
         <div className="d-flex flex-row-reverse">
           <Search value={searchInput} setValue={setSearchInput} />
         </div>
-        <PostTable />
+        <PostTable pageNumber={pageNumber}/>
         {
             !admin?.searchPosts && 
             <Pagination

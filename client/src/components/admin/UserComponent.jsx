@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsers, searchUsers } from "../../redux/actions/adminAction";
 import Pagination from "../common/Pagination";
 import Search from "../common/Search";
-import UserTable from "./PostTable";
+import UserTable from "./UserTable";
 
 function UserComponent() {
   const [pageNumber, setPageNumber] = useState(1);
@@ -33,7 +33,7 @@ function UserComponent() {
         <div className="d-flex flex-row-reverse">
           <Search value={searchInput} setValue={setSearchInput} />
         </div>
-        <UserTable />
+        <UserTable pageNumber={pageNumber} />
         {
           !admin.searchUsers && <Pagination
             pageCount={admin?.users?.pageCount}

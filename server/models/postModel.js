@@ -3,10 +3,6 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema({
     user: {type: mongoose.Types.ObjectId, ref: 'user'},
     content: String,
-    // image: {
-    //     type: String,
-    //     required: true
-    // },
     likes: [{ type: mongoose.Types.ObjectId, ref: 'user' }],
     comments: [
         {
@@ -18,7 +14,11 @@ const schema = new mongoose.Schema({
             user: mongoose.Types.ObjectId,
             like:[{ type: mongoose.Types.ObjectId, ref: 'user' }]
         }
-        ]
+        ],
+    isBanned:{
+        type:Boolean,
+        default:false
+    },
 }, {
     timestamps: true
 })

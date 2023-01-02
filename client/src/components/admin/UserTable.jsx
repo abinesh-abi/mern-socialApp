@@ -1,8 +1,24 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "../../redux/actions/adminAction";
+import { patchDataAPI } from "../../utils/fetchData";
 
-function UserTable() {
+function UserTable({pageNumber}) {
   const { admin } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  function ban(id) {
+    patchDataAPI('/admin/banUser',{id})
+    .then(({data})=>{
+      dispatch(getUsers({ pageNumber }));
+    })
+  }
+  function unBan(id) {
+    patchDataAPI('/admin/unBanUser',{id})
+    .then(({data})=>{
+      dispatch(getUsers({ pageNumber }));
+    })
+  }
 
   return (
     <div id="table">
@@ -32,7 +48,14 @@ function UserTable() {
                   <td>{val.username}</td>
                   <td>{val.email}</td>
                   <td>{new Date(val.createdAt).toLocaleDateString()}</td>
-                  <td>{"hi"}</td>
+                  <td>
+                    {
+                      val.isBanned?
+                      <button onClick={()=>unBan(val._id)} className="btn btn-success">Unban</button>
+                      :
+                      <button onClick={()=>ban(val._id)} className="btn btn-danger" >Ban</button>
+                    }
+                  </td>
                 </tr>
               );
             })
@@ -45,7 +68,14 @@ function UserTable() {
                   <td>{val.username}</td>
                   <td>{val.email}</td>
                   <td>{new Date(val.createdAt).toLocaleDateString()}</td>
-                  <td>{"hi"}</td>
+                  <td>
+                    {
+                      val.isBanned?
+                      <button onClick={()=>unBan(val._id)} className="btn btn-success">Unban</button>
+                      :
+                      <button onClick={()=>ban(val._id)} className="btn btn-danger" >Ban</button>
+                    }
+                  </td>
                 </tr>
               );
             })

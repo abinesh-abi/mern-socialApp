@@ -23,6 +23,26 @@ module.exports = {
             .catch(error=>reject(error))
         })
     },
+    banUser:(_id)=>{
+        return new Promise((resolve, reject) => {
+            userModel.updateOne({_id},
+                {
+                   $set:{isBanned:true}
+                })
+                .then(data=>resolve(data))
+                .catch(error=>reject(error))
+        })
+    },
+    unBanUser:(_id)=>{
+        return new Promise((resolve, reject) => {
+            userModel.updateOne({_id},
+                {
+                   $set:{isBanned:false}
+                })
+                .then(data=>resolve(data))
+                .catch(error=>reject(error))
+        })
+    },
     // posts
     postCount:()=>{
         return new Promise((resolve, reject) => {
@@ -68,12 +88,6 @@ module.exports = {
     searchPosts:(limit,name)=>{
         return new Promise((resolve, reject) => {
             postModel.aggregate([
-                // {
-                //     $skip:current
-                // },
-                // {
-                //     $limit:limit
-                // },
                 {
                     $lookup:{
                         from:'users',
@@ -97,13 +111,36 @@ module.exports = {
                 },
                 { 
                     $match:{
-                        'userDetail.username':'abinesh'
+                        'userDetail.username':{$regex:name}
                     }
-                 }
+                 },
+                {
+                    $limit:limit
+                },
             ])
             .then(data=>resolve(data))
             .catch(error=>reject(error))
         })
     
+    },
+    banPost:(_id)=>{
+        return new Promise((resolve, reject) => {
+            postModel.updateOne({_id},
+                {
+                   $set:{isBanned:true}
+                })
+                .then(data=>resolve(data))
+                .catch(error=>reject(error))
+        })
+    },
+    unBanPost:(_id)=>{
+        return new Promise((resolve, reject) => {
+            postModel.updateOne({_id},
+                {
+                   $set:{isBanned:false}
+                })
+                .then(data=>resolve(data))
+                .catch(error=>reject(error))
+        })
     },
 }

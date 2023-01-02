@@ -39,6 +39,10 @@ const schema = new mongoose.Schema({
         default: '',
         maxlength: 200
     },
+    isBanned:{
+        type:Boolean,
+        default:false
+    },
     lastSeen:{type:Date,default:Date.now()},
     website: {type: String, default: ''},
     followRequest: [{type: mongoose.Types.ObjectId, ref: 'user'}],
