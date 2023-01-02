@@ -21,6 +21,20 @@ const postControll ={
             
         }
     },
+    getUserPosts:async(req,res)=>{
+        try {
+            let {userId,pageNumber} = req.params
+            const listSize = 5;
+            const currPosts = listSize * (pageNumber - 1)
+            const postCount = await postService.userPostCount(userId)
+            const pageCount = Math.ceil(postCount / listSize);
+            let posts = await postService.getUserPosts(userId,listSize,currPosts)
+            res.json({status:true,data:{posts,pageCount}})
+        } catch (error) {
+            return res.json({message:error.message})
+        }
+
+    },
     createPost:async(req,res)=>{
         try {
             let {body} =req

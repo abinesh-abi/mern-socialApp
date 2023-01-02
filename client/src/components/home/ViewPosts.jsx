@@ -20,6 +20,7 @@ function ViewPosts() {
   let {id} = useParams()
 
 
+
     function findPosts() {
     auth.token && postDataAPI(`/user/post/${id}`,{},auth.token)
     .then(({data})=>{

@@ -1,34 +1,39 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import swal from 'sweetalert'
-import { getPost, likePost } from '../../redux/actions/postAction'
-import { getProfileUsers } from '../../redux/actions/profileActions'
-import { deleteDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetchData'
+import { getProfileUsers, getUserPosts } from '../../redux/actions/profileActions'
+import { deleteDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
-import AddComment from './AddComment'
-import EditPost from './EditPost'
+import AddComment from '../home/AddComment'
+import EditPost from '../home/EditPost'
 
-function PostList() {
-
-  const {auth,posts,profile } = useSelector(state=>state)
+function UserPosts() {
   const [editPost,setEditPost] = useState({})
-  const dispatch = useDispatch()
-
-
-    // function getPosts(){
-    //    postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
-    //     setPostsList(data.data)
-    //    })
-    // }
-
+  const [pageNumber, setPageNumber] = useState(1);
+  
+  const {auth ,profile} = useSelector(state=>state)
+  let dispatch  = useDispatch()
+  const {id} = useParams()
 
     useEffect(()=>{
-        dispatch(getPost(auth.token))
-    },[dispatch,posts.posts.length])
+       auth.token && dispatch(getUserPosts({id,auth,pageNumber}))
+    },[auth.token,pageNumber])
 
-   const deletePost = (id)=>{
+    function previousFn() {
+        setPageNumber((val) => val - 1);
+    }
+    function nextFn() {
+        setPageNumber((val) => val + 1);
+    }
+
+    function unFollow() {
+        patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
+        .then(({data})=>{
+            auth.token && dispatch(getUserPosts({id,auth}))
+        })
+    }
+    function deletePost(postId) {
         swal({
                 title: "Are you sure?",
                 text: "Once deleted, you will not be able to recover this post !",
@@ -38,59 +43,65 @@ function PostList() {
             })
             .then((willDelete) => {
                 if (willDelete) {
-                    deleteDataAPI(`/user/post/delete/${id}`,auth.token)
+                    deleteDataAPI(`/user/post/delete/${postId}`,auth.token)
                     .then(({data})=>{
-                        dispatch(getPost(auth.token))
+                        dispatch(getUserPosts({id,auth}))
                     })
                 }
             });
-    }
-
-    const like = (id)=>{
-        patchDataAPI(`/user/post/like`,{postId:id},auth.token)
-        .then(({data})=>{
-            dispatch(getPost(auth.token))
-        }
-        )
-        // dispatch(likePost({postId:id,auth}))
-    }
-    const unLikePost = (id)=>{
-        patchDataAPI(`/user/post/unLike`,{postId:id},auth.token)
-        .then(({data})=>{
-            // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            dispatch(getPost(auth.token))
-        })
-    }
-
-
-    function unFollow(id) {
-        patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
-        .then(({data})=>{
-            // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            dispatch(getPost(auth.token))
-        })
-    }
-
-    function savePost(postId) {
-        postDataAPI('/user/post/savePost/add',{postId},auth.token)
-        .then(({data})=>{
-            dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
-            dispatch(getPost(auth.token))
-        })
-        
     }
     function removeFromSaved(postId) {
         patchDataAPI('/user/post/savePost/remove',{postId},auth.token)
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
-            dispatch(getPost(auth.token))
+            dispatch(getUserPosts({id,auth}))
+        })
+        
+    }
+    function savePost(postId) {
+        postDataAPI('/user/post/savePost/add',{postId},auth.token)
+        .then(({data})=>{
+            dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
+            dispatch(getUserPosts({id,auth}))
         })
     }
+    function like(postId) {
+        patchDataAPI(`/user/post/like`,{postId},auth.token)
+        .then(({data})=>{
+            dispatch(getUserPosts({id,auth}))
+        }
+        )
+        
+    }
+    function unLikePost(postId) {
+        patchDataAPI(`/user/post/unLike`,{postId},auth.token)
+        .then(({data})=>{
+            dispatch(getUserPosts({id,auth}))
+        })
+        
+    }
+
+    
   return (
-    <>
-    {!posts.posts.length ? <h3 className='text-center mt-5' >No post to show</h3> :
-    posts.posts.map((post,index)=>{
-return <section key={index} className="profile-feed py-2" >
+    <div>
+        {
+          profile?.posts?.posts && <>
+                <div className='d-flex m-4 h5'>
+                    <p className='mx-auto'>Users Posts</p>
+                </div>
+            </>
+        }
+        {
+            profile?.posts?.posts && pageNumber > 1  && <div className='d-flex'>
+                <button 
+                className='btn btn-primary mx-auto'
+                onClick={previousFn}
+                >Previous Posts</button>
+            </div>
+        }
+        {
+            profile?.posts?.posts?.map((post,index)=>{
+               return <section key={index} className="profile-feed py-2" >
     <div className="">
         <div className="row">
             <div className="col-lg-12">
@@ -125,7 +136,7 @@ return <section key={index} className="profile-feed py-2" >
                             <div className="d-flex mr-3">
                                 <Link to={`/profile/${post.user}`} >
                                     {
-                                        <img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post.userDetail.avatar}.jpg`} alt="User" />
+                                        <img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post.userDetail?.avatar}.jpg`} alt="User" />
                                     }
                                 </Link>
                             </div>
@@ -160,7 +171,7 @@ return <section key={index} className="profile-feed py-2" >
                         </ul>
                         <ul>
                             {
-                                post?.likes.includes(profile?.users._id)?
+                                post?.likes.includes(profile?.users?._id)?
                             <li onClick={()=>unLikePost(post._id)}><a><i className="fa fa-heart text-danger"></i></a></li>
                                 :
                             <li onClick={()=>like(post._id)}><a><i className="fa fa-heart"></i></a></li>
@@ -179,6 +190,7 @@ return <section key={index} className="profile-feed py-2" >
                             comment={post?.comments[0]} 
                             postId={post._id} 
                             commentId={post?.comments[0].commentId}
+                            from={'userPost'}
                              />
                         </>
                     }
@@ -187,18 +199,26 @@ return <section key={index} className="profile-feed py-2" >
                              </div>
                         
 
-                    <AddComment post={post} auth={auth} />
+                    <AddComment post={post} auth={auth} from={'userPost'} />
                 </div>
 
             </div>
         </div>
     </div>
 </section>
-    })}
-
-<EditPost editValue={editPost}/>
-</>
+            })
+        }
+        {
+             pageNumber < profile?.posts?.pageCount && <div className='d-flex'>
+                <button 
+                className='btn btn-primary mx-auto'
+                onClick={nextFn}
+                >Next Posts</button>
+            </div>
+        }
+    <EditPost editValue={editPost} from='userPost' />
+    </div>
   )
 }
 
-export default PostList
+export default UserPosts

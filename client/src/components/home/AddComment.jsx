@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getPost } from '../../redux/actions/postAction'
+import { getUserPosts } from '../../redux/actions/profileActions'
 import { patchDataAPI } from '../../utils/fetchData'
 
-function AddComment({ post, auth,updatePost}) {
+function AddComment({ post, auth,updatePost ,from}) {
   const [comment, setComment] = useState('')
   const dispatch = useDispatch()
 
@@ -16,7 +17,8 @@ function AddComment({ post, auth,updatePost}) {
     patchDataAPI('/user/post/newComment',{postUser,comment,postId},auth.token)
     .then(data=>{
       setComment('')
-       updatePost ? updatePost() : dispatch(getPost(auth.token))  
+       updatePost ? updatePost() : dispatch(getPost(auth.token))
+       from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
     })
   }
   return (

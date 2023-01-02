@@ -23,6 +23,16 @@ const profileReducer = (state = initialState,action)=>{
                 ...state,
                 users:action.payload.user
             }
+        case PROFILE_TYPES.POSTS:
+            return{
+                ...state,
+                posts:action.payload.posts
+            }
+        case PROFILE_TYPES.ERROR:
+            return{
+                ...state,
+                error:action.payload.error
+            }
             
         default:
             return state;

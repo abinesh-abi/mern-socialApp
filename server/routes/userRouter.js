@@ -34,6 +34,9 @@ router.patch('/user/post/editContent',auth,postControll.editContent)
 router.delete('/user/post/delete/:id',auth,postControll.deletePost)
 router.patch('/user/post/like',auth,postControll.likePost)
 router.patch('/user/post/unLike',auth,postControll.unLikePost)
+// user's post
+router.get('/user/userPosts/:userId/:pageNumber',auth,postControll.getUserPosts)
+
 
 // notification
 router.get('/user/notification/get',auth,userControl.getNotificatins)

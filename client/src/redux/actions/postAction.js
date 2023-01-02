@@ -43,10 +43,10 @@ export const getPost =(token)=>async dispatch=>{
         
 }
 
-// export const likePost = ({auth,postId}) =>async dispatch=>{
-//         patchDataAPI(`/user/post/like`,{postId},auth.token)
-//         .then(({data})=>{
-//             fetchPost({token:auth.token,dispatch})
-//         }
-//         )
-// }
+export const likePost = ({auth,postId}) =>async dispatch=>{
+        patchDataAPI(`/user/post/like`,{postId},auth.token)
+        .then(({data})=>{
+
+        }
+        )
+}

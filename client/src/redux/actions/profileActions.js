@@ -3,7 +3,9 @@ import {GLOBALTYPES} from './globalTypes'
 
 export const PROFILE_TYPES = {
     LOADING: "LOADING",
-    GET_USER: "GET_USER" 
+    GET_USER: "GET_USER",
+    ERROR:'ERROR',
+    POSTS:'POSTS'
 }
 
 export const getProfileUsers = ({id, auth}) => async (dispatch) => {
@@ -55,8 +57,6 @@ export const updateProfileUser = (data,auth,closeModel) =>async(dispatch)=>{
             },
             });
             closeModel()
-    
-            
 }
 export const updateProfilePhoto = (data,auth,closeModel) =>async(dispatch)=>{
     // const res = await postDataAPI('/user/edit',data,auth.token)
@@ -75,4 +75,23 @@ export const updateProfilePhoto = (data,auth,closeModel) =>async(dispatch)=>{
             closeModel()
     }
             
+}
+
+export const getUserPosts = ({id,auth,pageNumber}) =>async(dispatch)=>{
+    try {
+        if (pageNumber == 1) {
+            const res = await getDataAPI(`/user/userPosts/${id}/${pageNumber}`,auth.token)
+            dispatch({
+                type: PROFILE_TYPES.POSTS,
+                payload:{posts:res.data.data} 
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: PROFILE_TYPES.GET_USER,
+            payload:{error:error.message} 
+        })
+    }
 }

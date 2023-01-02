@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from '../../redux/actions/postAction'
+import { getUserPosts } from '../../redux/actions/profileActions'
 import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
 
-function EditPost( {editValue,updatePost}) {
+function EditPost( {editValue,updatePost,from}) {
     const [image, setImage] = useState([])
     const [content, setContent] = useState('')
     const [err, setErr] = useState('')
@@ -43,6 +44,7 @@ function EditPost( {editValue,updatePost}) {
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
             updatePost? updatePost() : dispatch(getPost(auth.token))
+            from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
         })
        }
 
@@ -52,6 +54,7 @@ function EditPost( {editValue,updatePost}) {
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
             updatePost? updatePost() : dispatch(getPost(auth.token))
+            from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
         })
        }
         setContent('')

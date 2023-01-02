@@ -185,6 +185,85 @@ module.exports = {
                .catch(err=>reject(err))
         })
     },
+    userPostCount:(user)=>{
+        return new Promise((resolve, reject) => {
+            postModel.countDocuments({user})
+            .then(data=>resolve(data))
+            .catch(error=>reject(error))
+        })
+    },
+    getUserPosts:(userId,limit,skip)=>{
+        return new Promise((resolve, reject) => {
+            // postModel.find({user:userId})
+            postModel.aggregate([
+                {
+                    $match:{user:mongoose.Types.ObjectId(userId),
+                    isBanned:false
+                }
+                },
+                {
+                    $lookup:{
+                        from:'users',
+                        foreignField:'_id',
+                        localField:'user',
+                        pipeline:[
+                            {
+                                $project:{
+                                    username:1,
+                                    fullname:1,
+                                    avatar:1,
+                                }
+                            }
+                        ],
+                        as:"userDetail"
+                        
+                    }
+                },
+                {
+                    $lookup:{
+                        from:'users',
+                        foreignField:'_id',
+                        localField:'comments.user',
+                        pipeline:[
+                            {
+                                $project:{
+                                    username:1,
+                                    fullname:1,
+                                    avatar:1,
+                                }
+                            }
+                        ],
+                        as:"commentDetails"
+                        
+                    }
+                },
+                {$unwind:'$userDetail'},
+                {
+                    $sort:{createdAt:-1}
+                },
+                {
+                    $project:{
+                        comments:{$reverseArray:'$comments'},
+                        // comments:1,
+                        // commentDetails:{$reverseArray:'$commentDetails'},
+                        commentDetails:1,
+                        content:1,
+                        likes:1,
+                        user:1,
+                        userDetail:1,
+                    }
+                },
+                {
+                    $skip:skip
+                },
+                {
+                    $limit:limit
+                }
+            ])
+            .then(data=>resolve(data))
+            .catch(error=> reject(error))
+        })
+    },
     editContent:(_id,content)=>{
         return new Promise((resolve, reject) => {
             postModel.findOneAndUpdate({_id},{$set:{content}})

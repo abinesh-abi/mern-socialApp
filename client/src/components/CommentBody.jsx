@@ -2,9 +2,10 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getPost } from '../redux/actions/postAction'
+import { getUserPosts } from '../redux/actions/profileActions'
 import { patchDataAPI } from '../utils/fetchData'
 
-function CommentBody({postId,userDetail,comment,commentId,findPosts}) {
+function CommentBody({postId,userDetail,comment,commentId,findPosts,from}) {
   const {auth} =  useSelector(state=>state)
   const dispatch = useDispatch()
 
@@ -12,6 +13,7 @@ function CommentBody({postId,userDetail,comment,commentId,findPosts}) {
       patchDataAPI(`/user/post/coment/like`,{postId,commentId},auth.token)
       .then(({data})=>{
         findPosts ?findPosts() : dispatch(getPost(auth.token))
+       from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
       }
       )
   }
@@ -19,6 +21,7 @@ function CommentBody({postId,userDetail,comment,commentId,findPosts}) {
       patchDataAPI(`/user/post/coment/unLike`,{postId,commentId},auth.token)
       .then(({data})=>{
         findPosts ?findPosts() : dispatch(getPost(auth.token))
+       from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
       }
       )
   }
@@ -26,6 +29,7 @@ function CommentBody({postId,userDetail,comment,commentId,findPosts}) {
     patchDataAPI(`/user/post/coment/delete`,{postId,commentId},auth.token)
     .then(({data})=>{
       findPosts ?findPosts() : dispatch(getPost(auth.token))
+       from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
     })
   }
   return (

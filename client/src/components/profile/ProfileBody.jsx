@@ -10,6 +10,7 @@ import EditPassword from "./EditPassword";
 import FollowBtn from "./FollowBtn";
 import ImageEditModal from "./ImageEditModal";
 import '../../styles/profile.css'
+import UserPosts from "./UserPosts";
 
 const ProfileBody = ()=>{
   let imageStyle = {
@@ -103,6 +104,7 @@ const ProfileBody = ()=>{
         <UserDetailFeild feild={'Followers'} value={user?.followers?.length} />
         <UserDetailFeild feild={'Followings'} value={user?.following?.length} />
      </div>
+        <UserPosts />
 
 
 
