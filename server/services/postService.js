@@ -117,7 +117,14 @@ module.exports = {
             }
         })
     },
-    getPosts:(userId,following)=>{
+    getPostCount:(userId,following)=>{
+        return new Promise((resolve, reject) => {
+            postModel.find({user:[...following,userId],}).countDocuments()
+            .then(data=>resolve(data))
+            .catch(error=>reject(error))
+        })
+    },
+    getPosts:(userId,following,limit,skip)=>{
         return new Promise((resolve, reject) => {
             // postModel.find({user:[...following,userId]}).sort({createdAt:-1})
             postModel.aggregate([
@@ -179,6 +186,12 @@ module.exports = {
                         user:1,
                         userDetail:1,
                     }
+                },
+                {
+                    $skip:skip
+                },
+                {
+                    $limit:limit
                 }
             ])
                .then(data=>resolve(data) )

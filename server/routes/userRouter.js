@@ -26,7 +26,7 @@ router.patch('/user/unBlock',auth,userControl.unBlockUser)
 
 
 // posts
-router.post('/user/posts',auth,postControll.getPosts)
+router.post('/user/posts/:pageNumber',auth,postControll.getPosts)
 router.post('/user/post/:id',auth,postControll.getSinglePost)
 router.post('/user/addPost',auth,postControll.createPost)
 router.post('/user/post/editImage/:id',auth,postControll.editImage)

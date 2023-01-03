@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
-import { getPost, likePost } from '../../redux/actions/postAction'
+import { getPost, likePost, setPagenumber } from '../../redux/actions/postAction'
 import { getProfileUsers } from '../../redux/actions/profileActions'
 import { deleteDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
@@ -14,6 +14,7 @@ function PostList() {
 
   const {auth,posts,profile } = useSelector(state=>state)
   const [editPost,setEditPost] = useState({})
+  const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch()
 
 
@@ -25,8 +26,19 @@ function PostList() {
 
 
     useEffect(()=>{
-        dispatch(getPost(auth.token))
-    },[dispatch,posts.posts.length])
+        dispatch(getPost(posts.pageNumber,auth.token))
+    },[dispatch,posts?.posts?.posts?.length,posts.pageNumber])
+
+    function getPosts() {
+        dispatch(getPost(posts.pageNumber,auth.token))
+    }
+
+    function previousFn() {
+        dispatch(setPagenumber({pageNumber: posts.pageNumber -1}))
+    }
+    function nextFn() {
+        dispatch(setPagenumber({pageNumber: posts.pageNumber +1}))
+     }
 
    const deletePost = (id)=>{
         swal({
@@ -40,7 +52,7 @@ function PostList() {
                 if (willDelete) {
                     deleteDataAPI(`/user/post/delete/${id}`,auth.token)
                     .then(({data})=>{
-                        dispatch(getPost(auth.token))
+                        dispatch(getPost(posts.pageNumber,auth.token))
                     })
                 }
             });
@@ -49,7 +61,7 @@ function PostList() {
     const like = (id)=>{
         patchDataAPI(`/user/post/like`,{postId:id},auth.token)
         .then(({data})=>{
-            dispatch(getPost(auth.token))
+            dispatch(getPost(posts.pageNumber,auth.token))
         }
         )
         // dispatch(likePost({postId:id,auth}))
@@ -58,7 +70,7 @@ function PostList() {
         patchDataAPI(`/user/post/unLike`,{postId:id},auth.token)
         .then(({data})=>{
             // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            dispatch(getPost(auth.token))
+            dispatch(getPost(posts.pageNumber,auth.token))
         })
     }
 
@@ -67,7 +79,7 @@ function PostList() {
         patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
         .then(({data})=>{
             // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-            dispatch(getPost(auth.token))
+            dispatch(getPost(posts.pageNumber,auth.token))
         })
     }
 
@@ -75,7 +87,7 @@ function PostList() {
         postDataAPI('/user/post/savePost/add',{postId},auth.token)
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
-            dispatch(getPost(auth.token))
+            dispatch(getPost(posts.pageNumber,auth.token))
         })
         
     }
@@ -83,13 +95,21 @@ function PostList() {
         patchDataAPI('/user/post/savePost/remove',{postId},auth.token)
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
-            dispatch(getPost(auth.token))
+            dispatch(getPost(posts.pageNumber,auth.token))
         })
     }
   return (
     <>
-    {!posts.posts.length ? <h3 className='text-center mt-5' >No post to show</h3> :
-    posts.posts.map((post,index)=>{
+        {
+            posts?.posts?.posts && posts.pageNumber > 1  && <div className='d-flex'>
+                <button 
+                className='btn btn-primary mx-auto'
+                onClick={previousFn}
+                >Previous Posts</button>
+            </div>
+        }
+    {!posts?.posts?.posts?.length ? <h3 className='text-center mt-5' >No post to show</h3> :
+    posts.posts.posts.map((post,index)=>{
 return <section key={index} className="profile-feed py-2" >
     <div className="">
         <div className="row">
@@ -179,6 +199,7 @@ return <section key={index} className="profile-feed py-2" >
                             comment={post?.comments[0]} 
                             postId={post._id} 
                             commentId={post?.comments[0].commentId}
+                            pageNumber={posts.pageNumber}
                              />
                         </>
                     }
@@ -187,7 +208,7 @@ return <section key={index} className="profile-feed py-2" >
                              </div>
                         
 
-                    <AddComment post={post} auth={auth} />
+                    <AddComment post={post} />
                 </div>
 
             </div>
@@ -196,6 +217,14 @@ return <section key={index} className="profile-feed py-2" >
 </section>
     })}
 
+        {
+             posts.pageNumber < posts.posts?.pageCount && <div className='d-flex'>
+                <button 
+                className='btn btn-primary mx-auto'
+                onClick={nextFn}
+                >Next Posts</button>
+            </div>
+        }
 <EditPost editValue={editPost}/>
 </>
   )

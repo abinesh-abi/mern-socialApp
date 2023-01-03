@@ -4,7 +4,8 @@ import { GLOBALTYPES } from "./globalTypes";
 
 export const POST_TYPES ={
     CREATE_POST :'CREATE_POST',
-    GET_POST :'GET_POST'
+    GET_POST :'GET_POST',
+    PAGE_NUMBER:'PAGE_NUMBER',
 }
 
 // export const createPost =({content,image,auth})=>{
@@ -23,9 +24,9 @@ export const POST_TYPES ={
 //     })
 // }
 
-export const getPost =(token)=>async dispatch=>{
+export const getPost =(pageNumber,token)=>async dispatch=>{
     try {
-        let {data} = await postDataAPI(`/user/posts`,{},token)
+        let {data} = await postDataAPI(`/user/posts/${pageNumber}`,{},token)
         dispatch({
             type:POST_TYPES.GET_POST,
             payload:{
@@ -41,6 +42,17 @@ export const getPost =(token)=>async dispatch=>{
     });
     }
         
+}
+
+
+export const setPagenumber = ({pageNumber}) =>async dispatch=>{
+    console.log(pageNumber)
+    dispatch({
+      type: POST_TYPES.PAGE_NUMBER,
+      payload: {
+        pageNumber: pageNumber,
+      },
+    });
 }
 
 export const likePost = ({auth,postId}) =>async dispatch=>{

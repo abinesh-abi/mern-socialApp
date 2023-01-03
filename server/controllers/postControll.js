@@ -6,9 +6,18 @@ const { getPostById } = require("../services/postService")
 const { setNotification } = require("../services/notificationService")
 const postControll ={
     getPosts:async(req,res)=>{
-        const user = req.user
-        let data = await postService.getPosts(user._id,user.following)
-        res.json({stauts:true,data})
+        try {
+            const user = req.user
+            let {pageNumber} = req.params
+            const listSize = 10;
+            const currPosts = listSize * (pageNumber - 1)
+            const postCount = await postService.getPostCount(user._id,user.following)
+            const pageCount = Math.ceil(postCount / listSize);
+            let posts = await postService.getPosts(user._id,user.following,listSize,currPosts)
+            res.json({stauts:true,data:{posts,pageCount}})
+        } catch (error) {
+            return res.json({status:false, message:error.message})
+        }
     },
     getSinglePost:async(req,res)=>{
         let {id}= req.params

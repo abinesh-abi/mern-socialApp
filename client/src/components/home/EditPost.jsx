@@ -11,7 +11,7 @@ function EditPost( {editValue,updatePost,from}) {
     const [err, setErr] = useState('')
     const [currentValues, setCurrentValues] = useState({})
 
-    const {auth} = useSelector(state=>state)
+    const {auth,posts} =  useSelector(state=>state)
     const dispatch = useDispatch()
 
 
@@ -43,7 +43,7 @@ function EditPost( {editValue,updatePost,from}) {
         postDataAPI(`/user/post/editImage/${currentValues._id}`,formdata,auth.token)
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
-            updatePost? updatePost() : dispatch(getPost(auth.token))
+            updatePost? updatePost() : dispatch(getPost(posts.pageNumber,auth.token))
             from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
         })
        }
@@ -53,7 +53,7 @@ function EditPost( {editValue,updatePost,from}) {
         patchDataAPI(`/user/post/editContent`,{postId,content},auth.token)
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
-            updatePost? updatePost() : dispatch(getPost(auth.token))
+            updatePost? updatePost() : dispatch(getPost(posts.pageNumber,auth.token))
             from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
         })
        }
