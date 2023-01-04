@@ -36,6 +36,8 @@ router.patch('/user/post/like',auth,postControll.likePost)
 router.patch('/user/post/unLike',auth,postControll.unLikePost)
 // user's post
 router.get('/user/userPosts/:userId/:pageNumber',auth,postControll.getUserPosts)
+// report
+router.post('/user/report/post',auth,postControll.reportPost)
 
 
 // notification

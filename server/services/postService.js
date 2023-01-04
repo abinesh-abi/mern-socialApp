@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose")
 const postModel = require("../models/postModel")
+const ReportModel = require("../models/reportModel")
 const userModel = require("../models/userModel")
 
 module.exports = {
@@ -386,6 +387,13 @@ module.exports = {
         return new Promise((resolve, reject) => {
             
             userModel.updateOne({_id:userId},{$pull:{saved:postId}})
+            .then(data=>resolve(data))
+            .catch(error=>reject(error))
+        })
+    },
+    sendReport:(postId,message)=>{
+        return new Promise((resolve, reject) => {
+            const report = new ReportModel({postId,message}).save()
             .then(data=>resolve(data))
             .catch(error=>reject(error))
         })

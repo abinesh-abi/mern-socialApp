@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getPost } from '../../redux/actions/postAction'
+import config from '../../utils/config'
 import { postDataAPI } from '../../utils/fetchData'
 
 function Addpost() {
@@ -65,7 +66,7 @@ function Addpost() {
         <div className="d-flex">
             <div className='rounded-circle'>
               <Link to={`/profile/${auth.user?._id}`}>
-                <img src={`http://127.0.0.1:5000/images/profile/${auth?.user?.avatar}.jpg`}
+                <img src={`${config.SERVER_URL}/images/profile/${auth?.user?.avatar}.jpg`}
                  style={{width:'50px',height:'50px',borderRadius: "50%"}}
                  alt="" />
               </Link>

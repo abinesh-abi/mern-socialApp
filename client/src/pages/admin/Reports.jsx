@@ -1,5 +1,6 @@
 import React from 'react'
 import AdminSidebar from '../../components/admin/AdminSidebar'
+import ReportComponent from '../../components/admin/ReportComponent'
 
 function Reports() {
   return (
@@ -8,7 +9,7 @@ function Reports() {
         <AdminSidebar />
       </div>
       <div className="col-12 col-md-7 mt-3 rounded "style={{overflowY:"scroll",height:'89vh'}}>
-        <div className='w-100 h-100 bg-danger'>Report</div>
+          <ReportComponent />
       </div>
     </div>
   )

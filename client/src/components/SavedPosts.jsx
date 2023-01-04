@@ -10,6 +10,7 @@ import { deleteDataAPI, getDataAPI, patchDataAPI,postDataAPI} from '../utils/fet
 import CommentBody from './CommentBody'
 import AddComment from './home/AddComment' 
 import EditPost from './home/EditPost'
+import config from '../utils/config'
 
 function SavePost() {
 
@@ -19,20 +20,13 @@ function SavePost() {
   const [forceReload, setForceReload] = useState(0)
   const dispatch = useDispatch()
 
-//   console.log(posts?.posts[0]?.comments[0].message)
-//   console.log(posts?.posts[0])
-
 
 
     useEffect(()=>{
         if(auth.token) getPosts() 
-        // dispatch(getPost(auth.token))
-        // setPostsList(posts.posts)
     },[auth.token])
 
     function getPosts(){
-        // dispatch(getPost(auth.token))
-        // setPostsList(posts.posts)
        getDataAPI('/user/post/savePost/get',auth.token).then(({data}) =>{
         setPostsList(data.data)
        }).catch(error=>console.log(error))
@@ -77,29 +71,13 @@ return <section key={index} className="profile-feed py-2" >
                             </button>
                             <div className="dropdown-menu dropdown-scale dropdown-menu-right" role="menu" style={{position: 'absolute', transform: 'translate3d(-136px, 28px, 0px)', top: "0px", left: "0px", "willChange": "transform"}}>
                                 <Link className="dropdown-item" onClick={()=>removeFromSaved(post.postDetails._id)}> Remove form saved </Link>
-                                {/* {
-                                    auth.user._id !== post.userDetail._id ?
-                                    <>
-                                     <Link className="dropdown-item" onClick={()=>unFollow(post.user)} >Stop following</Link> 
-                                     <Link className="dropdown-item" to="/">Report</Link>
-                                    </> :
-
-                                     <>
-                                      <Link className="dropdown-item" 
-                                      data-toggle="modal" data-target="#edit-post"
-                                      onClick={()=>setEditPost(post)}
-                                      >Edit Post</Link> 
-                                      <Link className="dropdown-item" onClick={()=>deletePost(post._id)}>Delete Post</Link> 
-                                    </>
-
-                                } */}
                             </div>
                         </div>
                         <div className="media m-0">
                             <div className="d-flex mr-3">
                                 <Link to={`/profile/${post.postDetails.user}`} >
                                     {
-                                        <img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post.userDetail?.avatar}.jpg`} alt="User" />
+                                        <img className="img-fluid rounded-circle" src={`${config.SERVER_URL}/images/profile/${post.userDetail?.avatar}.jpg`} alt="User" />
                                     }
                                 </Link>
                             </div>
@@ -112,7 +90,7 @@ return <section key={index} className="profile-feed py-2" >
                     </div>
 
                     <div className="cardbox-heading">
-                        <img className="img-fluid" src={`http://127.0.0.1:5000/images/posts/${post?.postDetails._id}.jpg`} alt="Image"
+                        <img className="img-fluid" src={`${config.SERVER_URL}/images/posts/${post?.postDetails._id}.jpg`} alt="Image"
                             width={"100%"}
                         />
                     </div>

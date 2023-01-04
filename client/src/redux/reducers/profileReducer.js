@@ -3,7 +3,8 @@ import { PROFILE_TYPES } from "../actions/profileActions";
 const initialState ={
     loading:false,
     users:{},
-    posts:[]
+    posts:{},
+    pageNumber:1
 }
 
 const profileReducer = (state = initialState,action)=>{
@@ -33,6 +34,11 @@ const profileReducer = (state = initialState,action)=>{
                 ...state,
                 error:action.payload.error
             }
+        case PROFILE_TYPES.PAGE_NUMBER:
+            return{
+                ...state,
+                pageNumber:action.payload?.pageNumber
+            };
             
         default:
             return state;

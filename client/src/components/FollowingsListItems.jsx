@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
 import { getProfileUsers } from '../redux/actions/profileActions'
+import config from '../utils/config'
 import { patchDataAPI } from '../utils/fetchData'
 
 function FollowingsListItems({id , name , avatar}) {
@@ -35,7 +36,7 @@ function FollowingsListItems({id , name , avatar}) {
             <div className='d-flex'>
                 <img
                 className="img-fluid"
-                src={`http://127.0.0.1:5000/images/profile/${avatar}.jpg`}
+                src={`${config.SERVER_URL}/images/profile/${avatar}.jpg`}
                 style={listImage}
                 alt=""
                 />

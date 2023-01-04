@@ -21,4 +21,7 @@ router.get('/admin/searchPosts/:value',adminController.searchPosts)
 router.patch('/admin/banPost',adminController.banPost)
 router.patch('/admin/unBanPost',adminController.unBanPost)
 
+// report management
+router.get('/admin/reports/:pageNumber',adminController.getReports)
+
 module.exports = router

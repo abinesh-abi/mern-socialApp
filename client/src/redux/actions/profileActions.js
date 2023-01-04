@@ -5,7 +5,8 @@ export const PROFILE_TYPES = {
     LOADING: "LOADING",
     GET_USER: "GET_USER",
     ERROR:'ERROR',
-    POSTS:'POSTS'
+    POSTS:'POSTS',
+    PAGE_NUMBER:'PAGE_NUMBER'
 }
 
 export const getProfileUsers = ({id, auth}) => async (dispatch) => {
@@ -94,4 +95,13 @@ export const getUserPosts = ({id,auth,pageNumber}) =>async(dispatch)=>{
             payload:{error:error.message} 
         })
     }
+}
+export const setProfilePagenumber = ({pageNumber}) =>async dispatch=>{
+    console.log(pageNumber)
+    dispatch({
+      type: PROFILE_TYPES.PAGE_NUMBER,
+      payload: {
+        pageNumber: pageNumber,
+      },
+    });
 }

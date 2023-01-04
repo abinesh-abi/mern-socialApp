@@ -11,6 +11,7 @@ import FollowBtn from "./FollowBtn";
 import ImageEditModal from "./ImageEditModal";
 import '../../styles/profile.css'
 import UserPosts from "./UserPosts";
+import config from "../../utils/config";
 
 const ProfileBody = ()=>{
   let imageStyle = {
@@ -51,7 +52,7 @@ const ProfileBody = ()=>{
       <div className="container" style={imageStyle}></div>
       <img
       className="img-fluid shadow profileImage"
-        src={`http://127.0.0.1:5000/images/profile/${user?.avatar}.jpg`}
+        src={`${config.SERVER_URL}/images/profile/${user?.avatar}.jpg`}
         alt=""
       />
       {

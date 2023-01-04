@@ -87,4 +87,19 @@ module.exports = {
             res.json({status:false , message:'internal Server error',error})
         }
     },
+    // reports
+    getReports:async(req,res)=>{
+        try {
+            const { pageNumber } = req.params;
+            const listSize = 5;
+            const userCount = await adminServies.reportCount()
+            const count = userCount[0].count
+            const currPosts = listSize * (pageNumber - 1)
+            const pageCount = Math.ceil(count / listSize);
+            const reports= await adminServies.getReports(listSize,currPosts)
+            res.json({status:true , data:{pageCount,reports}})
+        } catch (error) {
+            res.json({status:false , message:'internal Server error',error})
+        }
+    },
 }

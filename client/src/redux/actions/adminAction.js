@@ -5,7 +5,8 @@ export const ADMIN_TYPES ={
     GET_USERS :'GET_USERS',
     SEARCH_USER:'SEARCH_USER',
     GET_POSTS:'GET_POSTS',
-    SEARCH_POSTS:'SEARCH_POSTS'
+    SEARCH_POSTS:'SEARCH_POSTS',
+    GET_REPORTS:'GET_REPORTS',
 }
 
 export const getUsers =({pageNumber})=>async dispatch=>{
@@ -61,6 +62,24 @@ export const getPosts =({pageNumber})=>async dispatch=>{
             type:ADMIN_TYPES.GET_POSTS,
             payload:{
                 posts:data.data
+            }
+        })
+    } catch (error) {
+    dispatch({
+      type: ADMIN_TYPES.ERROR,
+      payload: {
+        error: error.message,
+      },
+    });
+    }
+}
+export const getReports =({pageNumber})=>async dispatch=>{
+    try {
+        let {data} = await getDataAPI(`/admin/reports/${pageNumber}`)
+        dispatch({
+            type:ADMIN_TYPES.GET_REPORTS,
+            payload:{
+                reports:data.data
             }
         })
     } catch (error) {

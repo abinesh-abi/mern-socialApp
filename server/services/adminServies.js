@@ -1,4 +1,5 @@
 const postModel = require("../models/postModel")
+const reportModel = require("../models/reportModel")
 const userModel = require("../models/userModel")
 
 module.exports = {
@@ -143,4 +144,94 @@ module.exports = {
                 .catch(error=>reject(error))
         })
     },
+    // reports
+    reportCount:()=>{
+        return new Promise((resolve, reject) => {
+            reportModel.aggregate([
+                {
+                    $group:{
+                        _id:'$postId',
+                        // "val":{$push:{message:'$message'}}
+                    }
+                 },
+                 {
+                    $count:'count'
+                 },
+            ])
+            .then(data=>resolve(data))
+            .catch(error=>reject(error))
+        })
+    },
+    getReports:(limit,current)=>{
+        return new Promise((resolve, reject) => {
+            reportModel.aggregate([
+                {
+                    $group:{
+                        _id:'$postId',
+                        "reports":{$push:{message:'$message'}}
+                    }
+                 },
+                 {
+                    $skip:current
+                 },
+                 {
+                    $limit:limit
+                 },
+                 {
+                    $lookup:{
+                        from : "posts",
+                        localField:'_id',
+                        foreignField:'_id',
+                        pipeline:[
+                            {
+                                $project:{
+                                    user:1,
+                                    content:1,
+                                    isBanned:1
+                                }
+                            }
+                        ],
+                        as:'postDetails'
+                    }
+                 },
+                 {
+                    $unwind:'$postDetails'
+                 },
+                 {
+                    $lookup:{
+                        from : "users",
+                        localField:'postDetails.user',
+                        foreignField:'_id',
+                        pipeline:[
+                            {
+                                $project:{
+                                    fullname:1,
+                                    username:1,
+                                    email:1,
+                                }
+                            }
+                        ],
+                        as:'userDetails'
+                    },
+                 },
+                 {
+                    $unwind:'$userDetails'
+                 },
+                 {
+                    $project:{
+                        reports:1,
+                        noOfReports:{$size:'$reports'},
+                        postDetails:1,
+                        userDetails:1
+
+                    }
+                 },
+                 {
+                    $sort:{noOfReports:-1}
+                 },
+            ])
+            .then(data=>resolve(data))
+            .catch(error=>reject(error))
+        })
+    }
 }

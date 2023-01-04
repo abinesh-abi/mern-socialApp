@@ -162,6 +162,15 @@ const postControll ={
         } catch (error) {
          return res.json({status:false, message:error.message})
         }
+    },
+    reportPost:async(req,res)=>{
+        try {
+            const {postId,message} = req.body
+            const report = await postService.sendReport(postId,message)
+            res.json({stauts:true,data:report})
+        } catch (error) {
+         return res.json({status:false, message:error.message})
+        }
     }
 }
 

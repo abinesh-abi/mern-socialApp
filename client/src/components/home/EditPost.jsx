@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from '../../redux/actions/postAction'
 import { getUserPosts } from '../../redux/actions/profileActions'
+import config from '../../utils/config'
 import { patchDataAPI, postDataAPI } from '../../utils/fetchData'
 
 function EditPost( {editValue,updatePost,from}) {
@@ -11,7 +12,7 @@ function EditPost( {editValue,updatePost,from}) {
     const [err, setErr] = useState('')
     const [currentValues, setCurrentValues] = useState({})
 
-    const {auth,posts} =  useSelector(state=>state)
+    const {auth,posts,profile} =  useSelector(state=>state)
     const dispatch = useDispatch()
 
 
@@ -44,7 +45,7 @@ function EditPost( {editValue,updatePost,from}) {
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
             updatePost? updatePost() : dispatch(getPost(posts.pageNumber,auth.token))
-            from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
+            from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth,pageNumber:profile.pageNumber}))
         })
        }
 
@@ -54,7 +55,7 @@ function EditPost( {editValue,updatePost,from}) {
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
             updatePost? updatePost() : dispatch(getPost(posts.pageNumber,auth.token))
-            from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
+            from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth,pageNumber:profile.pageNumber}))
         })
        }
         setContent('')
@@ -90,7 +91,7 @@ function EditPost( {editValue,updatePost,from}) {
                 ></textarea>
                 {image.length !==0 ?
                 <img className='mx-auto p-3 m-3' width={400} height={250}  src={URL.createObjectURL(image[0])} alt="" />:
-                <img className='mx-auto p-3 m-3' width={400}  height={250} src={`http://127.0.0.1:5000/images/posts/${currentValues._id}.jpg`} alt="" />
+                <img className='mx-auto p-3 m-3' width={400}  height={250} src={`${config.SERVER_URL}/images/posts/${currentValues._id}.jpg`} alt="" />
                 }
                 <div>
                         <i 

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
 import { getProfileUsers } from '../redux/actions/profileActions'
+import config from '../utils/config'
 import { patchDataAPI } from '../utils/fetchData'
 
 function FollowersListItems({id , name , avatar,followStatus}) {
@@ -45,7 +46,7 @@ function FollowersListItems({id , name , avatar,followStatus}) {
             <div className='d-flex'>
                 <img
                 className="img-fluid"
-                src={`http://127.0.0.1:5000/images/profile/${avatar}.jpg`}
+                src={`${config.SERVER_URL}/images/profile/${avatar}.jpg`}
                 style={listImage}
                 alt=""
                 />
@@ -65,7 +66,7 @@ function FollowersListItems({id , name , avatar,followStatus}) {
             }
             {
                 status === 'follow' &&
-                <Link onClick={follow} className='mx-3' style={{'lineHeight': '45px',}}>FollowBack</Link>
+                <Link onClick={follow} className='mx-3 text-success' ><i class="fa-solid fa-user-plus"></i></Link>
             }
             {
                 status === 'requested' &&
@@ -73,7 +74,7 @@ function FollowersListItems({id , name , avatar,followStatus}) {
             }
             {
                 status === 'following' &&
-                <Link onClick={unFollow} className='mx-3' style={{'lineHeight': '45px',}}>Unfollow</Link>
+                <Link onClick={unFollow} className='mx-3 text-danger' ><i className="fa-solid fa-user-minus"></i></Link>
             }
         </div>
         </div>

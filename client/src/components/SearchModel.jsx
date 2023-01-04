@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import config from '../utils/config'
 import { postDataAPI } from '../utils/fetchData'
 
 function SearchModel({setSearchOrNot}) {
@@ -80,7 +81,7 @@ function SearchModel({setSearchOrNot}) {
                             <div className='d-flex'>
                                 <img
                                 className="img-fluid listImage"
-                                src={`http://127.0.0.1:5000/images/profile/${value?.avatar}.jpg`}
+                                src={`${config.SERVER_URL}/images/profile/${value?.avatar}.jpg`}
                                 alt=""
                                 />
                                 <p className='mx-3' style={{'lineHeight': '45px',}}>{value.fullname}</p>

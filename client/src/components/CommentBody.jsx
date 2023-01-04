@@ -1,19 +1,21 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { getPost } from '../redux/actions/postAction'
 import { getUserPosts } from '../redux/actions/profileActions'
+import config from '../utils/config'
 import { patchDataAPI } from '../utils/fetchData'
 
 function CommentBody({postId,userDetail,comment,commentId,findPosts,from}) {
-  const {auth,posts} =  useSelector(state=>state)
+  const {auth,posts,profile} =  useSelector(state=>state)
   const dispatch = useDispatch()
+  const {id} = useParams()
 
   function likeComment (){
       patchDataAPI(`/user/post/coment/like`,{postId,commentId},auth.token)
       .then(({data})=>{
         findPosts ?findPosts() : dispatch(getPost(posts.pageNumber,auth.token))
-       from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
+       from === 'userPost' && dispatch(getUserPosts({id,auth,pageNumber:profile.pageNumber}))
       }
       )
   }
@@ -21,7 +23,7 @@ function CommentBody({postId,userDetail,comment,commentId,findPosts,from}) {
       patchDataAPI(`/user/post/coment/unLike`,{postId,commentId},auth.token)
       .then(({data})=>{
         findPosts ?findPosts() : dispatch(getPost(posts.pageNumber,auth.token))
-       from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
+       from === 'userPost' && dispatch(getUserPosts({id,auth,pageNumber:profile.pageNumber}))
       }
       )
   }
@@ -29,14 +31,14 @@ function CommentBody({postId,userDetail,comment,commentId,findPosts,from}) {
     patchDataAPI(`/user/post/coment/delete`,{postId,commentId},auth.token)
     .then(({data})=>{
       findPosts ?findPosts() : dispatch(getPost(posts.pageNumber,auth.token))
-       from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
+       from === 'userPost' && dispatch(getUserPosts({id,auth,pageNumber:profile.pageNumber}))
     })
   }
   return (
     <> 
     <div className='my-2 '>
         <div className=' px-3  mx-4 pb-3 d-flex'>
-                <img src={`http://127.0.0.1:5000/images/profile/${userDetail?.avatar}.jpg`}
+                <img src={`${config.SERVER_URL}/images/profile/${userDetail?.avatar}.jpg`}
                 className="rounded-circle" 
                 style={{width:'20px',height:'20px'}}
                 alt="" />

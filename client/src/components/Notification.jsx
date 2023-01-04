@@ -7,6 +7,7 @@ import { deleteDataAPI, getDataAPI } from '../utils/fetchData'
 import ImageRounded from './common/ImageRounded'
 import '../styles/notification.css'
 import NotificationContent from './profile/NotificationContent'
+import config from '../utils/config'
 
 function Notification() {
   const {auth} = useSelector(state=>state)
@@ -63,7 +64,7 @@ function Notification() {
           <div className='ml-4 my-2 d-flex'>
             <div className="my-auto">
             <Link to={`/profile/${values.userId}`} style={{color:'black',textDecoration:'none'}}>
-              <ImageRounded size='55' src={`http://127.0.0.1:5000/images/profile/${values.userDetail[0].avatar}.jpg`} />
+              <ImageRounded size='55' src={`${config.SERVER_URL}/images/profile/${values.userDetail[0].avatar}.jpg`} />
             </Link>
             </div>
           </div>

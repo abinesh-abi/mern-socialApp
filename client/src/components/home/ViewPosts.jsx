@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import swal from 'sweetalert'
 import { getPost } from '../../redux/actions/postAction'
 import { getProfileUsers } from '../../redux/actions/profileActions'
+import config from '../../utils/config'
 import { deleteDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
 import AddComment from './AddComment'
@@ -124,7 +125,7 @@ function ViewPosts() {
                                   <div className="d-flex mr-3">
                                       <Link to={`/profile/${post[0]?.user}`} >
                                           {
-                                              <img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post[0]?.userDetail.avatar}.jpg`} alt="User" />
+                                              <img className="img-fluid rounded-circle" src={`${config.SERVER_URL}/images/profile/${post[0]?.userDetail.avatar}.jpg`} alt="User" />
                                           }
                                       </Link>
                                   </div>
@@ -137,7 +138,7 @@ function ViewPosts() {
                           </div>
 
                           <div className="cardbox-heading">
-                              <img className="img-fluid" src={`http://127.0.0.1:5000/images/posts/${post[0]?._id}.jpg`} alt="Image"
+                              <img className="img-fluid" src={`${config.SERVER_URL}/images/posts/${post[0]?._id}.jpg`} alt="Image"
                                   width={"100%"}
                               />
                           </div>

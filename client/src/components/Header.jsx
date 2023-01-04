@@ -4,6 +4,7 @@ import { Link, useLocation, } from 'react-router-dom'
 import { logout } from '../redux/actions/authAction'
 import SearchModel from './SearchModel'
 import '../../src/styles/seacrchModel.css'
+import config from '../utils/config'
 
 function Header() {
   const {auth,adminAuth} = useSelector(state=>state)
@@ -75,7 +76,7 @@ function Header() {
             <li className="nav-item dropdown">
         <Link className="nav-link p-0" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          <img src={`http://127.0.0.1:5000/images/profile/${isAdmin?'avatar': auth?.user?.avatar}.jpg`} className="rounded-circle z-depth-0"
+          <img src={`${config.SERVER_URL}/images/profile/${isAdmin?'avatar': auth?.user?.avatar}.jpg`} className="rounded-circle z-depth-0"
             alt="profile" height="35" />
         </Link>
         <div className="dropdown-menu dropdown-menu-right dropdown-default"

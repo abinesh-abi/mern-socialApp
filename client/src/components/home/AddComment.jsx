@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { getPost } from '../../redux/actions/postAction'
 import { getUserPosts } from '../../redux/actions/profileActions'
+import config from '../../utils/config'
 import { patchDataAPI } from '../../utils/fetchData'
 
 function AddComment({ post,updatePost ,from}) {
   const [comment, setComment] = useState('')
-  const {auth,posts} =  useSelector(state=>state)
+  const {auth,posts,profile} =  useSelector(state=>state)
   const dispatch = useDispatch()
+  const {id} = useParams()
 
   const sendComment=(e)=>{
     e.preventDefault()
@@ -19,13 +22,13 @@ function AddComment({ post,updatePost ,from}) {
     .then(data=>{
       setComment('')
        updatePost ? updatePost() : dispatch(getPost(posts.pageNumber,auth.token))
-       from === 'userPost' && dispatch(getUserPosts({id:auth.user._id,auth}))
+       from === 'userPost' && dispatch(getUserPosts({id,auth,pageNumber:profile.pageNumber}))  
     })
   }
   return (
     <div className='d-flex px-3 my-2 pb-3'>
         <div>
-        <img src={`http://127.0.0.1:5000/images/profile/${auth.user?.avatar}.jpg`}
+        <img src={`${config.SERVER_URL}/images/profile/${auth.user?.avatar}.jpg`}
           className="rounded-circle" 
           style={{width:'30px'}}
           alt="" />

@@ -25,6 +25,11 @@ const adminReducer = (state = intialSatate,action)=>{
                 ...state,
                 posts:action.payload.posts
             };
+        case ADMIN_TYPES.GET_REPORTS:
+            return {
+                ...state,
+                reports:action.payload.reports
+            };
         case ADMIN_TYPES.SEARCH_POSTS:
             return {
                 ...state,

@@ -5,16 +5,20 @@ import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
 import { getPost, likePost, setPagenumber } from '../../redux/actions/postAction'
 import { getProfileUsers } from '../../redux/actions/profileActions'
+import config from '../../utils/config'
 import { deleteDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
 import AddComment from './AddComment'
 import EditPost from './EditPost'
+import ReportModel from './ReportModel'
 
 function PostList() {
 
   const {auth,posts,profile } = useSelector(state=>state)
   const [editPost,setEditPost] = useState({})
-  const [pageNumber, setPageNumber] = useState(1);
+  const [retport, setRetport] = useState(false)
+  const [reportPost, setReportPost] = useState()
+
   const dispatch = useDispatch()
 
 
@@ -78,7 +82,6 @@ function PostList() {
     function unFollow(id) {
         patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
         .then(({data})=>{
-            // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
             dispatch(getPost(posts.pageNumber,auth.token))
         })
     }
@@ -127,7 +130,10 @@ return <section key={index} className="profile-feed py-2" >
                                     auth.user._id !== post.user ?
                                     <>
                                      <Link className="dropdown-item" onClick={()=>unFollow(post.user)} >Stop following</Link> 
-                                     <Link className="dropdown-item" to="/">Report</Link>
+                                     <Link className="dropdown-item" onClick={()=>{
+                                        setRetport(true)
+                                        setReportPost(post)
+                                    }}>Report</Link>
                                     </> :
 
                                      <>
@@ -145,7 +151,7 @@ return <section key={index} className="profile-feed py-2" >
                             <div className="d-flex mr-3">
                                 <Link to={`/profile/${post.user}`} >
                                     {
-                                        <img className="img-fluid rounded-circle" src={`http://127.0.0.1:5000/images/profile/${post.userDetail.avatar}.jpg`} alt="User" />
+                                        <img className="img-fluid rounded-circle" src={`${config.SERVER_URL}/images/profile/${post.userDetail.avatar}.jpg`} alt="User" />
                                     }
                                 </Link>
                             </div>
@@ -158,7 +164,7 @@ return <section key={index} className="profile-feed py-2" >
                     </div>
 
                     <div className="cardbox-heading">
-                        <img className="img-fluid" src={`http://127.0.0.1:5000/images/posts/${post?._id}.jpg`} alt="Image"
+                        <img className="img-fluid" src={`${config.SERVER_URL}/images/posts/${post?._id}.jpg`} alt="Image"
                             width={"100%"}
                         />
                     </div>
@@ -226,6 +232,9 @@ return <section key={index} className="profile-feed py-2" >
             </div>
         }
 <EditPost editValue={editPost}/>
+{
+    retport && <ReportModel setRetport={setRetport} postId={reportPost._id} />}
+
 </>
   )
 }

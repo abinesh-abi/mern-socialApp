@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileUsers, updateProfilePhoto } from "../../redux/actions/profileActions";
+import config from "../../utils/config";
 
 const ImageEditModal =({image})=>{
 
@@ -58,7 +59,7 @@ const ImageEditModal =({image})=>{
             /> :
             <img
             className="img-fluid shadow mx-auto"
-              src={`http://127.0.0.1:5000/images/profile/${image}.jpg`}
+              src={`${config.SERVER_URL}/images/profile/${image}.jpg`}
               style={profileStyle}
               alt=""
             />
