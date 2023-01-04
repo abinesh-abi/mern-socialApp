@@ -1,0 +1,11 @@
+
+
+.friends-card{
+    width: 200px ;
+    height: 220px ;
+}
+
+.friend-div{
+    display: flex;
+    flex-wrap: wrap;
+}

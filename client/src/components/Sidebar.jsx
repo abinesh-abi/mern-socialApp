@@ -18,6 +18,7 @@ function Sidebar() {
       <div className='mt-5 d-flex flex-column'>
           <SidebarItems path={'/'} name={'Home'} icon={'fa-solid fa-house'} isActive={isActive('/')} />
           <SidebarItems path={`/profile/${auth?.user?._id}`} name={'Profile'} icon={"fa-solid fa-user"}isActive={isActive('profile')}/>
+          <SidebarItems path={`/friends`} name={'Friends'} icon={"fa-solid fa-users"}isActive={isActive('friends')}/>
           <SidebarItems path={`/saved`} name={'Saved Posts'} icon={"fa-solid fa-bookmark"}isActive={isActive('saved')}/>
           <SidebarItems path={'/chat'} name={'Chat'} icon={'fa-solid fa-message'} isActive={isActive('chat')}/>
           <SidebarItems path={'/notification'} name={'Notification'} icon={'fa-solid fa-bell '}isActive={isActive('notification')}/>
