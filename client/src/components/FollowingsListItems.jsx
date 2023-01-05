@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import swal from 'sweetalert'
 import { getProfileUsers } from '../redux/actions/profileActions'
 import config from '../utils/config'
 import { patchDataAPI } from '../utils/fetchData'

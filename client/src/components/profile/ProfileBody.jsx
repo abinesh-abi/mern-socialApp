@@ -82,7 +82,7 @@ const ProfileBody = ()=>{
           data-target="#editDetails"
           >Edit User Details</Link> :
           <div className="d-flex w-100">
-            <div className="mx-auto">
+            <div className="mx-auto d-flex">
               <FollowBtn updateUser={getUsers} user={user} />
               <BlockOrUnBlock user={user} />
             </div>

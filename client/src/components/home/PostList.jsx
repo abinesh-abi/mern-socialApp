@@ -21,21 +21,9 @@ function PostList() {
 
   const dispatch = useDispatch()
 
-
-    // function getPosts(){
-    //    postDataAPI(`/user/posts`,{},auth.token).then(({data}) =>{
-    //     setPostsList(data.data)
-    //    })
-    // }
-
-
     useEffect(()=>{
         dispatch(getPost(posts.pageNumber,auth.token))
     },[dispatch,posts?.posts?.posts?.length,posts.pageNumber])
-
-    function getPosts() {
-        dispatch(getPost(posts.pageNumber,auth.token))
-    }
 
     function previousFn() {
         dispatch(setPagenumber({pageNumber: posts.pageNumber -1}))
@@ -68,12 +56,10 @@ function PostList() {
             dispatch(getPost(posts.pageNumber,auth.token))
         }
         )
-        // dispatch(likePost({postId:id,auth}))
     }
     const unLikePost = (id)=>{
         patchDataAPI(`/user/post/unLike`,{postId:id},auth.token)
         .then(({data})=>{
-            // dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
             dispatch(getPost(posts.pageNumber,auth.token))
         })
     }
@@ -125,7 +111,6 @@ return <section key={index} className="profile-feed py-2" >
                                 <em className="fa fa-ellipsis-h"></em>
                             </button>
                             <div className="dropdown-menu dropdown-scale dropdown-menu-right" role="menu" style={{position: 'absolute', transform: 'translate3d(-136px, 28px, 0px)', top: "0px", left: "0px", "willChange": "transform"}}>
-                                {/* <Link className="dropdown-item" to="/">Hide post</Link> */}
                                 {
                                     auth.user._id !== post.user ?
                                     <>
@@ -228,12 +213,13 @@ return <section key={index} className="profile-feed py-2" >
                 <button 
                 className='btn btn-primary mx-auto'
                 onClick={nextFn}
-                >Next Posts</button>
+                >Load more</button>
             </div>
         }
 <EditPost editValue={editPost}/>
-{
-    retport && <ReportModel setRetport={setRetport} postId={reportPost._id} />}
+    {
+    retport && <ReportModel setReport={setRetport} postId={reportPost._id} />
+    }
 
 </>
   )

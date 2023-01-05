@@ -8,7 +8,7 @@ import FollowingsListItems from './FollowingsListItems'
 function Followings() {
     
     const [followings, setFollowings] = useState([])
-  const {auth,profile} = useSelector(state=>state)
+  const {auth} = useSelector(state=>state)
     
   const dispatch =  useDispatch()
     let getFollowings=async()=>{

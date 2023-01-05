@@ -23,7 +23,7 @@ function BlockOrUnBlock({user}) {
   }
     
   return (
-    <>
+    <div className='mx-2'>
     {
         isBlocked?
         <Link className='btn btn-danger' onClick={unBlockUser} >Unblock</Link>
@@ -31,7 +31,7 @@ function BlockOrUnBlock({user}) {
         <Link className='btn btn-danger'  onClick={blockUser}>Block</Link>
     }
         
-    </>
+    </div>
   )
 }
 

@@ -188,7 +188,7 @@ function Register() {
                       </span>
                     </div>
                         <div className="form-group last mb-4">
-                      <label htmlFor="password">Password</label>
+                      <label htmlFor="password">Date Of Birth</label>
                       <input
                         type="date"
                         className="form-control"

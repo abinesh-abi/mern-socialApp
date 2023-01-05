@@ -4,6 +4,7 @@ import adminAuth from './adminAuthReducer'
 import admin from './adminReducer'
 import alert from "./alertReducer"
 import profile from "./profileReducer"
+import friends from "./friendsReducer"
 import showErr from './showerrReduser'
 import posts from './postReducer'
 import chat from './chatReducer'
@@ -19,5 +20,5 @@ export default combineReducers ({
     socket,
     adminAuth,
     admin,
-
+    friends,
 })

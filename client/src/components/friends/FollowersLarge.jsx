@@ -1,69 +1,61 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import config from '../../utils/config'
-import ImageRounded from '../common/ImageRounded'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getFollowers, setFollowersPagenumber } from "../../redux/actions/friendsAction";
+import { getProfileUsers } from "../../redux/actions/profileActions";
+import Pagination from "../common/Pagination";
+import FollowersCard from "./FollowersCard";
 
 function FollowersLarge() {
+  const { auth, friends } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (auth?.token) {
+      dispatch(getFollowers({ pageNumber: friends.followersPageNumber, auth }));
+    }
+  }, [auth?.token, friends.followersPageNumber]);
+
+  useEffect(() => {
+    dispatch(getProfileUsers({ id: auth?.user?._id, auth: auth }));
+  }, [auth?.token]);
+
+  
+  function previousFn() {
+      dispatch(setFollowersPagenumber({pageNumber: friends.followersPageNumber -1}))
+  }
+  function nextFn() {
+      dispatch(setFollowersPagenumber({pageNumber: friends.followersPageNumber +1}))
+  }
+
   return (
-    <div className='mx-auto friend-div d-flex mt-4'>
+    <div>
+      <div className="mx-auto friend-div d-flex mt-4">
+        {friends?.followers?.followers?.map((val, index) => {
+          return (
+            <div key={index}>
+              <FollowersCard user={val.userDetails} />
+            </div>
+          );
+        })}
+      </div>
+      <div>
+        {
+          friends.followers.pageCount ?
+            <Pagination 
+              pageCount={friends.followers.pageCount} 
+              pageNumber={friends.followersPageNumber}
+              nextFn={nextFn}
+              previousFn={previousFn}
+            /> :
+            <div className='d-flex h4 my-3'>
+                <p className='mx-auto'>There is no followings</p>
+            </div>
 
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
-      <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'220px'}}>
-        <div className='mx-auto m-2'>
-          <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/avatar.jpg`} />
-        </div>
-        <button className='btn btn-secondary w-75 mx-auto'>Unfollow</button>
-      </div>
+        }
 
+      </div>
     </div>
-  )
+  );
 }
 
-export default FollowersLarge
+export default FollowersLarge;

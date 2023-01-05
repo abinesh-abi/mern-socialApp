@@ -40,7 +40,7 @@ function FollowBtn({user,updateUser}) {
   }
 
   return (
-    <>
+    <div className='mx-2'>
     {
       followed == 'blocked' &&
     <Link className="btn btn-primary mx-auto "
@@ -73,7 +73,7 @@ function FollowBtn({user,updateUser}) {
     </Link> 
     }
 
-</>
+</div>
   )
 }
 

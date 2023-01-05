@@ -9,12 +9,15 @@ import { deleteDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
 import AddComment from './AddComment'
 import EditPost from './EditPost'
+import ReportModel from './ReportModel'
 
 function ViewPosts() {
   const {auth , profile} =  useSelector(state=>state)
   
   const [post, setPost] = useState([])
   const [editPost,setEditPost] = useState({})
+  const [report, setReport] = useState(false)
+  const [reportPost, setReportPost] = useState()
 
   const dispatch = useDispatch()
   const navigator = useNavigate()
@@ -105,7 +108,10 @@ function ViewPosts() {
                                           auth.user?._id !== post[0]?.user ?
                                           <>
                                           <Link className="dropdown-item" onClick={()=>unFollow(post[0]?.user)}>Stop following</Link> 
-                                          {/* <Link className="dropdown-item" to="/">Report</Link> */}
+                                          <Link className="dropdown-item" onClick={()=>{
+                                                setReport(true)
+                                                setReportPost(post)
+                                            }}>Report</Link>
                                           </> :
 
                                           <>
@@ -131,8 +137,6 @@ function ViewPosts() {
                                   </div>
                                   <div className="media-body">
                                       <p className="m-0">{post[0]?.userDetail.fullname}</p>
-                                      {/* <small><span><i className="icon ion-md-pin"></i> London, England</span></small>
-                                      <small><span><i className="icon ion-md-time"></i> 1 hour ago</span></small> */}
                                   </div>
                               </div>
                           </div>
@@ -170,10 +174,6 @@ function ViewPosts() {
                                   ><a><i className="fa fa-heart"></i></a></li>
                                       
                                   }
-                                  {/* <li><Link to="/"><img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
-                                  <li><Link to="/"><img src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
-                                  <li><Link to="/"><img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li>
-                                  <li><Link to="/"><img src="https://images.pexels.com/photos/6962108/pexels-photo-6962108.jpeg" className="img-fluid rounded-circle" alt="User" /></Link></li> */}
                                   <li><a><span>{post[0]?.likes?.length} Likes</span></a></li>
                               </ul>
                           </div>
@@ -203,6 +203,9 @@ function ViewPosts() {
     }
 
 <EditPost editValue={editPost} updatePost={findPosts}/>
+    {
+    report && <ReportModel setReport={setReport} postId={reportPost[0]._id} />
+    }
 </>
   )
 }

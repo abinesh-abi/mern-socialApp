@@ -12,9 +12,7 @@ export const PROFILE_TYPES = {
 export const getProfileUsers = ({id, auth}) => async (dispatch) => {
 
     try {
-        // dispatch({type: PROFILE_TYPES.LOADING, payload: true})
         const users  = await getDataAPI(`/user/${id}`, auth.token)
-        // const posts = await getDataAPI(`/user_posts/${id}`, auth.token)
         dispatch({
             type: PROFILE_TYPES.GET_USER,
             payload:{user:users.data.user} 

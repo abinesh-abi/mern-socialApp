@@ -242,6 +242,132 @@ module.exports = {
       .catch(error=>reject(error))
     })
   },
+  getFollowersPaginated:(userId,limit,skip)=>{
+    return new Promise((resolve, reject) => {
+      userModel.aggregate([
+        {
+          $match:{
+            "_id":mongoose.Types.ObjectId(userId)
+          }
+        },
+
+        {
+          $lookup:{
+            from:'users',
+            localField:'followers',
+            foreignField:"_id",
+            as:'userDetails'
+          }
+        },
+        {
+          $project:{
+            userDetails:1,
+            _id:0
+          }
+        },
+        {
+          $unwind:'$userDetails'
+        },
+        {$skip:skip},
+        { $limit : limit },
+        {
+          $project:{
+            fullname:1,
+            username:1,
+            userDetails:1,
+            avatar:1,
+            _id:0
+          }
+        },
+      ])
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
+  getFollowingsPaginated:(userId,limit,skip)=>{
+    return new Promise((resolve, reject) => {
+      userModel.aggregate([
+        {
+          $match:{
+            "_id":mongoose.Types.ObjectId(userId)
+          }
+        },
+
+        {
+          $lookup:{
+            from:'users',
+            localField:'following',
+            foreignField:"_id",
+            as:'userDetails'
+          }
+        },
+        {
+          $project:{
+            userDetails:1,
+            _id:0
+          }
+        },
+        {
+          $unwind:'$userDetails'
+        },
+        {$skip:skip},
+        { $limit : limit },
+        {
+          $project:{
+            fullname:1,
+            username:1,
+            userDetails:1,
+            avatar:1,
+            _id:0
+          }
+        },
+      ])
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
+  getFollowRequestsPaginated:(userId,limit,skip)=>{
+    return new Promise((resolve, reject) => {
+      userModel.aggregate([
+        {
+          $match:{
+            "_id":mongoose.Types.ObjectId(userId)
+          }
+        },
+
+        {
+          $lookup:{
+            from:'users',
+            localField:'followRequest',
+            foreignField:"_id",
+            as:'userDetails'
+          }
+        },
+        {
+          $project:{
+            userDetails:1,
+            _id:0
+          }
+        },
+        {
+          $unwind:'$userDetails'
+        },
+        {$skip:skip},
+        { $limit : limit },
+        {
+          $project:{
+            fullname:1,
+            username:1,
+            userDetails:1,
+            avatar:1,
+            _id:0
+          }
+        },
+      ])
+      .then(data=>resolve(data))
+      .catch(error=>reject(error))
+    })
+  },
   getFollowings:(userId)=>{
     return new Promise((resolve, reject) => {
       userModel.aggregate([

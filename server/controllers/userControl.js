@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
 const { setNotification } = require('../services/notificationService')
+const userService = require('../services/userService')
 const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification, followRequest, getFollowRequest, acceptRequest, blockUser, unBlockUser, getFollowings, retmoveFollowing, rejectRequest } = require("../services/userService")
 
 const postControll ={
@@ -88,19 +89,6 @@ const postControll ={
             if (followed) {
                 res.json({status:true,message:'followed'});
             }
-            // let id = req.user.id
-            // let folloUserId = req.params.id
-
-            // let followed = await  followUser(id,folloUserId)
-
-            // // set notificatins
-            // const type = 'followed'
-            // const content = 'This user followed you'
-            // let setNotify = await  setNotification(id,req.user.followers,type,content,id)
-
-            // if (followed) {
-            //     res.json({status:true,message:'followed'});
-            // }
         } catch (error) {
             res.json({status:false,message:error.message});
         }
@@ -126,6 +114,34 @@ const postControll ={
 
         } catch (error) {
            res.json({status:false,message:error.message});
+        }
+    },
+    getFollowersPaginated:async(req,res)=>{
+        try {
+            const id = req.user._id
+            let {pageNumber} = req.params
+            const listSize = 8;
+            const currPosts = listSize * (pageNumber - 1)
+            let count = req.user.followers.length
+            const pageCount = Math.ceil(count / listSize);
+            let followers = await userService.getFollowersPaginated(id,listSize,currPosts)
+            res.json({stauts:true,data:{followers,pageCount}})
+        } catch (error) {
+            return res.json({status:false, message:error.message})
+        }
+    },
+    getFollowingsPaginated:async(req,res)=>{
+        try {
+            const id = req.user._id
+            let {pageNumber} = req.params
+            const listSize = 8;
+            const currPosts = listSize * (pageNumber - 1)
+            let count = req.user.following.length
+            const pageCount = Math.ceil(count / listSize);
+            let followings = await userService.getFollowingsPaginated(id,listSize,currPosts)
+            res.json({stauts:true,data:{followings,pageCount}})
+        } catch (error) {
+            return res.json({status:false, message:error.message})
         }
     },
     getFollowings:async(req,res)=>{
@@ -157,6 +173,20 @@ const postControll ={
 
         } catch (error) {
            res.json({status:false,message:error.message});
+        }
+    },
+    getFollowRequestPaginated:async(req,res)=>{
+        try {
+            const id = req.user._id
+            let {pageNumber} = req.params
+            const listSize = 2;
+            const currPosts = listSize * (pageNumber - 1)
+            let count = req.user.followRequest.length
+            const pageCount = Math.ceil(count / listSize);
+            let requests = await userService.getFollowRequestsPaginated(id,listSize,currPosts)
+            res.json({stauts:true,data:{requests,pageCount}})
+        } catch (error) {
+            return res.json({status:false, message:error.message})
         }
     },
     acceptRequest:async(req,res)=>{

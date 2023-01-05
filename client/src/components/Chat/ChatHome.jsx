@@ -80,8 +80,6 @@ function ChatHome() {
             <div className="card chat-app">
                 {/* sideBar */}
 
-
-
             <div id="plist" className="people-list">
             {/* <ChatSearch /> */}
             {/* search */}

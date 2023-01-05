@@ -4,21 +4,20 @@ import { Link } from "react-router-dom";
 import '../../styles/report.css'
 import { postDataAPI } from "../../utils/fetchData";
 
-function ReportModel({setRetport,postId}){
+function ReportModel({setReport,postId}){
   const {auth} = useSelector(state=>state)
   const [reportMessage, setReportMessage] = useState('')
 
     function closeModel() {
-       setRetport(false)
+       setReport(false)
     }
 
     function sendReport(e) {
         e.preventDefault()
+        if (!reportMessage)return 
         postDataAPI('/user/report/post',{postId,message:reportMessage},auth.token)
         .then(({data})=>{
-            setRetport(false)
-            // dispatch(getProfileUsers({id:auth?.user?._id,auth:auth}))
-            // dispatch(getPost(posts.pageNumber,auth.token))
+            setReport(false)
         })
     }
   return (

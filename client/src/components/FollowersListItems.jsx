@@ -66,7 +66,7 @@ function FollowersListItems({id , name , avatar,followStatus}) {
             }
             {
                 status === 'follow' &&
-                <Link onClick={follow} className='mx-3 text-success' ><i class="fa-solid fa-user-plus"></i></Link>
+                <Link onClick={follow} className='mx-3 text-success' ><i className="fa-solid fa-user-plus"></i></Link>
             }
             {
                 status === 'requested' &&

@@ -36,12 +36,6 @@ function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
             setRejectStatus(true)
         })
     }
-    // function unFollow() {
-    //     patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
-    //     .then(({data})=>{
-    //         dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
-    //     })
-    // }
   return (
         <div className=" d-flex justify-content-between shadow-sm px-3 mx-1" style={listDiv}>
             <Link to={`/profile/${id}`} style={{textDecoration:'none'}}>

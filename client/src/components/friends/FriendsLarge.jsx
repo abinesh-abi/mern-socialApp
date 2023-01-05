@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import FollowersLarge from './FollowersLarge'
 import '../../styles/friends.css'
+import FollowingsLarge from './FollowingsLarge'
+import RequestsLarge from './RequestsLarge'
 
 function Friends() {
     const [items, setItems] = useState('followers')
@@ -26,11 +28,11 @@ function Friends() {
     }
     {
         items === 'requests' &&
-        <h1>reqests</h1>
+        <RequestsLarge />
     }
     {
         items === 'following' &&
-        <h1>following</h1>
+        <FollowingsLarge />
     }
     </div>
     </>
