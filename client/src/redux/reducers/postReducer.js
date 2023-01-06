@@ -11,7 +11,16 @@ const postReducer = (state = initialState , action)=>{
         case POST_TYPES.GET_POST:
             return{
                 ...state,
-                posts:action.payload?.posts
+                posts:action.payload?.posts,
+                
+            };
+        case POST_TYPES.GET_MORE_POST:
+            return{
+                ...state,
+                posts:{
+                        posts:[...state.posts.posts,...action.payload.posts.posts],
+                        pageCount:action.payload.posts.pageCount
+                }
             };
         case POST_TYPES.PAGE_NUMBER:
             return{

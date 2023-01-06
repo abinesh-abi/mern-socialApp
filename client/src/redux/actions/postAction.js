@@ -6,23 +6,9 @@ export const POST_TYPES ={
     CREATE_POST :'CREATE_POST',
     GET_POST :'GET_POST',
     PAGE_NUMBER:'PAGE_NUMBER',
+    GET_MORE_POST:'GET_MORE_POST',
 }
 
-// export const createPost =({content,image,auth})=>{
-//     console.log({content,image,auth},'onadf================')
-// }
-
-// const fetchPost = ({token,dispatch})=>{
-//     postDataAPI(`/user/posts`,{},token)
-//     .then(({data})=>{
-//         dispatch({
-//             type:POST_TYPES.GET_POST,
-//             payload:{
-//                 posts:data.data
-//             }
-//         })
-//     })
-// }
 
 export const getPost =(pageNumber,token)=>async dispatch=>{
     try {
@@ -43,10 +29,34 @@ export const getPost =(pageNumber,token)=>async dispatch=>{
     }
         
 }
+export const getMorePost =(pageNumber,token)=>async dispatch=>{
+    try {
+        let {data} = await postDataAPI(`/user/posts/${pageNumber}`,{},token)
+        dispatch({
+            type:POST_TYPES.GET_MORE_POST,
+            payload:{
+                posts:data.data
+            }
+        })
+        dispatch({
+          type: POST_TYPES.PAGE_NUMBER,
+          payload: {
+            pageNumber: pageNumber + 1,
+          },
+        });
+    } catch (err) {
+    dispatch({
+      type: GLOBALTYPES.ALERT,
+      payload: {
+        error: err.response.data.msg,
+      },
+    });
+    }
+        
+}
 
 
 export const setPagenumber = ({pageNumber}) =>async dispatch=>{
-    console.log(pageNumber)
     dispatch({
       type: POST_TYPES.PAGE_NUMBER,
       payload: {

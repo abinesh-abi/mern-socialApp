@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
-import { getPost, likePost, setPagenumber } from '../../redux/actions/postAction'
+import { getPost, setPagenumber } from '../../redux/actions/postAction'
 import { getProfileUsers } from '../../redux/actions/profileActions'
 import config from '../../utils/config'
 import { deleteDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetchData'
@@ -18,18 +18,21 @@ function PostList() {
   const [editPost,setEditPost] = useState({})
   const [retport, setRetport] = useState(false)
   const [reportPost, setReportPost] = useState()
+  const topRef = useRef()
 
   const dispatch = useDispatch()
 
     useEffect(()=>{
         dispatch(getPost(posts.pageNumber,auth.token))
-    },[dispatch,posts?.posts?.posts?.length,posts.pageNumber])
+    },[dispatch,posts.pageNumber])
 
     function previousFn() {
         dispatch(setPagenumber({pageNumber: posts.pageNumber -1}))
     }
     function nextFn() {
         dispatch(setPagenumber({pageNumber: posts.pageNumber +1}))
+        // dispatch(getMorePost(posts.pageNumber,auth.token))
+        topRef.current.scrollIntoView({behavior:'smooth'})
      }
 
    const deletePost = (id)=>{
@@ -89,6 +92,7 @@ function PostList() {
     }
   return (
     <>
+    <div ref={topRef}></div>
         {
             posts?.posts?.posts && posts.pageNumber > 1  && <div className='d-flex'>
                 <button 
@@ -142,8 +146,6 @@ return <section key={index} className="profile-feed py-2" >
                             </div>
                             <div className="media-body">
                                 <p className="m-0">{post.userDetail.fullname}</p>
-                                {/* <small><span><i className="icon ion-md-pin"></i> London, England</span></small>
-                                <small><span><i className="icon ion-md-time"></i> 1 hour ago</span></small> */}
                             </div>
                         </div>
                     </div>
@@ -167,7 +169,6 @@ return <section key={index} className="profile-feed py-2" >
                             <li><a onClick={e=>savePost(post._id)}><i className="fa fa-bookmark mr-4"></i></a></li>
 
                             }
-                            {/* <li><a><em className="mr-3">0</em></a></li> */}
                         </ul>
                         <ul>
                             {

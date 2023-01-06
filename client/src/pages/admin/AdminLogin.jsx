@@ -1,10 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { login } from "../../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { adminLogin } from "../../redux/actions/adminAuthAction";
 
 function AdminLogin() {

@@ -91,7 +91,7 @@ module.exports = {
     getReports:async(req,res)=>{
         try {
             const { pageNumber } = req.params;
-            const listSize = 5;
+            const listSize = 6;
             const userCount = await adminServies.reportCount()
             const count = userCount[0].count
             const currPosts = listSize * (pageNumber - 1)

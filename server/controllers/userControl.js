@@ -179,7 +179,7 @@ const postControll ={
         try {
             const id = req.user._id
             let {pageNumber} = req.params
-            const listSize = 2;
+            const listSize = 8;
             const currPosts = listSize * (pageNumber - 1)
             let count = req.user.followRequest.length
             const pageCount = Math.ceil(count / listSize);
@@ -196,11 +196,6 @@ const postControll ={
 
 
             let followed = await  acceptRequest(id,folloUserId)
-
-            // // set notificatins
-            // const type = 'followed'
-            // const content = 'This user followed you'
-            // let setNotify = await  setNotification(id,req.user.followers,type,content,id)
 
                 res.json({status:true,message:'followed'});
             
