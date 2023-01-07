@@ -8,6 +8,7 @@ import { getProfileUsers } from '../../redux/actions/profileActions'
 import config from '../../utils/config'
 import { deleteDataAPI, patchDataAPI, postDataAPI} from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
+import CopyPost from '../common/CopyPost'
 import AddComment from './AddComment'
 import EditPost from './EditPost'
 import ReportModel from './ReportModel'
@@ -132,8 +133,8 @@ return <section key={index} className="profile-feed py-2" >
                                       >Edit Post</Link> 
                                       <Link className="dropdown-item" onClick={()=>deletePost(post._id)}>Delete Post</Link> 
                                     </>
-
                                 }
+                                    <CopyPost  value={window.location.href+`post/${post._id}`}/>
                             </div>
                         </div>
                         <div className="media m-0">

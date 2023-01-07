@@ -6,6 +6,7 @@ import { getProfileUsers, getUserPosts, setProfilePagenumber } from '../../redux
 import config from '../../utils/config'
 import { deleteDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import CommentBody from '../CommentBody'
+import CopyPost from '../common/CopyPost'
 import AddComment from '../home/AddComment'
 import EditPost from '../home/EditPost'
 
@@ -130,6 +131,7 @@ function UserPosts() {
                                     </>
 
                                 }
+                                <CopyPost value={`${config.CLIENT_URL}/post/${post._id}`} />
                             </div>
                         </div>
                         <div className="media m-0">
@@ -142,8 +144,6 @@ function UserPosts() {
                             </div>
                             <div className="media-body">
                                 <p className="m-0">{post.userDetail.fullname}</p>
-                                {/* <small><span><i className="icon ion-md-pin"></i> London, England</span></small>
-                                <small><span><i className="icon ion-md-time"></i> 1 hour ago</span></small> */}
                             </div>
                         </div>
                     </div>
@@ -167,7 +167,6 @@ function UserPosts() {
                             <li><a onClick={e=>savePost(post._id)}><i className="fa fa-bookmark mr-4"></i></a></li>
 
                             }
-                            {/* <li><a><em className="mr-3">0</em></a></li> */}
                         </ul>
                         <ul>
                             {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { getProfileUsers } from '../redux/actions/profileActions'
 import { postDataAPI } from '../utils/fetchData'
 import FollowersListItems from './FollowersListItems'
@@ -49,6 +50,9 @@ function Followers() {
            followStatus={followStatus} />
           })
         }
+        <div className='d-flex justify-content-center my-3'>
+          <Link to={'/friends'} >View More</Link>
+        </div>
      </div>
 
   )

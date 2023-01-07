@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-share": "^4.4.1",
+    "sweetalert2": "^11.6.16"
+  }
+}

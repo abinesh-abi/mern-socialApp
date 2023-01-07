@@ -83,6 +83,14 @@ module.exports ={
       return res.status(500).json({ status: false, message: error.message });
     }
   },
+  admnLogout: async (req, res) => {
+    try {
+      res.clearCookie("adminLogin", { path: "/admin/refresh_token" });
+      res.json({ status: true, message: "Logged Out" });
+    } catch (error) {
+      return res.status(500).json({ status: false, message: error.message });
+    }
+  },
 }
 const createAccessToken = (payload) => {
   return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });

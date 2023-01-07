@@ -114,9 +114,20 @@ export const registerUser = ({otp,email}) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
+
+    const isAdmin = window.location.pathname.split('/').includes('admin')
+
+    if(isAdmin){
+      localStorage.removeItem('adminLogin')
+      await postDataAPI('/admin/logout')
+      .then(console.log())
+      window.location.href='/admin'
+      return
+    }
+
     localStorage.removeItem('firstLogin')
     await postDataAPI('/logout')
-    window.location.href='/'
+    window.location.href='/admin'
     // dispatch({
     //   type:GLOBALTYPES.AUTH,
     //   payload:null

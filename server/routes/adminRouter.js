@@ -2,11 +2,10 @@
 const router = require('express').Router()
 const adminAuthController = require('../controllers/admin/adminAuthController')
 const adminController = require('../controllers/admin/adminController')
-const authControll = require('../controllers/authControl')
 
 
 router.post('/admin/login',adminAuthController.login)
-// router.post('/logout',authControll.logout)
+router.post('/admin/logout',adminAuthController.admnLogout)
 router.post('/admin/refresh_token',adminAuthController.generateAdminAccessTocken)
 
 // User management

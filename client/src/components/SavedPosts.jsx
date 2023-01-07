@@ -11,6 +11,7 @@ import CommentBody from './CommentBody'
 import AddComment from './home/AddComment' 
 import EditPost from './home/EditPost'
 import config from '../utils/config'
+import CopyPost from './common/CopyPost'
 
 function SavePost() {
 
@@ -71,6 +72,7 @@ return <section key={index} className="profile-feed py-2" >
                             </button>
                             <div className="dropdown-menu dropdown-scale dropdown-menu-right" role="menu" style={{position: 'absolute', transform: 'translate3d(-136px, 28px, 0px)', top: "0px", left: "0px", "willChange": "transform"}}>
                                 <Link className="dropdown-item" onClick={()=>removeFromSaved(post.postDetails._id)}> Remove form saved </Link>
+                                <CopyPost value={`${config.CLIENT_URL}/post/${post.postDetails._id}`} />
                             </div>
                         </div>
                         <div className="media m-0">

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useParams} from "react-router-dom";
 
 
 import Header from "./components/Header";
@@ -27,10 +27,7 @@ function App() {
   const dispatch = useDispatch()
   let socket = useRef()
 
-  // useEffect(()=>{
-  //   socket.current = io(config.SERVER_URL)
-  //   dispatch(setSocket({socket}))
-  // },[])
+  const isAdmin = window.location.pathname.split('/').includes('admin')
 
   useEffect(()=>{
     if (auth?.user?._id) {
@@ -59,15 +56,15 @@ function App() {
   return (
     <>
       <BrowserRouter>
-         {(auth.token || adminAuth.token) && <Header />} 
+         {(auth.token || (adminAuth.token && isAdmin)) && <Header />} 
          <div className="pt-5">
         <Routes>
           <Route path="/" element={auth.token ? <Home /> :<Login />} />
-          <Route path="/:page" element={<PageRender />} />
-          <Route path="/profile/:id" element={ <Profile /> } />
-          <Route path="/:page/:id" element={<PageRender />} />
+          <Route path="/:page" element={!auth.token ?<Login /> : <PageRender />} />
+          <Route path="/profile/:id" element={!auth.token ?<Login /> : <Profile /> } />
+          <Route path="/:page/:id" element={!auth.token ?<Login /> : <PageRender />} />
           {/* post */}
-          <Route path="/post/:id" element={ <Post /> } />
+          <Route path="/post/:id" element={!auth.token ?<Login /> : <Post /> } />
 
           {/* admin */}
           <Route path="/admin" element={ adminAuth.token?<UserManagement />:<AdminLogin />} />
