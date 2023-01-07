@@ -10,6 +10,7 @@
     "moment": "^2.29.4",
     "peerjs": "^1.4.7",
     "react": "^18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.4",
     "react-redux": "^8.0.5",
@@ -20,6 +21,7 @@
     "redux-thunk": "^2.4.2",
     "socket.io-client": "^4.5.3",
     "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.6.16",
     "timeago.js": "^4.0.2",
     "web-vitals": "^2.1.4"
   },
