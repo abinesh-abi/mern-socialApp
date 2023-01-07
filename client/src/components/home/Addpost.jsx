@@ -45,7 +45,7 @@ function Addpost() {
         .then(({data})=>{
           if (!data.status)  return setErr(data.message)
           
-        dispatch(getPost(auth.token))
+        dispatch(getPost(1,auth.token))
         let modal = document.getElementById("add-post")
         modal.classList.remove("show");
         modal.classList.remove( "d-block");

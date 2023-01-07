@@ -127,11 +127,8 @@ export const logout = () => async (dispatch) => {
 
     localStorage.removeItem('firstLogin')
     await postDataAPI('/logout')
-    window.location.href='/admin'
-    // dispatch({
-    //   type:GLOBALTYPES.AUTH,
-    //   payload:null
-    // })
+    window.location.href='/'
+
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.ALERT,

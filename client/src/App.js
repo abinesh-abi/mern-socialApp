@@ -21,6 +21,7 @@ import { CHAT_TYPES } from "./redux/actions/chatAction";
 import UserManagement from "./pages/admin/UserManagement";
 import PostManagement from "./pages/admin/PostManagement";
 import Reports from "./pages/admin/Reports";
+import Register from "./pages/register";
 
 function App() {
   const { auth ,adminAuth} = useSelector((state) => state);
@@ -59,6 +60,7 @@ function App() {
          {(auth.token || (adminAuth.token && isAdmin)) && <Header />} 
          <div className="pt-5">
         <Routes>
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={auth.token ? <Home /> :<Login />} />
           <Route path="/:page" element={!auth.token ?<Login /> : <PageRender />} />
           <Route path="/profile/:id" element={!auth.token ?<Login /> : <Profile /> } />

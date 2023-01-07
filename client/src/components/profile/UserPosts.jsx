@@ -161,7 +161,7 @@ function UserPosts() {
                             <li><a><i className="fa fa-message"></i></a></li>
                             <li><a><em className="mr-5">{post.comments?.length}</em></a></li>
                             {
-                                auth?.user?.saved?.includes(post._id)?
+                                profile?.users?.saved?.includes(post._id)?
                             <li><a onClick={e=>removeFromSaved(post._id)}><i className="fa fa-bookmark mr-4 text-success"></i></a></li>
                             :
                             <li><a onClick={e=>savePost(post._id)}><i className="fa fa-bookmark mr-4"></i></a></li>

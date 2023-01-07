@@ -38,6 +38,7 @@ function FollowersListItems({id , name , avatar,followStatus}) {
         patchDataAPI(`/user/${id}/unFollow`,{},auth.token)
         .then(({data})=>{
             dispatch(getProfileUsers({id:auth.user._id,auth:auth}))
+            setStatus('follow')
         })
     }
   return (
