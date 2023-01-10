@@ -7,27 +7,38 @@ function VideoPlayer({myVideo ,userVideo , stream,setCurrStream}) {
   const [video, setVideo] = useState(true)
   const [audio, setAudio] = useState(true)
 
-  let { chat , auth, socket} =useSelector(state=>state)
+  let { chat , socket} =useSelector(state=>state)
   const dispatch = useDispatch()
 
 
   function stopVideo() {
-      // currStream.getTracks().forEach(track => track.stop())
       stream?.getVideoTracks()[0].stop();
       setVideo(false)
   }
 
   function stopAudio() {
-      // currStream.getTracks().forEach(track => track.stop())
       stream?.getAudioTracks()[0].stop();
       setAudio(false)
   }
 
-function renewStream() {
+function renewVideo() {
   navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
     .then(stream=>{
+      if (!audio) {
+        stream?.getAudioTracks()[0]?.stop();
+      }
        setCurrStream(stream)
        setVideo(true)
+    })
+    .catch(err=>console.log(err,'err____-----'))
+}
+function renewAudio() {
+  navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
+    .then(stream=>{
+      if (!video) {
+        stream?.getVideoTracks()[0]?.stop();
+      }
+       setCurrStream(stream)
        setAudio(true)
     })
     .catch(err=>console.log(err,'err____-----'))
@@ -40,11 +51,11 @@ useEffect(()=>{
       dispatch(EndCall({stream}))
     })
   }
-},[])
+},[stream])
 
 function endCall() {
-  socket.socket.current.emit('endCall',{otherUser:chat?.otherUser?._id || chat?.otherStream})
   dispatch(EndCall({stream}))
+  socket.socket.current.emit('endCall',{otherUser:chat?.otherUser?._id || chat?.otherStream})
 }
 
   return (
@@ -65,7 +76,7 @@ function endCall() {
       </div>
       <div className='call-buttons d-flex justify-content-around'>
         <div className='video-action-div d-flex justify-content-center align-items-center'
-        onClick={video ? stopVideo : renewStream}
+        onClick={video ? stopVideo : renewVideo}
         >
           {
             video ?
@@ -86,7 +97,7 @@ function endCall() {
         </div>
 
         <div className='audio-action-div d-flex justify-content-center align-items-center'
-        onClick={audio ? stopAudio : renewStream}
+        onClick={audio ? stopAudio : renewAudio}
         >
           {
             audio ?

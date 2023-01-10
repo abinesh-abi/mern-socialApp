@@ -20,11 +20,20 @@ useEffect(()=>{
   // // if call accepted
   socket.socket.current.on('callAcepeddddd',({val})=>{
 
+    if(navigator.getUserMedia){
+     navigator.getUserMedia({video:{ width: 1440, height: 720 },audio:true},
+    stream=>{
+       setCurrStream(stream)
+    })
+    }
+    else{
   navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
     .then(stream=>{
        setCurrStream(stream)
     })
     .catch(err=>console.log(err,'err____-----'))
+
+    }
   })
 },[])
 
@@ -42,13 +51,13 @@ useEffect(()=>{
 useEffect(()=>{
   if (peer) {
       var call = peer.call(chat.otherUser._id, currStream);
-    call.on('stream',(remotStreame)=>{
+    call?.on('stream',(remotStreame)=>{
       userVideo.current.srcObject = remotStreame
     },function(err) {
       console.log('Failed to get local stream' ,err);
     })
   }
-},[peer])
+},[peer,currStream])
 
 
   return (

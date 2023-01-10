@@ -57,12 +57,9 @@ export const getCurretChat = ({chatDetails})=>async dispatch =>{
 }
 
 export const EndCall = ({stream})=>async dispatch =>{
-    stream.getTracks().forEach(track => track.stop())
-    // end streame
-    // navigator.mediaDevices.getUserMedia({video: true})
-    // .then(stream => {
-    //     stream.getTracks().forEach(track => track.stop())
-    // })
+      stream?.getAudioTracks()[0]?.stop();
+      stream?.getVideoTracks()[0]?.stop();
+
     // end receved call
     dispatch({
     type:CHAT_TYPES.IS_RECEVED_CALL,

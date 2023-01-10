@@ -77,7 +77,6 @@ const ProfileBody = ()=>{
         {
           auth.user?._id ===id ?
           <Link className="btn btn-primary mx-auto"
-          // href="#profile-edit"
           data-toggle="modal"
           data-target="#editDetails"
           >Edit User Details</Link> :
