@@ -26,9 +26,19 @@ function Chat() {
         type:CHAT_TYPES.IS_RECEVED_CALL,
         payload:{isRecevedCall:true}
       })
+    }else{
+      socket?.socket?.current?.emit('rejectCall',{otherUser:peerId})
     }
   })
+
   
+  socket?.socket?.current?.on('callRejected',({val})=>{
+    alert('Video call Rejected')
+      dispatch({
+        type:CHAT_TYPES.IS_VIDEO_CALL,
+        payload:{isVideoCall:false}
+      })
+  })
 
 
   },[socket.socket.current])
