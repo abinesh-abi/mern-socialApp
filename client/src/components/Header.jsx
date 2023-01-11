@@ -25,7 +25,7 @@ function Header() {
 
   return (
   <>
-    <div className='w-100' style={{position:'fixed',zIndex:'1'}}>
+    <div className='w-100' style={{position:'fixed',zIndex:'2'}}>
 <nav className="mb-1 navbar navbar-expand-lg navbar-dark bg-dark lighten-1 " >
   <Link className="navbar-brand" to={'/'}>SocialApp</Link>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"

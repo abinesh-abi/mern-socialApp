@@ -15,29 +15,29 @@ let myVideo = useRef()
 let userVideo = useRef()
 
 useEffect(()=>{
-    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    getUserMedia({video:{ width: 1440, height: 720 }},ownStream=>{
-      setCurrStream(ownStream)
-    })
-},[])
-
-useEffect(()=>{
-      if (currStream) {
+  navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
+    .then(stream=>{
+       setCurrStream(stream)
         const newPeer =  new Peer(auth.user._id,{
           host: config.PEER_JS_URL,
           port:config.PEER_JS_PORT
         })
         setPeer(newPeer)
-  
-        myVideo.current.srcObject = currStream
         // send caller to call accepted
         socket.socket.current.emit('callAccepted',{otherUserId:chat.otherStream})
-    }
+    })
+    .catch(err=>console.log(err,'err____-----'))
+},[])
 
-},[currStream])
+// useEffect(()=>{
+//       if (currStream) {
+//         myVideo.current.srcObject = currStream
+//     }
+// },[currStream])
 
 useEffect(()=>{
-  if (peer) {
+  if (peer && currStream) {
+      myVideo.current.srcObject = currStream
       peer.on('call',(call)=>{
       call.answer(currStream)
       call.on('stream',(remotStream)=>{
@@ -46,7 +46,7 @@ useEffect(()=>{
       })
   }
 
-},[peer])
+},[peer,currStream])
 
 
   return (

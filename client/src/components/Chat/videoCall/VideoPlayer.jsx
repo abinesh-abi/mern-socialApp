@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { EndCall } from '../../../redux/actions/chatAction';
 
-function VideoPlayer({myVideo ,userVideo , stream,setCurrStream}) {
+function VideoPlayer({myVideo ,userVideo , stream }) {
 
   const [video, setVideo] = useState(true)
   const [audio, setAudio] = useState(true)
@@ -12,36 +12,27 @@ function VideoPlayer({myVideo ,userVideo , stream,setCurrStream}) {
 
 
   function stopVideo() {
-      stream?.getVideoTracks()[0].stop();
+      const videoStreame = stream?.getVideoTracks()[0]
+      videoStreame.enabled = false;
       setVideo(false)
   }
 
   function stopAudio() {
-      stream?.getAudioTracks()[0].stop();
+      const audioStram = stream?.getAudioTracks()[0]
+      audioStram.enabled = false
       setAudio(false)
   }
 
 function renewVideo() {
-  navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
-    .then(stream=>{
-      if (!audio) {
-        stream?.getAudioTracks()[0]?.stop();
-      }
-       setCurrStream(stream)
-       setVideo(true)
-    })
-    .catch(err=>console.log(err,'err____-----'))
+  const videoStreame = stream?.getVideoTracks()[0]
+    videoStreame.enabled = true;
+    setVideo(true)
 }
+
 function renewAudio() {
-  navigator.mediaDevices.getUserMedia({video:{ width: 1440, height: 720 },audio:true})
-    .then(stream=>{
-      if (!video) {
-        stream?.getVideoTracks()[0]?.stop();
-      }
-       setCurrStream(stream)
-       setAudio(true)
-    })
-    .catch(err=>console.log(err,'err____-----'))
+    const audioStram = stream?.getAudioTracks()[0]
+    audioStram.enabled = true;
+    setAudio(true)
 }
 
 useEffect(()=>{
@@ -64,8 +55,9 @@ function endCall() {
 
       <div className='full-size-div'>
             <video
-            ref={userVideo} id='userVideo' autoPlay
+            ref={userVideo} id='userVideo' autoPlay loop
             className='full-size-video mt-3'
+            src='../images/loding_user_video.mp4'
             ></video>
       </div>
       <div className='small-size-div'>
@@ -85,7 +77,6 @@ function endCall() {
                 ></i>
               :
                 <i className="fa-solid fa-video"
-                // onClick={renewStream}
                 ></i>
           }
         </div>
