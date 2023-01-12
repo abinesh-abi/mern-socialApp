@@ -26,6 +26,10 @@ useEffect(()=>{
     .catch(err=>console.log(err,'err____-----'))
 
   })
+  return ()=>{
+        currStream?.getAudioTracks()[0]?.stop();
+        currStream?.getVideoTracks()[0]?.stop();
+  }
 },[])
 
 useEffect(()=>{

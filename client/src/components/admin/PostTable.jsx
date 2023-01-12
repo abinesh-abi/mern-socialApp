@@ -65,7 +65,7 @@ function PostTable({pageNumber}) {
             admin?.posts?.posts.map((val, index) => {
               return (
                 <tr key={index}>
-                  <td>{index + 1}</td>
+                  <td>{index + 1 + ((pageNumber - 1) * 5)}</td>
                   <td><img width={130} src={`${config.SERVER_URL}/images/posts/${val._id}.jpg`} /></td>
                   <td>{val?.userDetail?.username}</td>
                   <td>{val.content}</td>

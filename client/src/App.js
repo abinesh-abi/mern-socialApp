@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes, useParams} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate, useParams} from "react-router-dom";
 
 
 import Header from "./components/Header";
@@ -22,9 +22,10 @@ import UserManagement from "./pages/admin/UserManagement";
 import PostManagement from "./pages/admin/PostManagement";
 import Reports from "./pages/admin/Reports";
 import Register from "./pages/register";
+import ReceveCall from "./components/Chat/videoCall/ReceveCall";
 
 function App() {
-  const { auth ,adminAuth} = useSelector((state) => state);
+  const { auth ,adminAuth, chat} = useSelector((state) => state);
   const dispatch = useDispatch()
   let socket = useRef()
 
@@ -45,6 +46,23 @@ function App() {
                 }
             })
         })
+
+    socket?.current?.on('callNotify',({peerId})=>{
+    let confirmed = window.confirm('Accept Call')
+    if (confirmed) {
+      dispatch({
+        type:CHAT_TYPES.OTHERS_STREAM,
+        payload:{otherStream:peerId}
+      })
+      dispatch({
+        type:CHAT_TYPES.IS_RECEVED_CALL,
+        payload:{isRecevedCall:true}
+      })
+
+    }else{
+      socket?.socket?.current?.emit('rejectCall',{otherUser:peerId})
+    }
+  })
     }
   },[auth?.user?._id])
 
@@ -55,7 +73,11 @@ function App() {
 
 
   return (
+    chat.isRecevedCall ?
+    <ReceveCall />
+    :
     <>
+
       <BrowserRouter>
          {(auth.token || (adminAuth.token && isAdmin)) && <Header />} 
          <div className="pt-5">

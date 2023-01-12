@@ -15,21 +15,21 @@ function Chat() {
   useEffect(()=>{
     
     // notify call and accept
-    socket?.socket?.current?.on('callNotify',({peerId})=>{
-    let confirmed = window.confirm('Accept Call')
-    if (confirmed) {
-      dispatch({
-        type:CHAT_TYPES.OTHERS_STREAM,
-        payload:{otherStream:peerId}
-      })
-      dispatch({
-        type:CHAT_TYPES.IS_RECEVED_CALL,
-        payload:{isRecevedCall:true}
-      })
-    }else{
-      socket?.socket?.current?.emit('rejectCall',{otherUser:peerId})
-    }
-  })
+  //   socket?.socket?.current?.on('callNotify',({peerId})=>{
+  //   let confirmed = window.confirm('Accept Call')
+  //   if (confirmed) {
+  //     dispatch({
+  //       type:CHAT_TYPES.OTHERS_STREAM,
+  //       payload:{otherStream:peerId}
+  //     })
+  //     dispatch({
+  //       type:CHAT_TYPES.IS_RECEVED_CALL,
+  //       payload:{isRecevedCall:true}
+  //     })
+  //   }else{
+  //     socket?.socket?.current?.emit('rejectCall',{otherUser:peerId})
+  //   }
+  // })
 
   
   socket?.socket?.current?.on('callRejected',({val})=>{
@@ -47,12 +47,12 @@ function Chat() {
     <>
     {
     chat.isVideoCall &&
-    <VideoCall />
+      <VideoCall />
     }
-    {
+    {/* {
     chat.isRecevedCall &&
     <ReceveCall />
-    }
+    } */}
     {
       !chat.isRecevedCall && !chat.isVideoCall &&
     <div className="row justify-content-center">

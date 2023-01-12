@@ -3,6 +3,7 @@ import VideoPlayer from './VideoPlayer'
 import Peer from 'peerjs'
 import config from '../../../utils/config'
 import { useSelector } from 'react-redux'
+import '../../../styles/chat.css'
 
 
 function ReceveCall() {
@@ -27,13 +28,9 @@ useEffect(()=>{
         socket.socket.current.emit('callAccepted',{otherUserId:chat.otherStream})
     })
     .catch(err=>console.log(err,'err____-----'))
+
 },[])
 
-// useEffect(()=>{
-//       if (currStream) {
-//         myVideo.current.srcObject = currStream
-//     }
-// },[currStream])
 
 useEffect(()=>{
   if (peer && currStream) {
@@ -46,7 +43,7 @@ useEffect(()=>{
       })
   }
 
-},[peer,currStream])
+},[peer])
 
 
   return (

@@ -11,9 +11,9 @@ const basicConfig = require('./config/basicConfig');
 const app = express()
 
 app.use(express.json());
-// app.use(logger('dev'));
+app.use(logger('dev'));
 app.use(cors({
-    origin:basicConfig.CLIENT_URL,
+    origin:[basicConfig.CLIENT_URL,'http://192.168.236.102:3000','http://0.0.0.0:3000','http://localhost:3000'],
     credentials: true,
 }))
 app.use('/images', express.static('uploads'))
@@ -40,6 +40,7 @@ module.exports = {io}
 
 
 // app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", [basicConfig.CLIENT_URL] );
 //   res.header('Content-Type', 'application/json;charset=UTF-8')
 //   res.header('Access-Control-Allow-Credentials', true)
 //   res.header(

@@ -63,7 +63,7 @@ function UserTable({pageNumber}) {
             admin?.users?.users.map((val, index) => {
               return (
                 <tr key={index}>
-                  <td>{index + 1}</td>
+                  <td>{index + 1 + ((pageNumber - 1) * 5)}</td>
                   <td>{val.fullname}</td>
                   <td>{val.username}</td>
                   <td>{val.email}</td>
