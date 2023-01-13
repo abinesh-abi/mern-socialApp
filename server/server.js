@@ -13,7 +13,7 @@ const app = express()
 app.use(express.json());
 app.use(logger('dev'));
 app.use(cors({
-    origin:[basicConfig.CLIENT_URL,'http://192.168.236.102:3000','http://0.0.0.0:3000','http://localhost:3000'],
+    origin:[...basicConfig.CLIENT_URL],
     credentials: true,
 }))
 app.use('/images', express.static('uploads'))
