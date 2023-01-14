@@ -21,7 +21,8 @@ useEffect(()=>{
        setCurrStream(stream)
         const newPeer =  new Peer(auth.user._id,{
           host: config.PEER_JS_URL,
-          port:config.PEER_JS_PORT
+          port:config.PEER_JS_PORT,
+          secure:true
         })
         setPeer(newPeer)
         // send caller to call accepted
