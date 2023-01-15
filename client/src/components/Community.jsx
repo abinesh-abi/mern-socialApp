@@ -8,7 +8,7 @@ function Community() {
     const [items, setItems] = useState('followers')
   return (
     <>
-    <div className="card py-3 my-4 shadowmt-3 h-75" > 
+    <div className="card py-3 my-4 shadowmt-3 h-75 community" > 
     <div className='d-flex justify-content-around'>
         <Link  onClick={()=>setItems('followers')} 
         className={`btn ${items === 'followers'?'btn-success':'btn-primary'}`}

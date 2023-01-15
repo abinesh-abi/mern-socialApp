@@ -1,12 +1,12 @@
 import { Provider } from "react-redux";
-import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, createStore, legacy_createStore } from "redux";
 import thunk from "redux-thunk";
 
 import rootReducer from './reducers/index'
 
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-const store = createStore(
+const store = legacy_createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(thunk))
 )

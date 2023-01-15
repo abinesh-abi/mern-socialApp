@@ -5,6 +5,7 @@ import { logout } from '../redux/actions/authAction'
 import SearchModel from './SearchModel'
 import '../../src/styles/seacrchModel.css'
 import config from '../utils/config'
+import ProfileIcon from './common/ProfileIcon'
 
 function Header() {
   const {auth,adminAuth} = useSelector(state=>state)
@@ -25,7 +26,7 @@ function Header() {
 
   return (
   <>
-    <div className='w-100' style={{position:'fixed',zIndex:'2'}}>
+    <div className='w-100 headder' style={{position:'fixed',zIndex:'2'}}>
 <nav className="mb-1 navbar navbar-expand-lg navbar-dark bg-dark lighten-1 " >
   <Link className="navbar-brand" to={'/'}>SocialApp</Link>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
@@ -73,7 +74,8 @@ function Header() {
         <Link className="nav-link pb-1">
           {isAdmin ? adminName :userName}</Link>
       </li>
-            <li className="nav-item dropdown">
+      <ProfileIcon isAdmin={isAdmin} />
+            {/* <li className="nav-item dropdown">
         <Link className="nav-link p-0" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
           <img src={`${config.SERVER_URL}/images/profile/${isAdmin?'avatar': auth?.user?.avatar}.jpg`} className="rounded-circle z-depth-0"
@@ -86,14 +88,24 @@ function Header() {
             }
           <Link onClick={()=>dispatch(logout())} className="dropdown-item">Log Out</Link>
         </div>
-      </li>
+      </li> */}
     </ul>
   </div>
-
-      {/* model */}
-     {searchOrNot && <SearchModel setSearchOrNot={setSearchOrNot} /> }  
 </nav>
 </div>
+  <nav className='d-flex justify-content-between mx-3 mt-2 mobile-headder'>
+    <Link className="mobile-brand h4" to={'/'}>SocialApp</Link>
+      <div className={`d-flex`}>
+        <a className="fa-solid active fa-magnifying-glass nav-lens" 
+          onClick={e=>{
+            setSearchOrNot(val=>!val)
+          }}
+        ></a>
+      <ProfileIcon  isAdmin={isAdmin}/>
+      </div> 
+  </nav>
+  {/* search modal */}
+    {searchOrNot && <SearchModel setSearchOrNot={setSearchOrNot} /> }  
 </>
   )
 }

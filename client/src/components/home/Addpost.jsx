@@ -62,8 +62,8 @@ function Addpost() {
   }
   return (
 <>
-    <div className='px-3 bg-white p-3 rounded'>
-        <div className="d-flex">
+    <div className='px-3 bg-white p-3 rounded add-post'>
+        <div className="d-flex justify-content-center">
             <div className='rounded-circle'>
               <Link to={`/profile/${auth.user?._id}`}>
                 <img src={`${config.SERVER_URL}/images/profile/${auth?.user?.avatar}.jpg`}
@@ -71,7 +71,9 @@ function Addpost() {
                  alt="" />
               </Link>
             </div>
-            <div type="text"className='border border-primary mt-1 mx-3 py-2 px-5 rounded shadow'><span>Whats Happening</span></div>
+            <div type="text"className='border border-primary mt-1 mx-3 py-2 px-5 rounded shadow'
+              data-toggle="modal" data-target="#add-post"
+            ><span>Whats Happening</span></div>
             <Link className='btn btn-primary w-25' data-toggle="modal" data-target="#add-post">Add Post</Link>
         </div>
     </div>

@@ -52,7 +52,7 @@ function SearchModel({setSearchOrNot}) {
 <>
 
 
-<div id="search" className="custom-model">
+<div id="search" className="custom-model" style={{zIndex:'3'}}>
     <div className="modal__content">
         <div className=" m-3 justify-content-center">
             <div className="card  p-4">

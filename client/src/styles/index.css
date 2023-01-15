@@ -4,12 +4,11 @@ body{
 ::-webkit-scrollbar {
     display: none;
 }
-
+.main-container{
+    padding-top: 50px;
+}
 .sideBarColor{
     background: #868B8E !important;
-}
-.sideBarItemsActive{
-    color: red;
 }
 /* .round-button{
     background: blue;
@@ -21,3 +20,56 @@ body{
     height: 30px;
     font-size: 14px;
 } */
+
+.contents{
+    overflow: scroll;
+    height: 89vh;
+}
+
+.sideBar-mobile{
+    display: none !important;
+}
+.mobile-brand{
+    color: #000c66;
+}
+.sidebar-mobile-items{
+    background-color: #0000ff !important;
+}
+.mobile-headder{
+    display: none !important;
+}
+ @media screen and (max-width: 720px) {
+    .sidebar{
+        display: none !important;
+    }   
+    .sideBar-mobile{
+        display: flex !important;
+        position: sticky ;
+        z-index: 1;
+        padding-top: 1%;
+    }
+    .headder{
+        display: none;
+    }
+    .mobile-headder{
+        display: flex !important;
+    }
+    .main-container{
+        padding-top: 3%;
+    }
+    /* .contents{
+        overflow: ;
+    } */
+    .nav-lens{
+        color: #000c66;
+        font-size: 23px;
+        padding-top: 8px;
+        padding-right: 15px;
+    }
+    .community{
+        display: none;
+    }
+    .add-post{
+        font-size: 13px;
+    }
+}

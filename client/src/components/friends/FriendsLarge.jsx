@@ -22,18 +22,20 @@ function Friends() {
         className={`btn ${items === 'requests'?'btn-success':'btn-primary'} mx-3`}
         >Requests</Link>
     </div>
-    {
-        items === 'followers' &&
-        <FollowersLarge />
-    }
-    {
-        items === 'requests' &&
-        <RequestsLarge />
-    }
-    {
-        items === 'following' &&
-        <FollowingsLarge />
-    }
+    <div className='row'>
+            {
+                items === 'followers' &&
+                <FollowersLarge />
+            }
+            {
+                items === 'requests' &&
+                <RequestsLarge />
+            }
+            {
+                items === 'following' &&
+                <FollowingsLarge />
+            }
+    </div>
     </div>
     </>
   )

@@ -13,7 +13,7 @@ function Chat() {
         <Sidebar />
       </div>
       {/* body */}
-      <div className="col-12 col-md-7 mt-3 rounded " >
+      <div className="col-12 col-md-7 mt-3 rounded contents" >
         <Friends />
         
       </div>

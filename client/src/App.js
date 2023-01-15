@@ -80,7 +80,7 @@ function App() {
 
       <BrowserRouter>
          {(auth.token || (adminAuth.token && isAdmin)) && <Header />} 
-         <div className="pt-5">
+         <div className="main-container">
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/" element={auth.token ? <Home /> :<Login />} />
