@@ -94,7 +94,7 @@ function SearchModel({setSearchOrNot}) {
             </div>	
             </div>
 
-        <Link onClick={closeModel} className="modal__close">&times;</Link>
+        <Link onClick={closeModel} className="modal__close h2">&times;</Link>
     </div>
 </div>
     </>
