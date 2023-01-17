@@ -64,7 +64,7 @@ function Notification() {
           <div className='ml-4 my-2 d-flex'>
             <div className="my-auto">
             <Link to={`/profile/${values.userId}`} style={{color:'black',textDecoration:'none'}}>
-              <ImageRounded size='55' src={`${config.SERVER_URL}/images/profile/${values.userDetail[0].avatar}.jpg`} />
+              <ImageRounded size='55' src={values.userDetail[0].avatar} />
             </Link>
             </div>
           </div>

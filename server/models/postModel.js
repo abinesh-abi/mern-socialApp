@@ -4,6 +4,7 @@ const schema = new mongoose.Schema({
     user: {type: mongoose.Types.ObjectId, ref: 'user'},
     content: String,
     likes: [{ type: mongoose.Types.ObjectId, ref: 'user' }],
+    image:String,
     comments: [
         {
             commentId:{

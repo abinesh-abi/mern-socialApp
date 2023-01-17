@@ -187,7 +187,8 @@ module.exports = {
                                 $project:{
                                     user:1,
                                     content:1,
-                                    isBanned:1
+                                    isBanned:1,
+                                    image:1
                                 }
                             }
                         ],

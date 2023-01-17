@@ -28,6 +28,7 @@ module.exports = {
                         likes:1,
                         user:1,
                         userDetail:1,
+                        image:1
                     }
                 },
                 {$unwind:'$comments'},
@@ -186,6 +187,7 @@ module.exports = {
                         likes:1,
                         user:1,
                         userDetail:1,
+                        image:1
                     }
                 },
                 {

@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, } from 'react-router-dom'
-import { logout } from '../redux/actions/authAction'
 import SearchModel from './SearchModel'
 import '../../src/styles/seacrchModel.css'
-import config from '../utils/config'
 import ProfileIcon from './common/ProfileIcon'
 
 function Header() {
@@ -74,21 +72,9 @@ function Header() {
         <Link className="nav-link pb-1">
           {isAdmin ? adminName :userName}</Link>
       </li>
-      <ProfileIcon isAdmin={isAdmin} />
-            {/* <li className="nav-item dropdown">
-        <Link className="nav-link p-0" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <img src={`${config.SERVER_URL}/images/profile/${isAdmin?'avatar': auth?.user?.avatar}.jpg`} className="rounded-circle z-depth-0"
-            alt="profile" height="35" />
-        </Link>
-        <div className="dropdown-menu dropdown-menu-right dropdown-default"
-          aria-labelledby="navbarDropdownMenuLink-333">
-            {
-              !isAdmin &&<Link className="dropdown-item" to={`/profile/${auth.user?._id}`}>View Profile</Link>
-            }
-          <Link onClick={()=>dispatch(logout())} className="dropdown-item">Log Out</Link>
-        </div>
-      </li> */}
+      {
+       !isAdmin && <ProfileIcon isAdmin={isAdmin} />
+      }
     </ul>
   </div>
 </nav>

@@ -35,7 +35,7 @@ function FollowingsListItems({id , name , avatar}) {
             <div className='d-flex'>
                 <img
                 className="img-fluid"
-                src={`${config.SERVER_URL}/images/profile/${avatar}.jpg`}
+                src={avatar}
                 style={listImage}
                 alt=""
                 />

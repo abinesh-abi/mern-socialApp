@@ -26,7 +26,7 @@ function ChatContentHedder({}) {
     <div className="row">
         <div className="col-lg-6">
             <Link  data-toggle="modal" >
-                <img src={`${config.SERVER_URL}/images/profile/${chat?.otherUser?.avatar}.jpg`} alt="avatar" />
+                <img src={chat?.otherUser?.avatar} alt="avatar" />
             </Link>
             <div className="chat-about">
                 <h6 className="m-b-0">{chat?.otherUser?.fullname}</h6>

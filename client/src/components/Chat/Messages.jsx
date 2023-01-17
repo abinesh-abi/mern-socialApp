@@ -10,14 +10,14 @@ function Messages({self,message}) {
     <li className="clearfix">
         <div className="message-data text-right">
             <span className="message-data-time">{format(message.createdAt)}</span>
-            <img src={`${config.SERVER_URL}/images/profile/${auth?.user?.avatar}.jpg`} alt="avatar" />
+            <img src={auth?.user?.avatar} alt="avatar" />
         </div>
         <div className="message other-message float-right">{message.text}</div>
     </li>
     :
     <li className="clearfix">
         <div className="message-data">
-            <img src={`${config.SERVER_URL}/images/profile/${chat.otherUser?.avatar}.jpg`} alt="avatar" />
+            <img src={chat.otherUser?.avatar} alt="avatar" />
             <span className="message-data-time">{format(message?.createdAt)}</span>
         </div>
         <div className="message my-message">{message?.text}</div>                                    

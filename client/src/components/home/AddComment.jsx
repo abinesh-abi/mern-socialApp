@@ -28,7 +28,7 @@ function AddComment({ post,updatePost ,from}) {
   return (
     <div className='d-flex px-3 my-2 pb-3'>
         <div>
-        <img src={`${config.SERVER_URL}/images/profile/${auth.user?.avatar}.jpg`}
+        <img src={auth.user?.avatar}
           className="rounded-circle" 
           style={{width:'30px'}}
           alt="" />

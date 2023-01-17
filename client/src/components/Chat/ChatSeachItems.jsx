@@ -21,7 +21,7 @@ function ChatSeachItems({details,auth,status}) {
   return (
     // <li className="clearfix" onClick={getChat}>
     <li className="clearfix" >
-        <img src={`${config.SERVER_URL}/images/profile/${otherUser?.avatar}.jpg`} alt="avatar" />
+        <img src={otherUser?.avatar} alt="avatar" />
         <div className="about">
             <div className="name">{otherUser.fullname}</div>
             {

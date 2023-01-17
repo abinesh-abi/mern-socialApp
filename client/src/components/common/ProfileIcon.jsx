@@ -11,7 +11,7 @@ const {auth,} = useSelector(state=>state)
         <div className="nav-item dropdown">
         <Link className="nav-link p-0" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          <img src={`${config.SERVER_URL}/images/profile/${isAdmin?'avatar': auth?.user?.avatar}.jpg`} className="rounded-circle z-depth-0"
+          <img src={isAdmin?'avatar': auth?.user?.avatar} className="rounded-circle z-depth-0"
             alt="profile" height="35" />
         </Link>
         <div className="dropdown-menu dropdown-menu-right dropdown-default"

@@ -131,7 +131,7 @@ function ViewPosts() {
                                   <div className="d-flex mr-3">
                                       <Link to={`/profile/${post[0]?.user}`} >
                                           {
-                                              <img className="img-fluid rounded-circle" src={`${config.SERVER_URL}/images/profile/${post[0]?.userDetail.avatar}.jpg`} alt="User" />
+                                              <img className="img-fluid rounded-circle" src={post[0]?.userDetail.avatar} alt="User" />
                                           }
                                       </Link>
                                   </div>
@@ -142,7 +142,8 @@ function ViewPosts() {
                           </div>
 
                           <div className="cardbox-heading">
-                              <img className="img-fluid" src={`${config.SERVER_URL}/images/posts/${post[0]?._id}.jpg`} alt="Image"
+                          {console.log(post)}
+                              <img className="img-fluid" src={post[0]?.image} alt="Image"
                                   width={"100%"}
                               />
                           </div>

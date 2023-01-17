@@ -1,5 +1,8 @@
 const bcrypt = require('bcrypt')
 const multer = require('multer')
+const fs = require('fs')
+const clodinaryConfig = require('../config/cloudinary')
+const cloudinary =  require('cloudinary').v2
 const { setNotification } = require('../services/notificationService')
 const userService = require('../services/userService')
 const { getUserByUserId, useridAndEmailExists, updateUser, editPassword, useridAndUserNameExists, serchName, serchUser, followUser, unFollowUser, getFollowers, getNotifications, deleteNotification, followRequest, getFollowRequest, acceptRequest, blockUser, unBlockUser, getFollowings, retmoveFollowing, rejectRequest } = require("../services/userService")
@@ -55,7 +58,10 @@ const postControll ={
         res.json({status:true,data:changedPassword})
     },
     editImage:(req,res)=>{
+        try {
         let id = req.user._id
+            // Cloudinary configuration
+            clodinaryConfig(cloudinary)
 
           // multer configaration
         const upload = multer({
@@ -68,12 +74,21 @@ const postControll ={
         }).single("image");
 
         req.imageName = `${id}.jpg`;
-        upload(req, res, async(err) => {
+        const imagePath =`./uploads/profile/${id}.jpg`
+        console.log(`/profile/${id}`)
+        upload(req, res,(err) => {
             if(err) return console.log(err)
-            let update = await updateUser(id,{avatar:id})
-            res.json({status:true,message:'Image Updated'});
+            cloudinary.uploader.upload(imagePath, { public_id:`image/profile/${id}`,invalidate:true})
+            .then((result) => {
+                console.log(result)
+              res.json({status:true,message:'Image Updated'});
+               updateUser(id,{avatar:result.secure_url})
+              fs.unlinkSync(imagePath)
+            }).catch(error=>console.log(error,'errroeeee-----'))
         });
-            //     /* image upload multer end*/
+        } catch (error) {
+            return res.json({message: err.message})
+        }
     },
     follow:async(req,res)=>{
         try {

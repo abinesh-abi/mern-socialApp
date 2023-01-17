@@ -46,7 +46,7 @@ function PostTable({pageNumber}) {
               return (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td><img width={130} src={`${config.SERVER_URL}/images/posts/${val._id}.jpg`} /></td>
+                  <td><img width={130} src={val.image} /></td>
                   <td>{val?.userDetail?.username}</td>
                   <td>{val.content}</td>
                   <td>{new Date(val.createdAt).toLocaleDateString()}</td>
@@ -66,7 +66,8 @@ function PostTable({pageNumber}) {
               return (
                 <tr key={index}>
                   <td>{index + 1 + ((pageNumber - 1) * 5)}</td>
-                  <td><img width={130} src={`${config.SERVER_URL}/images/posts/${val._id}.jpg`} /></td>
+                  {console.log(val.image)}
+                  <td><img width={130} src={val.image} /></td>
                   <td>{val?.userDetail?.username}</td>
                   <td>{val.content}</td>
                   <td>{new Date(val.createdAt).toLocaleDateString()}</td>

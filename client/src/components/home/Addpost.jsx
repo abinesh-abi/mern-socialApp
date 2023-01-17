@@ -66,7 +66,7 @@ function Addpost() {
         <div className="d-flex justify-content-center">
             <div className='rounded-circle'>
               <Link to={`/profile/${auth.user?._id}`}>
-                <img src={`${config.SERVER_URL}/images/profile/${auth?.user?.avatar}.jpg`}
+                <img src={auth?.user?.avatar}
                  style={{width:'50px',height:'50px',borderRadius: "50%"}}
                  alt="" />
               </Link>

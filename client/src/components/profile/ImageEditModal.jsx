@@ -59,7 +59,7 @@ const ImageEditModal =({image})=>{
             /> :
             <img
             className="img-fluid shadow mx-auto"
-              src={`${config.SERVER_URL}/images/profile/${image}.jpg`}
+              src={image}
               style={profileStyle}
               alt=""
             />

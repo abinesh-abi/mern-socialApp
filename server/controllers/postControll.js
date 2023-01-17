@@ -1,9 +1,13 @@
 
 const multer = require("multer")
+const cloudinary = require('cloudinary').v2
 const postService = require("../services/postService")
 const fs = require('fs')
 const { getPostById } = require("../services/postService")
 const { setNotification } = require("../services/notificationService")
+const path = require("path")
+const clodinaryConfig = require("../config/cloudinary")
+const postModel = require("../models/postModel")
 const postControll ={
     getPosts:async(req,res)=>{
         try {
@@ -64,8 +68,11 @@ const postControll ={
     },
     editImage:async (req,res)=>{
         try {
-             //     /* image upload multer start*/
-          // multer configaration
+
+            // Cloudinary configuration
+            clodinaryConfig(cloudinary)
+                 /* image upload multer start*/
+        //   multer configaration
         const upload = multer({
             storage: multer.diskStorage({
             destination: "./uploads/posts",
@@ -75,13 +82,21 @@ const postControll ={
             }),
         }).single("image");
 
-        req.imageName = `${req.params.id}.jpg`;
+        req.imageName = req.params.id;
         upload(req, res, async(err) => {
             if(err) return res.json({status:false,message:'There is an erron in image uploading'})
-            res.json({status:true,message:'Image Updated'});
+            const imagePath =`./uploads/posts/${req.imageName}`
+            cloudinary.uploader.upload(imagePath, { public_id:`/posts/${req.imageName}`,folder:'image'})
+            .then((result) => {
+                postModel.updateOne({_id:req.params.id},{image:result.secure_url})
+                .then()
+              res.json({status:true,message:'Image Updated'});
+              fs.unlinkSync(imagePath);
+            }).catch(error=>console.log(error.error,'errroeeee-----'))
+            
         });
         } catch (error) {
-         return res.json({status:false, message:err.message})
+         return res.json({status:false, message:error.message})
         }
     },
     editContent:async(req,res)=>{
@@ -98,14 +113,11 @@ const postControll ={
         let {id} = req.params
         const val = await postService.deletePost(id)
           if (val) {
-            fs.unlink(`uploads/posts/${val._id}.jpg`,(err => {
-            if (err) {
-                console.log('imgage edit error')
-            }
-            else {
+            // delete image from cloudinary
+            cloudinary.uploader.destroy(`image/posts/${val._id}`)
+            .then(data=>{
                 res.json({stauts:true,data:val})
-            }
-            }))
+            })
           }
         } catch (error) {
          return res.json({status:false, message:error.message})

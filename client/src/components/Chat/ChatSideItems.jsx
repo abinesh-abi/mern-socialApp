@@ -18,7 +18,7 @@ function ChatSideItems({details,auth,status}) {
     },[auth?.token])
   return (
     <li className="clearfix">
-        <img src={`${config.SERVER_URL}/images/profile/${otherUser?.avatar}.jpg`} alt="avatar" />
+        <img src={otherUser?.avatar} alt="avatar" />
         <div className="about ">
             <div className="name">{otherUser?.fullname}</div>
             {

@@ -81,7 +81,7 @@ function SearchModel({setSearchOrNot}) {
                             <div className='d-flex'>
                                 <img
                                 className="img-fluid listImage"
-                                src={`${config.SERVER_URL}/images/profile/${value?.avatar}.jpg`}
+                                src={value?.avatar}
                                 alt=""
                                 />
                                 <p className='mx-3' style={{'lineHeight': '45px',}}>{value.fullname}</p>

@@ -38,7 +38,7 @@ function CommentBody({postId,userDetail,comment,commentId,findPosts,from}) {
     <> 
     <div className='my-2 '>
         <div className=' px-3  mx-4 pb-3 d-flex'>
-                <img src={`${config.SERVER_URL}/images/profile/${userDetail?.avatar}.jpg`}
+                <img src={userDetail?.avatar}
                 className="rounded-circle" 
                 style={{width:'20px',height:'20px'}}
                 alt="" />

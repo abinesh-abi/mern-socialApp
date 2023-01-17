@@ -45,7 +45,7 @@ function ReportTable({pageNumber}) {
               return (
                 <tr key={index}>
                   <td>{index + 1 + ((pageNumber - 1) * 5)}</td>
-                  <td><img width={130} src={`${config.SERVER_URL}/images/posts/${val._id}.jpg`} /></td>
+                  <td><img width={130} src={val.postDetails.image} /></td>
                   <td>{val?.userDetails?.username}</td>
                   <td>{val?.postDetails?.content}</td>
                   <td>{val?.noOfReports}</td>

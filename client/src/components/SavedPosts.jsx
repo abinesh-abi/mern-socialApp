@@ -74,7 +74,7 @@ return <section key={index} className="profile-feed py-2" >
                             <div className="d-flex mr-3">
                                 <Link to={`/profile/${post.postDetails.user}`} >
                                     {
-                                        <img className="img-fluid rounded-circle" src={`${config.SERVER_URL}/images/profile/${post.userDetail?.avatar}.jpg`} alt="User" />
+                                        <img className="img-fluid rounded-circle" src={post.userDetail?.avatar} alt="User" />
                                     }
                                 </Link>
                             </div>
@@ -87,7 +87,7 @@ return <section key={index} className="profile-feed py-2" >
                     </div>
 
                     <div className="cardbox-heading">
-                        <img className="img-fluid" src={`${config.SERVER_URL}/images/posts/${post?.postDetails._id}.jpg`} alt="Image"
+                        <img className="img-fluid" src={post?.postDetails._id} alt="Image"
                             width={"100%"}
                         />
                     </div>

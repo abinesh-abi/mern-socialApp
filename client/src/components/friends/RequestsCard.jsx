@@ -26,7 +26,7 @@ function RequestsCard({user}) {
   return (
     <div className='card border shadow mx-2 my-2' style={{width:'200px',height:'240px'}}>
         <div onClick={openPorofile} className='mx-auto m-2'>
-        <ImageRounded size={130} src={`${config.SERVER_URL}/images/profile/${user.avatar}.jpg`} />
+        <ImageRounded size={130} src={user.avatar} />
         </div>
         <p className='mx-auto' onClick={openPorofile}>{user.fullname} </p>
         {

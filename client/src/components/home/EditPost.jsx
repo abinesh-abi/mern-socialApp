@@ -91,7 +91,7 @@ function EditPost( {editValue,updatePost,from}) {
                 ></textarea>
                 {image.length !==0 ?
                 <img className='mx-auto p-3 m-3' width={400} height={250}  src={URL.createObjectURL(image[0])} alt="" />:
-                <img className='mx-auto p-3 m-3' width={400}  height={250} src={`${config.SERVER_URL}/images/posts/${currentValues._id}.jpg`} alt="" />
+                <img className='mx-auto p-3 m-3' width={400}  height={250} src={currentValues.image} alt="" />
                 }
                 <div>
                         <i 

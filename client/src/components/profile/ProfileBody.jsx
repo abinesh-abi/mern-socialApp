@@ -52,7 +52,7 @@ const ProfileBody = ()=>{
       <div className="container" style={imageStyle}></div>
       <img
       className="img-fluid shadow profileImage"
-        src={`${config.SERVER_URL}/images/profile/${user?.avatar}.jpg`}
+        src={user?.avatar}
         alt=""
       />
       {
