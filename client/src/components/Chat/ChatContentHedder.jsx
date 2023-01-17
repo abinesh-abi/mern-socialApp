@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { format } from 'timeago.js'
-import { CHAT_TYPES } from '../../redux/actions/chatAction'
+import { CHAT_TYPES, getCurretChat } from '../../redux/actions/chatAction'
 import config from '../../utils/config'
 
 function ChatContentHedder({}) {
@@ -21,9 +21,13 @@ function ChatContentHedder({}) {
             }
         })
     }
+    function exitChat() {
+        dispatch(getCurretChat({chatDetails:null}))
+    }
   return (
 <div className="chat-header clearfix">
-    <div className="row">
+    <div className="d-flex">
+        <i class="fa-solid fa-arrow-left my-auto h5" onClick={exitChat}></i>
         <div className="col-lg-6">
             <Link  data-toggle="modal" >
                 <img src={chat?.otherUser?.avatar} alt="avatar" />
@@ -37,7 +41,7 @@ function ChatContentHedder({}) {
                 }
             </div>
         </div>
-    <div>
+    <div className='my-auto mr-4'>
            <i className="fa-solid fa-video" onClick={videoCall}></i>
     </div>
     </div>

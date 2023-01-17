@@ -255,6 +255,9 @@
         overflow-x: auto
     }
 }
+.chatMobile{
+    display: none;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     .chat-app .chat-list {
@@ -277,6 +280,14 @@
         overflow-x: auto
     }
 }
+ @media screen and (max-width: 720px) {
+    .chatMobile{
+        display: block;
+    }
+    .chatDesktop{
+        display: none;
+    }
+ }
 
 
 

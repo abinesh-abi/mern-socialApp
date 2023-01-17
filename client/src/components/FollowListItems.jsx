@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { getProfileUsers } from '../redux/actions/profileActions'
 import { patchDataAPI } from '../utils/fetchData'
 
-function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
+function FollowRequestItems({id , name , avatar }) {
     const [status, setStatus] = useState(false)
     const [rejectStatus, setRejectStatus] = useState(false)
 
@@ -42,7 +42,7 @@ function FollowRequestItems({id , name , avatar , isFollows ,updaeFollowers}) {
             <div className='d-flex'>
                 <img
                 className="img-fluid"
-                src={`http://127.0.0.1:5000/images/profile/${avatar}.jpg`}
+                src={avatar}
                 style={listImage}
                 alt=""
                 />

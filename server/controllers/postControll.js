@@ -89,9 +89,10 @@ const postControll ={
             cloudinary.uploader.upload(imagePath, { public_id:`/posts/${req.imageName}`,folder:'image'})
             .then((result) => {
                 postModel.updateOne({_id:req.params.id},{image:result.secure_url})
-                .then()
-              res.json({status:true,message:'Image Updated'});
-              fs.unlinkSync(imagePath);
+                .then(data=>{
+                  res.json({status:true,message:'Image Updated'});
+                 fs.unlinkSync(imagePath);
+                })
             }).catch(error=>console.log(error.error,'errroeeee-----'))
             
         });
