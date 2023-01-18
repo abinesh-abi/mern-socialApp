@@ -5,4 +5,3 @@ export default {
     PEER_JS_PORT: process.env.REACT_APP_PEER_JS_PORT,
     IMAGE_URL:process.env.REACT_APP_IMAGE_URL,
 }
-console.log(process.env.REACT_APP_SERVER_URL)

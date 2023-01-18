@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const basicConfig = require("../config/basicConfig");
 
 
 const schema = new mongoose.Schema({
@@ -27,7 +28,7 @@ const schema = new mongoose.Schema({
     },
     avatar:{
         type: String,
-        default: 'avatar'
+        default: basicConfig.INITIAL_PROFIE
     },
     dob:Date,
     role: {type: String, default: 'user'},

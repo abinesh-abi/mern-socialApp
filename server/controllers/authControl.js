@@ -11,7 +11,7 @@ const otpModel = require("../models/otpModel");
 module.exports = {
   reqestOtp:async(req,res)=>{
     try {
-      let { fullname, username, email, password } = req.body;
+      let { username, email, password } = req.body;
       let isUserexists = await userService.getUserByUserEmail(email);
       let isUserNameTaken = await userService.getUserByUserUserName(username);
 

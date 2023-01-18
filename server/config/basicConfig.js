@@ -8,5 +8,7 @@ module.exports = {
     CLIENT_URL : process.env.CLIENT_URL.split(","),
 
     EMAIL_SEND_ID:process.env.EMAIL_SEND_ID,
-    EMAIL_SEND_PASS:process.env.EMAIL_SEND_PASS
+    EMAIL_SEND_PASS:process.env.EMAIL_SEND_PASS,
+
+    INITIAL_PROFIE:process.env.INITIAL_PROFIE,
 }
