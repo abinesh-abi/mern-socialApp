@@ -11,7 +11,6 @@ import FollowBtn from "./FollowBtn";
 import ImageEditModal from "./ImageEditModal";
 import '../../styles/profile.css'
 import UserPosts from "./UserPosts";
-import config from "../../utils/config";
 
 const ProfileBody = ()=>{
   let imageStyle = {
@@ -39,12 +38,12 @@ const ProfileBody = ()=>{
     if (ownProfile) {
       setUser(profile?.users)
     }else{
-      //  getDataAPI(`/user/${id}`,auth.token).then(data=>{
-      //   setUser(data.data.user)
-      //  })
       getUsers()
     }
     },[profile?.users?._id,id,useParams])
+    useEffect(()=>{
+      setUser(profile.users)
+    },[profile.users.avatar])
 
   return (
   <div className="d-flex flex-column bg-white profile-container">

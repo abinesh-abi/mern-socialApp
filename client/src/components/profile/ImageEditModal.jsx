@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileUsers, updateProfilePhoto } from "../../redux/actions/profileActions";
-import config from "../../utils/config";
 
 const ImageEditModal =({image})=>{
 
@@ -13,6 +12,7 @@ const ImageEditModal =({image})=>{
 
     let [newImage,setNewimage] = useState(null)
     const [imageUpdated,setImageUpdated] = useState(false)
+    const [refresh, setRefresh] = useState(0)
 
     const dispatch = useDispatch()
 
@@ -27,14 +27,8 @@ const ImageEditModal =({image})=>{
     const updateImage = () =>{
         let data = new FormData()
         data.append('image',newImage)
-        dispatch(updateProfilePhoto(data,auth,closeModel))
-        dispatch(getProfileUsers({id:auth.user._id,auth})) 
-        // postDataAPI('/user/editImage',data,auth.token)
-        // .then(({data})=>{
-        // document.getElementById("exampleModalCenter").classList.remove("show", "d-block");
-        // document.querySelectorAll(".modal-backdrop")
-        //     .forEach(el => el.classList.remove("modal-backdrop"));
-        // })
+        dispatch(updateProfilePhoto(data,auth,closeModel,setRefresh))
+        // dispatch(getProfileUsers({id:auth.user._id,auth})) 
     }
 
   return(

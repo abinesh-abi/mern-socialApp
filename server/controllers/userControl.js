@@ -75,14 +75,12 @@ const postControll ={
 
         req.imageName = `${id}.jpg`;
         const imagePath =`./uploads/profile/${id}.jpg`
-        console.log(`/profile/${id}`)
         upload(req, res,(err) => {
             if(err) return console.log(err)
             cloudinary.uploader.upload(imagePath, { public_id:`image/profile/${id}`,invalidate:true})
-            .then((result) => {
-                console.log(result)
-              res.json({status:true,message:'Image Updated'});
-               updateUser(id,{avatar:result.secure_url})
+            .then(async(result) => {
+              let data =await updateUser(id,{avatar:result.secure_url})
+              res.json({status:true,message:'Image Updated',data});
               fs.unlinkSync(imagePath)
             }).catch(error=>console.log(error,'errroeeee-----'))
         });

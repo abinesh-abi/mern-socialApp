@@ -55,7 +55,11 @@ module.exports = {
   updateUser:(_id,values)=>{
     return new Promise((resolve, reject) => {
       userModel.updateOne({_id},{$set:values})
-      .then(data=>resolve(data))
+      .then(data=>
+        userModel.findOne({_id}).then(val=>{
+          resolve(val)
+        })
+        )
       .catch(error=>reject(error))
     })
   },

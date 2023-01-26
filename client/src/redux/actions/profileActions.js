@@ -61,6 +61,10 @@ export const updateProfilePhoto = (data,auth,closeModel) =>async(dispatch)=>{
     // const res = await postDataAPI('/user/edit',data,auth.token)
     const res = await postDataAPI('/user/editImage',data,auth.token)
     if (res.data.status) {
+        dispatch({
+            type: PROFILE_TYPES.GET_USER,
+            payload:{user:res.data.data} 
+        })
             dispatch({
                 type:GLOBALTYPES.AUTH,
                 payload:{
