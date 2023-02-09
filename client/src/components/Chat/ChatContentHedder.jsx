@@ -41,9 +41,9 @@ function ChatContentHedder({}) {
                 }
             </div>
         </div>
-    <div className='my-auto mr-4'>
+    {/* <div className='my-auto mr-4'>
            <i className="fa-solid fa-video" onClick={videoCall}></i>
-    </div>
+    </div> */}
     </div>
         </div>
   )

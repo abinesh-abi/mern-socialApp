@@ -149,7 +149,7 @@ function UserPosts() {
                     </div>
 
                     <div className="cardbox-heading">
-                        <img className="img-fluid" src={`${config.IMAGE_URL}/posts/${post?._id}.jpg`} alt="Image"
+                        <img className="img-fluid" src={post.image} alt="Image"
                             width={"100%"}
                         />
                     </div>

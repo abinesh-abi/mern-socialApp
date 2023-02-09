@@ -10,7 +10,7 @@ function Addpost() {
     const [image, setImage] = useState([])
     const [content, setContent] = useState('')
     const [err, setErr] = useState('')
-    const {auth} = useSelector(state=>state)
+    const {auth,profile} = useSelector(state=>state)
 
   const dispatch = useDispatch()
 
@@ -66,7 +66,7 @@ function Addpost() {
         <div className="d-flex justify-content-center">
             <div className='rounded-circle'>
               <Link to={`/profile/${auth.user?._id}`}>
-                <img src={auth?.user?.avatar}
+                <img src={profile?.users?.avatar}
                  style={{width:'50px',height:'50px',borderRadius: "50%"}}
                  alt="" />
               </Link>

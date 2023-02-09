@@ -87,7 +87,7 @@ return <section key={index} className="profile-feed py-2" >
                     </div>
 
                     <div className="cardbox-heading">
-                        <img className="img-fluid" src={post?.postDetails._id} alt="Image"
+                        <img className="img-fluid" src={post?.postDetails.image} alt="Image"
                             width={"100%"}
                         />
                     </div>
