@@ -83,22 +83,25 @@ function ChatHomeMobile() {
           { !chat.currentChat && <div id="plist" className="people-lista">
             {/* <ChatSearch /> */}
             {/* search */}
-            <div className="input-group">
+            <div className="">
                 <form onSubmit={searchSubmit}>
                     <input type="text" className="form-control" placeholder="Search..." value={searchInput} onChange={e=>setSearchInput(e.target.value)} />
                     <div className="input-group-prepend position-relative">
+                        {
+                            searchInput &&
                         <i id='close-search'
                          className="fa-sharp fa-solid fa-xmark position-absolute text-danger chat-search-close"
                          onClick={()=>{
                             setSearchInput('')
                         }}
                         ></i>
+                        }
                         <button type='submit' className="input-group-text chat-search-button" ><i className="fa fa-search"></i></button>
                     </div>
                 </form>
             </div>
             {/* search end*/}
-            <ul className="list-unstyled chat-list">
+            <ul className="list-unstyled chat-list" >
                 <div className='friend-lst-scrollable'>
                     {
                         !isSearch ?

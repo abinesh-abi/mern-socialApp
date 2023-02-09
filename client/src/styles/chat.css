@@ -215,7 +215,7 @@
 
 /* my */
 .friend-lst-scrollable{
-    height: 370px;
+    height: 100%;
     overflow-y: scroll;
 }
 .chat-search-button{
