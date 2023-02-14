@@ -142,7 +142,6 @@ function ViewPosts() {
                           </div>
 
                           <div className="cardbox-heading">
-                          {console.log(post)}
                               <img className="img-fluid" src={post[0]?.image} alt="Image"
                                   width={"100%"}
                               />
